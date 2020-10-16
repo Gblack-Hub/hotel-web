@@ -1,48 +1,41 @@
 import React from 'react';
 import './App.css';
+import { makeStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import HelpIcon from '@material-ui/icons/Help';
+
 import Navbar from './components/Navbar.jsx' ;
 import HomePage from './components/HomePage.jsx' ;
 import SearchPane from './components/SearchPane.jsx' ;
-import Services from './components/Services.jsx' ;
+import WhyQuickstays from './components/WhyQuickstays.jsx' ;
+import HotelsTopList from './components/HotelsTopList.jsx' ;
+import Testimonies from './components/Testimonies.jsx' ;
+import Facts from './components/Facts.jsx' ;
+
+
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+}));
 
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
+    <div>
+      <Fab size="medium" color="secondary" aria-label="need help?" className={classes.fab}>
+        <HelpIcon />
+      </Fab>
       <Navbar />
       <HomePage />
       <SearchPane />
-      <Services />
-      <span><i className="fa fa-user"></i></span>
-
-      <div className="container">
-        <div>
-          <div>Explore popular hotels around the world</div>
-          <div>
-            <button className="btn btn-primary">See all</button>
-            <button>See all</button>
-          </div>
-        </div>
-      </div>
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Paris</div>
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Berlin</div>
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">St. Petersburg</div>
-        </div>
-        <div className="row">
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Uk</div>
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Amsterdam</div>
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Rio de Jenerio</div>
-        </div>
-        <div className="row">
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Budapest</div>
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Dubai</div>
-          <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">Nigeria</div>
-        </div>
-      </div>
-      <div className="container">
-      </div>
-
+      <WhyQuickstays />
+      <HotelsTopList />
+      <Testimonies />
+      <Facts />
     </div>
   );
 }
