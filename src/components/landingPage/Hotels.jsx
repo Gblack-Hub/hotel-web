@@ -13,14 +13,18 @@ class HotelsTopList extends Component {
 			{ image: 'HotelIcon', location: 'Lagos', country: 'Nigeria', likes: '120,888'},
 			{ image: 'HotelIcon', location: 'Ogun', country: 'Nigeria', likes: '110,008'},
 			{ image: 'HotelIcon', location: 'Abuja', country: 'Nigeria', likes: '90,243'},
-			{ image: 'HotelIcon', location: 'Kaduna', country: 'Nigeria', likes: '140,765'}
+			{ image: 'HotelIcon', location: 'Kaduna', country: 'Nigeria', likes: '140,765'},
+			{ image: 'HotelIcon', location: 'Ogun', country: 'Nigeria', likes: '110,008'},
+			{ image: 'HotelIcon', location: 'Lagos', country: 'Nigeria', likes: '120,888'},
+			{ image: 'HotelIcon', location: 'Kaduna', country: 'Nigeria', likes: '140,765'},
+			{ image: 'HotelIcon', location: 'Abuja', country: 'Nigeria', likes: '90,243'}
 		]
 	}
 	render(){
 		return (
 			<div className="container py-5">
 				<div className="row mb-4">
-					<div classname="col-12">
+					<div className="col-12">
 						<div className="d-flex justify-content-between align-items-center">
 							<Typography>Enjoy Quick stay all over Nigeria</Typography>
 							<Button variant="contained">See All</Button>
@@ -29,14 +33,14 @@ class HotelsTopList extends Component {
 				</div>
 				<div className="row">
 					{ this.state.data.map((item, index) => (
-						<div className="col-sm-12 col-md-12 col-lg-3 col-xl-3" key={index}>
+						<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 mb-4" key={index}>
 							<Card>
 						      <CardActionArea>
 									<CardMedia
 									 component="img"
 									 alt={item.location}
 									 height="140"
-									 image={require("../assets/images/img3.jpg")}
+									 image={require("../../assets/images/img3.jpg")}
 									 title={item.location}
 									/>
 						        	<CardContent>
