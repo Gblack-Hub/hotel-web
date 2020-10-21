@@ -7,7 +7,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,16 +24,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchPane() {
 	const classes = useStyles();
-	const [searchTypeId, setSearchType] = React.useState('');
-	const handleChange = (event) => {
-	 setSearchType(event.target.value);
+	// const [searchTypeId, setSearchType] = React.useState('');
+	const [adultSearchTypeId, setAdultSearchType] = React.useState('');
+	const [childrenSearchTypeId, setChildrenSearchType] = React.useState('');
+
+	// const handleChange = (event) => {
+	//  setSearchType(event.target.value);
+	// };
+	const handleAdultChange = (event) => {
+	 setAdultSearchType(event.target.value);
+	};
+	const handleChildrenChange = (event) => {
+	 setChildrenSearchType(event.target.value);
 	};
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
 		<div className="d-flex align-items-center py-3">
 
-        	<div>
+        	{/*<div>
 	 			<FormControl variant="outlined" className={classes.formControl}>
 		        <InputLabel id="demo-simple-select-outlined-label">Search By Location</InputLabel>
 		        <Select
@@ -49,6 +60,11 @@ export default function SearchPane() {
 		          <MenuItem value={3}>By Others</MenuItem>
 		        </Select>
 		      </FormControl>
+        	</div>*/}
+        	<div className="px-2">
+        		<IconButton color="primary">
+        			<MyLocationIcon fontSize="large" />
+        		</IconButton>
         	</div>
 	      <div>
 	        	<TextField id="outlined-basic" label="Enter Location" variant="outlined" />
@@ -57,7 +73,7 @@ export default function SearchPane() {
 	         <TextField
 	         	variant="outlined"
 				    id="datetime-local"
-				    label="Check out date"
+				    label="Check in Date and Time"
 				    type="datetime-local"
 				    defaultValue="2020-10-21T10:30"
 				    className="d-block"
@@ -68,12 +84,12 @@ export default function SearchPane() {
         	</div>
         	<div>
 	         <FormControl variant="outlined" className={classes.formControl}>
-					<InputLabel id="demo-simple-select-outlined-label">Search By Location</InputLabel>
+					<InputLabel id="demo-simple-select-outlined-label">No of Adults</InputLabel>
 					<Select
 						labelId="demo-simple-select-outlined-label"
 						id="demo-simple-select-outlined"
-						value={searchTypeId}
-						onChange={handleChange}
+						value={adultSearchTypeId}
+						onChange={handleAdultChange}
 						label="Age"
 					>
 						<MenuItem value="">
@@ -87,12 +103,12 @@ export default function SearchPane() {
         	</div>
         	<div>
 				<FormControl variant="outlined" className={classes.formControl}>
-					<InputLabel id="demo-simple-select-outlined-label">Search By Location</InputLabel>
+					<InputLabel id="demo-simple-select-outlined-label">No of Children</InputLabel>
 					<Select
 						labelId="demo-simple-select-outlined-label"
 						id="demo-simple-select-outlined"
-						value={searchTypeId}
-						onChange={handleChange}
+						value={childrenSearchTypeId}
+						onChange={handleChildrenChange}
 						label="Age"
 					>
 						<MenuItem value="">

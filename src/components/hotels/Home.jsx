@@ -10,10 +10,10 @@ export default function Home(){
 	return (
 		<div className="container-fluid pt-2">
 			<div className="row">
-				<div className="col-sm-12 col-md-12 col-lg-3 col-xl-3">
+				<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3">
 					<SideSearchPane />
 				</div>
-				<div className="col-sm-12 col-md-12 col-lg-9 col-xl-9">
+				<div className="col-sm-12 col-md-8 col-lg-9 col-xl-9">
 					<Router>
 						<Route exact path="/hotels" component={HotelList}></Route>
      					<Route path="/hotel/detail/:hotel_id" component={HotelDetail}></Route>
