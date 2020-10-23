@@ -16,12 +16,14 @@ class Facts extends Component {
 			<div className="container">
 				<div className="row">
 					<div className="col-12">
-						<Paper className="d-flex justify-content-between py-3 px-5" elevation={2}>
+						<Paper className="row justify-content-between py-3 px-5" elevation={2}>
 							{ this.state.data.map((item, index) => (
-								<div className="text-center px-2" key={index}>
-									<Typography variant="h6">{item.value}</Typography>
-									<Typography variant="body1" color="textSecondary text-uppercase">{item.title}</Typography>
-								</div>
+								<div className="col-md-4 col-lg-3 col-xl-3 col-6 mb-3" key={index}>
+									<div className="text-center px-2">
+										<Typography variant="h6">{item.value}</Typography>
+										<Typography variant="body1" color="textSecondary" className="text-uppercase">{item.title}</Typography>
+									</div>
+									</div>
 							)) }
 						</Paper>
 					</div>

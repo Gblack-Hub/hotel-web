@@ -27,7 +27,7 @@ class Services extends Component {
 				</div>
 				<div className="row">
 				{ this.state.data.map((item, index) => (
-					<div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 text-center" key={index}>
+					<div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-3 text-center" key={index}>
 						<IconButton aria-label={item.title} style={{ backgroundColor: "teal" }} component="span">
 							<item.icon fontSize="large" />
 						</IconButton>

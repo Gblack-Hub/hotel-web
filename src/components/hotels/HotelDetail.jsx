@@ -46,7 +46,7 @@ class HotelDetail extends Component {
 				<Button size="small" disableElevation>
 					<KeyboardBackspaceIcon fontSize="small" color="primary" /> <Typography color="primary" component="span">Back To Search Result</Typography>
 				</Button>
-				<div className="d-flex justify-content-between">
+				<div className="d-flex justify-content-between mb-2">
 					<div className="d-flex flex-column">
 						<Typography variant="h5">Eko Hotels & Suites {this.state.hotel_id}</Typography>
 						<div className="d-flex">
