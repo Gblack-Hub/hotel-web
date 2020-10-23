@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Route/*, Redirect, Switch */} from 'react-rout
 import Navbar from './components/Navbar.jsx' ;
 import Home from './components/Home.jsx' ;
 import HotelHome from './components/hotels/Home.jsx' ;
+import HotelList from './components/hotels/HotelList.jsx' ;
+import HotelDetail from './components/hotels/HotelDetail.jsx' ;
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -26,7 +28,8 @@ function App() {
         </Fab>
         <Navbar />
         <Route exact path="/" component={Home}></Route>
-        <Route path="/hotels" component={HotelHome}></Route>
+        <Route path="/hotels" component={HotelList}></Route>
+        <Route path="/hotel/detail/:hotel_id" component={HotelDetail}></Route>
       </Router>
     </div>
   );

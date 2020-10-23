@@ -19,8 +19,8 @@ import StarHalfIcon from '@material-ui/icons/StarHalf';
 
 class HotelDetail extends Component {
 	state = {
-		hotel_id: null,
 		value: 0,
+		hotelData: ""
 	}
 
 	componentDidMount(){
@@ -29,7 +29,22 @@ class HotelDetail extends Component {
 		// });
 		// console.log(this.props.match.params.hotel_id);
 		let id = this.props.match.params.hotel_id;
-		this.setState({hotel_id: id});
+		// console.log(id);
+		let data = {
+			hotel_id: id,
+		}
+		this.fetchData(id);
+	}
+	fetchData=(searchData)=>{
+		console.log(searchData)
+		axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {searchData})
+		.then(res => {
+		   console.log(res);
+		   // this.setState({hotelData: res});
+		})
+		.catch(error => {
+			console.log(error);
+		}) 
 	}
 	// const [value, setValue] = React.useState(0);
 	handleChange = (event, value) => {

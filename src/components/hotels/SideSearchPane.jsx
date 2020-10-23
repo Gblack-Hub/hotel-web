@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import Geocode from "react-geocode";
 
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import TextField from '@material-ui/core/TextField';
@@ -45,16 +46,32 @@ function valuetext(value) {
 class SideSearchPane extends Component{
 	state = {
 		value: 30,
-		latitude: 51.509865,
-		longitude: -0.118092,
-		// location: '',
+		latitude: 38.736946,
+		longitude: -9.142685,
+		location: "",
 		// noOfChildren: null,
 		// noOfAdults: null,
 		checkInDateTime: null,
 		checkOutDateTime: null,
-		size: 3,
+		size: 4,
 		data: null
 	}
+	// componentDidMount(){
+	// 	Geocode.setApiKey("AIzaSyAKZWv-ybYGdH6WZbOftXfLnQ4RPvIU1U8");
+	// 	Geocode.setLanguage("en");
+	// 	Geocode.enableDebug();
+
+	// 	Geocode.fromAddress("Eiffel Tower").then(
+	// 	  response => {
+	// 	    const { lat, lng } = response.results[0].geometry.location;
+	// 	    console.log(lat, lng);
+	// 	  },
+	// 	  error => {
+	// 	    console.error(error);
+	// 	  }
+	// 	);
+	// }
+
 	// const [value, setValue] = React.useState(30);
 
 	handleGetLocation = () => {
@@ -69,56 +86,47 @@ class SideSearchPane extends Component{
 		console.log('Longitude: ', this.state.longitude);
 	}
 	handleChange = (e) => {
-		this.setState({ [e.target.id]: e.target.value })
-		this.handleSearchRequest();
-		// console.log(this.state)
+		this.setState({ [e.target.id]: e.target.value }, ()=> {
+			// console.log(this.state)
+			// this.handleSearchRequest();
+		});
 	}
 	handleSliderChange = (event, newValue) => {
 		this.setState({ value: newValue });
 		// console.log(this.state.value)
 		// setValue(newValue);
 	}
-	handleSearchRequest=() => {
+	// handleSearchRequest=(data) => {
+	// 	axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {
+	// 		params: data
+	// 	})
+	// 	.then(res => {
+	// 	   console.log(res.data.body.data);
+	// 	   this.setState({hotels: res.data.body.data});
+	// 	})
+	// 	.catch(error => {
+	// 		console.log(error);
+	// 	});
+	// }
+	handleSubmit = async (e) => {
+		e.preventDefault();
 		this.setState({
 			data: {
-				// location: this.state.location,
+				location: this.state.location,
 				latitude: this.state.latitude,
 				longitude: this.state.longitude,
+				size: this.state.size,
 				// noOfChildren: this.state.noOfChildren,
 				// noOfAdults: this.state.noOfAdults,
 				start: moment(this.state.checkInDateTime).format("YYYY-MM-DD"),
 				end: moment(this.state.checkOutDateTime).format("YYYY-MM-DD"),
 			}
 		}, () => {
-			console.log(this.state.data);
-			// let searchData = this.props.location.state.searchData;
-			// console.log(searchData);
-			axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {
-				params: this.state.data
-			})
-			.then(res => {
-			   console.log(res.data.body.data);
-			   this.setState({hotels: res.data.body.data});
-			})
-			.catch(error => {
-				console.log(error);
-			});
+			// console.log(this.state.data);
+			// this.handleSearchRequest(this.state.data);
+			this.props.onSubmitSearch(this.state.data);
 		});
-	}
-	handleSubmit = async (e) => {
-		e.preventDefault();
-		this.setState({
-			data: {
-				// location: this.state.location,
-				latitude: this.state.latitude,
-				longitude: this.state.longitude,
-				// noOfChildren: this.state.noOfChildren,
-				// noOfAdults: this.state.noOfAdults,
-				start: moment(this.state.checkInDateTime).format("YYYY-MM-DD"),
-				end: moment(this.state.checkOutDateTime).format("YYYY-MM-DD"),
-			}
-		});
-		console.log(this.state.data);
+
 		// let searchData = this.props.location.state.searchData;
 		// console.log(searchData);
 		// axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {
@@ -134,7 +142,7 @@ class SideSearchPane extends Component{
 
 
 		// try {
-		// 	const res = await axios.post("https://quickstays.azurewebsites.net/api/v1/hotels", this.state.data);
+		// 	const res = await axios.get("https://quickstays.azurewebsites.net/api/v1/hotels", searchData);
 		// 	console.log(res);
 		// } catch(err) {
 		// 	console.log(err);
@@ -159,7 +167,7 @@ class SideSearchPane extends Component{
 						   	<MyLocationIcon fontSize="small" />
 						  	</IconButton>
 						  </div>
-						  <input type="text" className="form-control" id="location" onChange={this.handleLocation} aria-label="Enter Location" placeholder="Enter Location" />
+						  <input type="text" className="form-control" id="location" onChange={this.handleChange} aria-label="Enter Location" placeholder="Enter Location" />
 						  <div className="input-group-append">
 						    <button type="submit" className="btn btn-primary">Search</button>
 						  </div>
@@ -175,8 +183,8 @@ class SideSearchPane extends Component{
 						    id="checkInDateTime"
 						    label="CHECK IN DATE AND TIME"
 						    fullWidth
-						    type="datetime-local"
-						    defaultValue="2017-05-24T10:30"
+						    type="date"
+						    // defaultValue="2017-05-24"
 						    className="d-block"
 						    InputLabelProps={{
 						      shrink: true,
@@ -189,8 +197,8 @@ class SideSearchPane extends Component{
 							    id="checkOutDateTime"
 							    label="CHECK OUT DATE AND TIME"
 							    fullWidth
-							    type="datetime-local"
-							    defaultValue="2017-05-24T10:30"
+							    type="date"
+							    // defaultValue="2017-05-24"
 							    className="d-block"
 							    InputLabelProps={{
 							      shrink: true,
