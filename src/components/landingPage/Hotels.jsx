@@ -46,7 +46,7 @@ class Hotels extends Component {
 					<div className="col-12">
 						<div className="d-flex justify-content-between align-items-center">
 							<Typography>Enjoy Quick stay all over Nigeria</Typography>
-							<Button variant="contained">See All</Button>
+							<Button variant="contained" disableElevation>See All</Button>
 						</div>
 					</div>
 				</div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import moment from 'moment';
-import { withRouter, Redirect /*, NavLink */} from 'react-router-dom';
+import { withRouter, /*Redirect, NavLink */} from 'react-router-dom';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -32,9 +32,6 @@ class SearchPane extends Component {
 	}
 
 	handleGetLocation = () => {
-		let latitude = null;
-		let longitude = null;
-
 		window.navigator.geolocation.getCurrentPosition(
          success => this.setState({ latitude: success.coords.latitude, longitude: success.coords.longitude })
          // error=> console.log(error);
@@ -73,7 +70,7 @@ class SearchPane extends Component {
 				size: this.state.size,
 			}
 		}, ()=>{
-			if(this.state.longitude == "" || this.state.latitude == ""){
+			if(this.state.longitude === "" || this.state.latitude === ""){
 				this.setState({ isDataNotComplete: true });
 				console.log(this.state.isDataNotComplete);
 			} else {
@@ -144,7 +141,7 @@ class SearchPane extends Component {
 					        	<TextField id="location" size="small" onChange={this.handleChange} fullWidth label="Enter Location" className="d-block" variant="outlined" />
 					      </div>
 					   </div>
-			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 mb-3">
+			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-2 mb-3">
 				         <TextField
 				         	variant="outlined"
 							    id="checkInDateTime"
@@ -161,7 +158,7 @@ class SearchPane extends Component {
 							    }}
 							/>
 			        	</div>
-			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 mb-3">
+			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-2 mb-3">
 				         <TextField
 				         	variant="outlined"
 							    id="checkOutDateTime"
@@ -218,7 +215,7 @@ class SearchPane extends Component {
 								</FormControl>
 				        	</div>
 				      </div>
-			        	<div className="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
+			        	<div className="col-sm-12 col-md-4 col-lg-2 col-xl-2">
 				        	<Button variant="contained" type="submit" size="large" color="primary">Search</Button>
 			       	</div>
 			      </div>

@@ -16,7 +16,7 @@ class Facts extends Component {
 			<div className="container">
 				<div className="row">
 					<div className="col-12">
-						<Paper className="row justify-content-between py-3 px-5" elevation={2}>
+						<Paper className="row justify-content-center py-3 px-5" elevation={2}>
 							{ this.state.data.map((item, index) => (
 								<div className="col-md-4 col-lg-3 col-xl-3 col-6 mb-3" key={index}>
 									<div className="text-center px-2">

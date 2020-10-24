@@ -1,16 +1,40 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import moment from 'moment';
-import Geocode from "react-geocode";
+import { Map, GoogleApiWrapper, Marker  } from 'google-maps-react';
+// import Geocode from "react-geocode";
 
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+
+const mapContainer = {
+	position: 'relative',
+   width: '100%',
+   paddingBottom: '40.25%',
+};
+const mapStyles = {
+    display: 'block',
+    position: 'absolute',
+    top: '0',
+    right: '0',
+    bottom: '0',
+    left: '0',
+    margin: '0',
+    padding: '0',
+    height: '100%',
+    width: '100%',
+};
+// const mapStyles = {
+//   width: '100%',
+//   height: '100%'
+// };
 
 const marks = [
   {
@@ -75,9 +99,6 @@ class SideSearchPane extends Component{
 	// const [value, setValue] = React.useState(30);
 
 	handleGetLocation = () => {
-		let latitude = null;
-		let longitude = null;
-
 		window.navigator.geolocation.getCurrentPosition(
          success => this.setState({ latitude: success.coords.latitude, longitude: success.coords.longitude })
          // error=> console.log(error);
@@ -151,13 +172,25 @@ class SideSearchPane extends Component{
 
 
 	render(){
+		const { latitude, longitude } = this.props.searchData;
 		return (
 			<div>
-				<Card>
-					<CardContent>
-						Map Here
-					</CardContent>
-				</Card>
+				<Paper style={mapContainer} elevation={1}>
+						<Map
+				         google={this.props.google}
+				         zoom={14}
+				         style={mapStyles}
+				         initialCenter={{
+				            lat: latitude,
+				            lng: longitude
+				         }}
+				      >
+				         <Marker
+				          onClick={this.onMarkerClick}
+				          name={'This is test name'}
+				        />
+				      </Map>
+				</Paper>
 				<Card className="d-block mt-2">
 					<CardContent>
 						<form onSubmit={ this.handleSubmit }>
@@ -251,4 +284,6 @@ class SideSearchPane extends Component{
 		);
 	}
 }
-export default SideSearchPane;
+export default GoogleApiWrapper({
+	apiKey: "AIzaSyAKZWv-ybYGdH6WZbOftXfLnQ4RPvIU1U8"
+})(SideSearchPane);

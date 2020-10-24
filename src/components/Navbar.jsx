@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+// import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link /*, NavLink */} from 'react-router-dom';
 
 
@@ -19,10 +19,10 @@ class Navbar extends Component {
 			        <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
 			      </li>
 			      <li className="nav-item">
-			        <a className="nav-link" href="#">About Us</a>
+			        <Link to="/" className="nav-link" href="#">About Us</Link>
 			      </li>
 			      <li className="nav-item">
-			        <a className="nav-link" href="#">Contact Us</a>
+			        <Link to="/" className="nav-link" href="#">Contact Us</Link>
 			      </li>
 			    </ul>
 			    <div>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link, Route, BrowserRouter, Switch } from "react-router-dom";
 import axios from 'axios';
 
 import Overview from './hotelDetail/Overview.jsx';
@@ -14,88 +13,140 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import StarIcon from '@material-ui/icons/Star';
-import StarHalfIcon from '@material-ui/icons/StarHalf';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+// import StarHalfIcon from '@material-ui/icons/StarHalf';
+
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 24 }}>
+      {props.children}
+    </Typography>
+  );
+}
 
 
 class HotelDetail extends Component {
 	state = {
-		value: 0,
-		hotelData: ""
+		activeTabIndex: 0,
+		hotelData: {},
 	}
 
 	componentDidMount(){
-		// axios.get('https://quickstays.azurewebsites.net/api/v1/hotels?size=10&start=2020-10-24&end=2020-10-25').then(res => {
-		// 	console.log(res)
-		// });
-		// console.log(this.props.match.params.hotel_id);
 		let id = this.props.match.params.hotel_id;
-		// console.log(id);
+		
 		let data = {
-			hotel_id: id,
+			guestCount: 3
 		}
-		this.fetchData(id);
+		this.fetchData(id, data);
 	}
-	fetchData=(searchData)=>{
-		console.log(searchData)
-		axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {searchData})
+	fetchData=(id, data)=>{
+		axios.get(`https://quickstays.azurewebsites.net/api/v1/hotels/${id}`, {params: data})
 		.then(res => {
-		   console.log(res);
-		   // this.setState({hotelData: res});
+		   console.log(res.data.data);
+		   this.setState({ hotelData: res.data.data });
 		})
 		.catch(error => {
 			console.log(error);
 		}) 
 	}
-	// const [value, setValue] = React.useState(0);
-	handleChange = (event, value) => {
-	 this.setState({ value });
-	}
 
-	handleChangeIndex = index => {
-	 this.setState({ value: index });
+	// const [value, setValue] = React.useState(0);
+	handleTabChange = (event, value) => {
+	 this.setState({ activeTabIndex: value });
+	}
+	handleBackButton = () => {
+		this.props.history.goBack()
 	}
 
 	render(){
+		const { activeTabIndex, hotelData } = this.state;
 		return (
-			<div className="mt-3">
-				<Button size="small" disableElevation>
-					<KeyboardBackspaceIcon fontSize="small" color="primary" /> <Typography color="primary" component="span">Back To Search Result</Typography>
-				</Button>
-				<div className="d-flex justify-content-between mb-2">
-					<div className="d-flex flex-column">
-						<Typography variant="h5">Eko Hotels & Suites {this.state.hotel_id}</Typography>
-						<div className="d-flex">
-							<StarIcon color="secondary" /><StarIcon color="secondary" /><StarIcon color="secondary" /><StarIcon color="secondary" /><StarHalfIcon color="secondary" />
+			<div className="container-fluid mt-3">
+				<div className="row">
+					<div className="col-12">
+						<Button size="small" disableElevation onClick={this.handleBackButton}>
+							<KeyboardBackspaceIcon fontSize="small" color="primary" /> <Typography color="primary" variant="caption" component="span">Back To Search Result</Typography>
+						</Button>
+						<div className="d-flex justify-content-between pt-2 pb-3">
+							<div className="d-flex flex-column">
+								<Typography variant="h5">{hotelData.name}</Typography>
+								<div className="d-flex">
+									{ hotelData.starRating === "5.0" ?
+									 	<div>
+									 		<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+									 	</div> :
+										hotelData.starRating === "4.0" ?
+										<div>
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+										</div> :
+										hotelData.starRating === "3.0" ? 
+										<div>
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+										</div> : 
+										hotelData.starRating === "2.0" ? 
+										<div>
+											<StarIcon fontSize="small" color="secondary" />
+											<StarIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+										</div> : 
+										hotelData.starRating === "1.0" ? 
+										<div>
+											<StarIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+										</div> : 
+										<div>
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+											<StarBorderIcon fontSize="small" color="secondary" />
+										</div>
+									}
+								</div>
+							</div>
+							<div>
+								<Button variant="contained" color="secondary" disableElevation>Reserve Now</Button>
+							</div>
 						</div>
-					</div>
-					<div>
-						<Button variant="contained" color="primary" disableElevation>Book Now</Button>
+						<AppBar position="static" color="default">
+						  <Tabs
+						  		value={this.state.activeTabIndex}
+						  		onChange={this.handleTabChange}
+						  		aria-label="Hotel Detail Tab"
+						  		indicatorColor="primary"
+				            textColor="primary"
+				            variant="scrollable"
+          					scrollButtons="auto"
+				         >
+						    <Tab label="Overview" />
+						    <Tab label="Facilities" />
+						    <Tab label="Rooms" />
+						    <Tab label="Reviews" />
+						  </Tabs>
+						</AppBar>
+						{ activeTabIndex === 0 && <TabContainer><Overview { ...hotelData } /></TabContainer> }
+						{ activeTabIndex === 1 && <TabContainer><Facilities { ...hotelData } /></TabContainer> }
+						{ activeTabIndex === 2 && <TabContainer><Rooms { ...hotelData } /></TabContainer> }
+						{ activeTabIndex === 3 && <TabContainer><Reviews { ...hotelData } /></TabContainer> }
 					</div>
 				</div>
-				<BrowserRouter>
-		        <div>
-		          <AppBar position="static" color="default">
-		            <Tabs
-		              value={this.state.value}
-		              onChange={this.handleChange}
-		              indicatorColor="primary"
-		              textColor="primary"
-		            >
-		              <Tab label="Overview" component={Link} to="/overview" />
-		              <Tab label="Facilities" component={Link} to="/facilities" />
-		            </Tabs>
-		          </AppBar>
-
-		          <Switch>
-		            {/*<Route path="/one" component={PageShell(ItemOne)} />
-		            <Route path="/two" component={PageShell(ItemTwo)} />*/}
-		            <Route path={"/hotel/detail/" + this.state.hotel_id} component={Overview} />
-            		<Route path="/facilities" component={Facilities} />
-            		<Route path="/rooms" component={Rooms} />
-            		<Route path="/reviews" component={Reviews} />
-		          </Switch>
-		        </div>
-		      </BrowserRouter>
 			</div>
 		);
 	}
