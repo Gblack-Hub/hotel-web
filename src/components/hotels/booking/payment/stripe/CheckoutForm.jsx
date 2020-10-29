@@ -6,9 +6,14 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
+import Slide from '@material-ui/core/Slide';
+import MuiAlert from '@material-ui/lab/Alert';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import { ElementsConsumer, CardElement } from "@stripe/react-stripe-js";
 
 
@@ -36,7 +41,15 @@ class CheckoutForm extends React.Component {
 		expiryDateYY: "",
 		cvvCode: "",
 		creditCardName: "",
-		isProcessing: false
+    isProcessing: false,
+    bookingId: "",
+    bookingReferenceCode: "",
+    hotelConfirmationCode: "",
+    modalMessage: null,
+    isRequestError: false,
+    isRequestErrorMessage: "",
+    isRequestWarning: false,
+    isRequestWarningMessage: "",
   }
 
   // componentDidUpdate(){
@@ -45,8 +58,7 @@ class CheckoutForm extends React.Component {
   // }
   
   handleChange = (e) => {
-    console.log(e.target.value)
-		this.setState({ [e.target.name]: e.target.value}, console.log(this.state));
+		this.setState({ [e.target.name]: e.target.value});
   };
 
   sendData = (data)=>{
@@ -54,12 +66,21 @@ class CheckoutForm extends React.Component {
     axios.post(`https://quickstays.azurewebsites.net/api/v1/bookings`, JSON.stringify(data))
 		.then(res => {
 		   	console.log(res.data);
-		   	this.setState({ isDataSubmitted: true });
+		   	this.setState({ 
+           modalMessage: {
+            bookingId: res.data.bookingId,
+            bookingReferenceCode: res.data.bookingReferenceCode,
+            hotelConfirmationCode: res.data.hotelConfirmationCode,
+            amount: this.props.selectedHotel.roomAmount
+           },
+           isDataSubmitted: true,
+        });
 			// if(this.state.isDataSubmitted){
 			// 	console.log(this.state.isDataNotComplete);
 			// }
 		})
 		.catch(error => {
+		  this.setState({ isProcessing: false, isRequestError: true, isRequestErrorMessage: "All fields are required!" });
 			console.log(error);
     })
     
@@ -69,6 +90,21 @@ class CheckoutForm extends React.Component {
     //   receipt_email: 'customer@example.com'
     // })
   }
+
+  handleErrorClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ isRequestError: false });
+  };
+  handleWarningClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ isRequestError: false });
+  };
   
   handleSubmit = async event => {
     event.preventDefault();
@@ -85,6 +121,7 @@ class CheckoutForm extends React.Component {
     const result = await stripe.createToken(card);
     if (result.error) {
       console.log(result.error.message);
+  		this.setState({ isProcessing: false, isRequestWarning: true, isRequestWarningMessage: result.error.message });
     } else {
       console.log(result.token);
 
@@ -112,263 +149,289 @@ class CheckoutForm extends React.Component {
         this.sendData(this.state.data);
       })
       
+      this.setState({ isProcessing: true });
     }
-		this.setState({ isProcessing: true });
 
   };
 
   render() {
-    const { purposeOfUse, isBookingForMyself, isInstantPayment, saveInformation, paymentMethod, isProcessing, isDataSubmitted, data } = this.state;
+    const { purposeOfUse, isBookingForMyself, isInstantPayment, saveInformation, paymentMethod, isProcessing, isDataSubmitted, data, modalMessage, isRequestError, isRequestErrorMessage, isRequestWarning, isRequestWarningMessage } = this.state;
     return (
       <div>
         <div>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <div className="mb-3">
-                <Typography variant="h6" color="primary">Purpose of use</Typography>
-                <RadioGroup row aria-label="Are you travelling for work" name="purposeOfUse" value={purposeOfUse} onChange={this.handleChange}>
-                  <FormControlLabel value="quick business meetings" control={<Radio />} label="Quick Business Meetings" />
-                  <FormControlLabel value="refresh after interview" control={<Radio />} label="Refresh after interview" />
-                  <FormControlLabel value="avoiding traffic" control={<Radio />} label="Avoiding traffic" />
-                  <FormControlLabel value="others" control={<Radio />} label="Others" />
-                    </RadioGroup>
-                <TextField
-                  onChange={this.handleChange}
-                  variant="outlined"
-                  label="Specify"
-                  name="purposeOfUse"
-                  size="small"
-                  fullWidth
-                />
-                </div>
-                <Divider />
-              <Typography variant="h6" className="mt-3 mb-2">Enter your information</Typography>
-              <div className="col-12 p-0 mb-3">
-                <div className="row">
-                  <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <TextField
-                      onChange={this.handleChange}
-                      variant="outlined"
-                      label="First Name"
-                      name="firstName"
-                      id="firstName"
-                      size="small"
-                      fullWidth
-                    />
-                  </div>
-                  <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <TextField
-                      onChange={this.handleChange}
-                      variant="outlined"
-                      label="Last Name"
-                      name="lastName"
-                      id="lastName"
-                      size="small"
-                      fullWidth
-                    />
-                  </div>
-                  <div className="col-12 mt-3">
-                    <TextField
-                      onChange={this.handleChange}
-                      variant="outlined"
-                      label="Email"
-                      name="email"
-                        id="email"
-                        size="small"
-                        fullWidth
-                    />
-                    <Typography variant="caption" color="textSecondary" className="font-italic">confirmation email will be sent to this address</Typography>
-                  </div>
-                  <div className="col-12">
-                    <div className="row">
-                      <div className="col-sm-12 col-md-5 col-lg-4 col-xl-4">
-                        <FormControlLabel
-                            control={<Checkbox checked={saveInformation} onChange={this.handleChange} name="saveInformation" />}
-                            label="Save my information"
-                          />
-                      </div>
-                      <div className="col-sm-12 col-md-7 col-lg-8 col-xl-8">
-                          <Alert severity="warning"><Typography variant="caption">You will be directed to create your account</Typography></Alert>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <Divider />
-            </div>
-
-            <div className="mt-3">
+          { isDataSubmitted ? 
+            <BookingConfirmation bookingInfo={data} bookingReceiptInfo={modalMessage} />
+          :
+            <form onSubmit={this.handleSubmit}>
               <div>
-                <Typography variant="h6" color="primary">Are you booking for yourself?</Typography>
-                <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForMyself" value={isBookingForMyself} onChange={this.handleChange}>
-                  <FormControlLabel value="yes" control={<Radio />} label="Yes, I am booking for myself" />
-                  <FormControlLabel value="no" control={<Radio />} label="No, I am booking for someone" />
-                    </RadioGroup>
-                </div>
-                <Divider />
-              <Typography variant="h6" className="mt-3 mb-2">Enter guest information</Typography>
-              <div className="col-12 p-0 mb-3">
-                <div className="row">
-                  <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <TextField
+                <div className="mb-3">
+                  <Typography variant="h6" color="primary">Purpose of use</Typography>
+                  <RadioGroup row aria-label="Are you travelling for work" name="purposeOfUse" value={purposeOfUse} onChange={this.handleChange}>
+                    <FormControlLabel value="quick business meetings" control={<Radio />} label="Quick Business Meetings" />
+                    <FormControlLabel value="refresh after interview" control={<Radio />} label="Refresh after interview" />
+                    <FormControlLabel value="avoiding traffic" control={<Radio />} label="Avoiding traffic" />
+                    <FormControlLabel value="others" control={<Radio />} label="Others" />
+                      </RadioGroup>
+                  <TextField
+                    onChange={this.handleChange}
+                    variant="outlined"
+                    label="Specify"
+                    name="purposeOfUse"
+                    size="small"
+                    fullWidth
+                  />
+                  </div>
+                  <Divider />
+                <Typography variant="h6" className="mt-3 mb-2">Enter your information</Typography>
+                <div className="col-12 p-0 mb-3">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                      <TextField
                         onChange={this.handleChange}
                         variant="outlined"
                         label="First Name"
-                        name="guestFirstName"
-                        id="guestFirstName"
+                        name="firstName"
+                        id="firstName"
                         size="small"
                         fullWidth
+                      />
+                    </div>
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                      <TextField
+                        onChange={this.handleChange}
+                        variant="outlined"
+                        label="Last Name"
+                        name="lastName"
+                        id="lastName"
+                        size="small"
+                        fullWidth
+                      />
+                    </div>
+                    <div className="col-12 mt-3">
+                      <TextField
+                        onChange={this.handleChange}
+                        variant="outlined"
+                        label="Email"
+                        name="email"
+                          id="email"
+                          size="small"
+                          fullWidth
+                      />
+                      <Typography variant="caption" color="textSecondary" className="font-italic">confirmation email will be sent to this address</Typography>
+                    </div>
+                    <div className="col-12">
+                      <div className="row">
+                        <div className="col-sm-12 col-md-5 col-lg-4 col-xl-4">
+                          <FormControlLabel
+                              control={<Checkbox checked={saveInformation} onChange={this.handleChange} name="saveInformation" />}
+                              label="Save my information"
+                            />
+                        </div>
+                        <div className="col-sm-12 col-md-7 col-lg-8 col-xl-8">
+                            <Alert severity="warning"><Typography variant="caption">You will be directed to create your account</Typography></Alert>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <Divider />
+              </div>
+
+              <div className="mt-3">
+                <div>
+                  <Typography variant="h6" color="primary">Are you booking for yourself?</Typography>
+                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForMyself" value={isBookingForMyself} onChange={this.handleChange}>
+                    <FormControlLabel value="yes" control={<Radio />} label="Yes, I am booking for myself" />
+                    <FormControlLabel value="no" control={<Radio />} label="No, I am booking for someone" />
+                      </RadioGroup>
+                  </div>
+                  <Divider />
+                <Typography variant="h6" className="mt-3 mb-2">Enter guest information</Typography>
+                <div className="col-12 p-0 mb-3">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                      <TextField
+                          onChange={this.handleChange}
+                          variant="outlined"
+                          label="First Name"
+                          name="guestFirstName"
+                          id="guestFirstName"
+                          size="small"
+                          fullWidth
+                      />
+                    </div>
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                      <TextField
+                          onChange={this.handleChange}
+                          variant="outlined"
+                          label="Last Name"
+                          name="guestLastName"
+                          id="guestLastName"
+                          size="small"
+                          fullWidth
+                      />
+                    </div>
+                    <div className="col-12 mt-3">
+                      <TextField
+                          onChange={this.handleChange}
+                          variant="outlined"
+                          label="Email"
+                          name="guestEmail"
+                          id="guestEmail"
+                          size="small"
+                          fullWidth
+                      />
+                      <Typography variant="caption" color="textSecondary" className="font-italic">reservation information will be sent to this address</Typography>
+                    </div>
+                    <div className="col-12 my-4 bg-secondary">
+                      <div className="row align-items-center py-2">
+                        <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                          <Typography variant="body1" className="text-white">Wish to save your details and manage your bookings on the go?</Typography>
+                        </div>
+                        <div className="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                            <Button variant="contained" color="secondary" size="large" disableElevation>Sign Up Now</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <Divider />
+              </div>
+              <div className="mb-2">
+                <div>
+                  <Typography variant="h6" color="primary">Do you wish to pay Now?</Typography>
+                  <RadioGroup row aria-label="Do you wish to pay Now?" name="isInstantPayment" value={isInstantPayment} onChange={this.handleChange}>
+                    <FormControlLabel value="yes" control={<Radio />} label="Yes, I am booking for myself" />
+                    <FormControlLabel value="no" control={<Radio />} label="No, I am booking for someone" />
+                  </RadioGroup>
+                  </div>
+                <Divider />
+                  <Typography variant="h6">Choose your payment method</Typography>
+                <RadioGroup aria-label="payment Method" value={paymentMethod} name="paymentMethod" onChange={this.handleChange}>
+                  <div className="d-flex flex-column mb-2">
+                    <div className="d-flex justify-content-between">
+                      <FormControlLabel value="paypal" control={<Radio color="primary" />} label="PayPal" />
+                      <Typography variant="h6">PayPal</Typography>
+                    </div>
+                    <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
+                  </div>
+                  <div className="d-flex flex-column">
+                    <div className="d-flex justify-content-between">
+                      <FormControlLabel value="credit card" control={<Radio color="primary" />} label="Credit Card" />
+                      <Typography variant="h6">Visa, MasterCard</Typography>
+                    </div>
+                  <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
+                  </div>
+                </RadioGroup>
+              </div>
+              <Divider />
+              <div className="col-12 p-0 my-3">
+                <div className="row mb-3">
+                  <div className="col-12">
+                    <Typography variant="h6" className="mb-2">Enter your credit card details</Typography>
+                    
+                    <TextField
+                      onChange={this.handleChange}
+                      variant="outlined"
+                      label="Credit Card Number"
+                      name="creditCardNumber"
+                      id="creditCardNumber"
+                      size="small"
+                      fullWidth
+                    />
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex">
+                    <TextField
+                      onChange={this.handleChange}
+                      variant="outlined"
+                      label="Expiry Date (MM)"
+                      name="expiryDateMM"
+                      id="expiryDateMM"
+                      size="small"
+                      className="mr-2"
+                      fullWidth
+                    />
+                    <TextField
+                      onChange={this.handleChange}
+                      variant="outlined"
+                      label="Expiry Date (YY)"
+                      name="expiryDateYY"
+                      id="expiryDateYY"
+                      size="small"
+                      fullWidth
                     />
                   </div>
                   <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                     <TextField
-                        onChange={this.handleChange}
-                        variant="outlined"
-                        label="Last Name"
-                        name="guestLastName"
-                        id="guestLastName"
-                        size="small"
-                        fullWidth
+                      onChange={this.handleChange}
+                      variant="outlined"
+                      label="CVV Code"
+                      name="cvvCode"
+                      id="cvvCode"
+                      size="small"
+                      fullWidth
                     />
                   </div>
-                  <div className="col-12 mt-3">
+                </div>
+                <div className="row">
+                  <div className="col-12 mb-3">
                     <TextField
-                        onChange={this.handleChange}
-                        variant="outlined"
-                        label="Email"
-                        name="guestEmail"
-                        id="guestEmail"
-                        size="small"
-                        fullWidth
+                      onChange={this.handleChange}
+                      variant="outlined"
+                      label="Credit Card Name"
+                      name="creditCardName"
+                      id="creditCardName"
+                      size="small"
+                      fullWidth
                     />
-                    <Typography variant="caption" color="textSecondary" className="font-italic">reservation information will be sent to this address</Typography>
                   </div>
-                  <div className="col-12 my-4 bg-secondary">
-                    <div className="row align-items-center py-2">
-                      <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9">
-                        <Typography variant="body1" className="text-white">Wish to save your details and manage your bookings on the go?</Typography>
+                  <div className="col-12 mb-2">
+                    <div className="row">
+                      <div className="col-sm-12 col-md-5 col-lg-4 col-xl-4">
+                        <FormControlLabel
+                        control={<Checkbox checked={saveInformation} onChange={this.handleChange} name="saveInformation" />}
+                        label="Save my credit card details"
+                        />
                       </div>
-                      <div className="col-sm-12 col-md-4 col-lg-3 col-xl-3">
-                          <Button variant="contained" color="secondary" size="large" disableElevation>Sign Up Now</Button>
+                      <div className="col-sm-12 col-md-7 col-lg-8 col-xl-8">
+                        <Alert severity="warning"><Typography variant="caption">You will be directed to create your account</Typography></Alert>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <Divider />
-            </div>
-            <div className="mb-2">
-              <div>
-                <Typography variant="h6" color="primary">Do you wish to pay Now?</Typography>
-                <RadioGroup row aria-label="Do you wish to pay Now?" name="isInstantPayment" value={isInstantPayment} onChange={this.handleChange}>
-                  <FormControlLabel value="yes" control={<Radio />} label="Yes, I am booking for myself" />
-                  <FormControlLabel value="no" control={<Radio />} label="No, I am booking for someone" />
-                </RadioGroup>
-                </div>
-              <Divider />
-                <Typography variant="h6">Choose your payment method</Typography>
-              <RadioGroup aria-label="payment Method" value={paymentMethod} name="paymentMethod" onChange={this.handleChange}>
-                <div className="d-flex flex-column mb-2">
-                  <div className="d-flex justify-content-between">
-                    <FormControlLabel value="paypal" control={<Radio color="primary" />} label="PayPal" />
-                    <Typography variant="h6">PayPal</Typography>
-                  </div>
-                  <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
-                </div>
-                <div className="d-flex flex-column">
-                  <div className="d-flex justify-content-between">
-                    <FormControlLabel value="credit card" control={<Radio color="primary" />} label="Credit Card" />
-                    <Typography variant="h6">Visa, MasterCard</Typography>
-                  </div>
-                <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
-                </div>
-              </RadioGroup>
-            </div>
-            <Divider />
-            <div className="col-12 p-0 my-3">
-              <div className="row mb-3">
-                <div className="col-12">
-                  <Typography variant="h6" className="mb-2">Enter your credit card details</Typography>
-                  
-                  <TextField
-                    onChange={this.handleChange}
-                    variant="outlined"
-                    label="Credit Card Number"
-                    name="creditCardNumber"
-                    id="creditCardNumber"
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              </div>
-              <div className="row mb-3">
-                <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex">
-                  <TextField
-                    onChange={this.handleChange}
-                    variant="outlined"
-                    label="Expiry Date (MM)"
-                    name="expiryDateMM"
-                    id="expiryDateMM"
-                    size="small"
-                    className="mr-2"
-                    fullWidth
-                  />
-                  <TextField
-                    onChange={this.handleChange}
-                    variant="outlined"
-                    label="Expiry Date (YY)"
-                    name="expiryDateYY"
-                    id="expiryDateYY"
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-                <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                  <TextField
-                    onChange={this.handleChange}
-                    variant="outlined"
-                    label="CVV Code"
-                    name="cvvCode"
-                    id="cvvCode"
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-12 mb-3">
-                  <TextField
-                    onChange={this.handleChange}
-                    variant="outlined"
-                    label="Credit Card Name"
-                    name="creditCardName"
-                    id="creditCardName"
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-                <div className="col-12 mb-2">
-                  <div className="row">
-                    <div className="col-sm-12 col-md-5 col-lg-4 col-xl-4">
-                      <FormControlLabel
-                      control={<Checkbox checked={saveInformation} onChange={this.handleChange} name="saveInformation" />}
-                      label="Save my credit card details"
-                      />
-                    </div>
-                    <div className="col-sm-12 col-md-7 col-lg-8 col-xl-8">
-                      <Alert severity="warning"><Typography variant="caption">You will be directed to create your account</Typography></Alert>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <CardSection />
-            <Button variant="contained" disabled={!this.props.stripe || isProcessing } type="submit" color="secondary" size="large" fullWidth>
-              Reserve Now
-            </Button>
-          </form>
-          { isDataSubmitted && <BookingConfirmation bookingInfo={data} /> }
+              
+              <CardSection />
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  open={isRequestError}
+                  autoHideDuration={6000}
+                  onClose={this.handleErrorClose}
+                >
+                  <Alert onClose={this.handleErrorClose} variant="filled" severity="error">{ isRequestErrorMessage }</Alert>
+                </Snackbar>
+              
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  open={isRequestWarning}
+                  autoHideDuration={6000}
+                  onClose={this.handleWarningClose}
+                >
+                  <Alert onClose={this.handleErrorClose} variant="filled" severity="warning">{isRequestWarningMessage}</Alert>
+                </Snackbar>
+              <Button variant="contained" disabled={!this.props.stripe || isProcessing } type="submit" color="secondary" size="large" fullWidth>
+                Reserve Now
+              </Button>
+            </form>
+          }
         </div>
       </div>
     );

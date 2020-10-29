@@ -53,7 +53,7 @@ class Rooms extends React.PureComponent {
 							<div className="row">
 								<div className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 									<div className="row">
-										<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+										<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2 order-md-first order-last">
 											<div style={ isTextHidden ? classes.hidden : null} className="mb-1">
 												{ item.description }
 												<Typography variant="body1" className="mt-2">
@@ -130,7 +130,7 @@ class Rooms extends React.PureComponent {
 												</Link>
 											</div>
 										</div>
-										<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+										<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
 											<img src={item.images[0].url} className="img-fluid rounded" alt={item.name} />
 										</div>
 									</div>

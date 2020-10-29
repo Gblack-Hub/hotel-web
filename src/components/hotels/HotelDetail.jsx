@@ -68,7 +68,7 @@ class HotelDetail extends Component {
 	render(){
 		const { activeTabIndex, hotelData } = this.state;
 		const { searchData } = this.props.location;
-		console.log(searchData)
+
 		// const { hotel_id } = this.props.match.params;
 		return (
 			<div className="container-fluid mt-3">
@@ -77,8 +77,8 @@ class HotelDetail extends Component {
 						<Button size="small" disableElevation onClick={this.handleBackButton}>
 							<KeyboardBackspaceIcon fontSize="small" color="primary" /> <Typography color="primary" variant="caption" component="span">Back To Search Result</Typography>
 						</Button>
-						<div className="d-flex justify-content-between pt-2 pb-3">
-							<div className="d-flex flex-column">
+						<div className="row justify-content-between pt-2 pb-3">
+							<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex flex-column mb-2">
 								<Typography variant="h5">{hotelData.name}</Typography>
 								<div className="d-flex">
 									{ hotelData.starRating === "5.0" ?
@@ -131,7 +131,7 @@ class HotelDetail extends Component {
 									}
 								</div>
 							</div>
-							<div>
+							<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
 								<Button variant="contained" color="secondary" disableElevation>Reserve Now</Button>
 							</div>
 						</div>

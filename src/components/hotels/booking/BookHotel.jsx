@@ -40,10 +40,10 @@ class BookHotel extends Component {
 		const { hotelImage, hotelName, roomType, roomAmount, start } = this.props.location.hotelInfo;
 		// const { selectedHotel } = this.state;
 		return (
-			<div>
-				<div className="row mb-4">
+			<React.Fragment>
+				<div className="row mb-4 mt-2">
 					<div className="col-sm-12 col-md-5 col-lg-4 col-xl-4">
-						<div className="card">
+						<div className="card mb-4">
 							<div className="card-body p-0">
 								<div className="d-flex justify-content-between p-2">
 									<div className="flex-fill">
@@ -135,14 +135,14 @@ class BookHotel extends Component {
 						</div>
 					</div>
 					<div className="col-sm-12 col-md-7 col-lg-8 col-xl-8">
-							<Elements stripe={stripePromise}>
-								{ this.props.location.hotelInfo &&
-									<CheckoutForm selectedHotel={ this.props.location.hotelInfo } />
-								}
-							</Elements>
+						<Elements stripe={stripePromise}>
+							{ this.props.location.hotelInfo &&
+								<CheckoutForm selectedHotel={ this.props.location.hotelInfo } />
+							}
+						</Elements>
 					</div>
 				</div>
-			</div>
+			</React.Fragment>
 		);
 	}
 }
