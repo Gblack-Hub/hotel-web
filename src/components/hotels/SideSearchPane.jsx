@@ -73,8 +73,7 @@ class SideSearchPane extends Component{
 		latitude: 38.736946,
 		longitude: -9.142685,
 		location: "",
-		// noOfChildren: null,
-		// noOfAdults: null,
+		// guestCount: null,
 		checkInDateTime: null,
 		checkOutDateTime: null,
 		size: 4,
@@ -111,6 +110,18 @@ class SideSearchPane extends Component{
 			// console.log(this.state)
 			// this.handleSearchRequest();
 		});
+	}
+	handleClearSearch=()=>{
+		console.log('cleared')
+		this.setState({
+			location: "",
+			latitude: "",
+			longitude: "",
+			size: "",
+			// guestCount: this.state.guestCount,
+			checkInDateTime: "",
+			checkOutDateTime: "",
+		})
 	}
 	handleSliderChange = (event, newValue) => {
 		this.setState({ value: newValue });
@@ -207,7 +218,7 @@ class SideSearchPane extends Component{
 						</div>
 						<div className="d-flex justify-content-between align-items-center pb-4 pt-4">
 							<div>Filters</div>
-							<Button size="small" variant="outlined" className="btn btn-outline-primary">Clear all filters</Button>
+							<Button size="small" variant="outlined" onClick={this.handleClearSearch} className="btn btn-outline-primary">Clear all filters</Button>
 						</div>
 						{/*<Typography variant="body1">Check In Date and Time</Typography>*/}
 						<TextField

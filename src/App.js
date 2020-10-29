@@ -9,7 +9,7 @@ import Home from './components/Home.jsx' ;
 // import HotelHome from './components/hotels/Home.jsx' ;
 import HotelList from './components/hotels/HotelList.jsx' ;
 import HotelDetail from './components/hotels/HotelDetail.jsx' ;
-import BookHotel from './components/hotels/BookHotel.jsx' ;
+import BookHotel from './components/hotels/booking/BookHotel.jsx' ;
 
 // const useStyles = makeStyles((theme) => ({
 //   fab: {
@@ -30,7 +30,7 @@ function App() {
         <Navbar />
         <Route exact path="/" component={Home}></Route>
         <Route path="/hotels" component={HotelList}></Route>
-        <Route path="/book_hotel/:details" component={BookHotel}></Route>
+        <Route path="/book_hotel" component={BookHotel}></Route>
         <Route path="/hotel/detail/:hotel_id" component={HotelDetail}></Route>
       </Router>
     </div>

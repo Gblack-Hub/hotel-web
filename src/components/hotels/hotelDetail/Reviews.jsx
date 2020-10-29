@@ -19,7 +19,7 @@ class Reviews extends Component {
 			<div>
 				<Typography variant="h6" color="primary">ALL GUEST REVIEWS</Typography>
 				<div className="row mt-3">
-					{ reviews.map((item, index) => (
+					{ reviews && reviews.map((item, index) => (
 						<div className="col-sm-12 mb-4" key={index}>
 							<div className="d-flex flex-column mb-4">
 								<div className="d-flex justify-content-between mb-3">

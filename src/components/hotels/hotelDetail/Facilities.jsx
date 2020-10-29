@@ -8,9 +8,9 @@ class Facilities extends React.PureComponent {
 		return (
 			<div>
 				<Typography variant="h6">FACILITIES</Typography>
-				{ amenities.length === 0 && <div>Sorry, no facility found</div> }
+				{ amenities && amenities.length === 0 && <div>Sorry, no facility found</div> }
 				<div className="row mt-3">
-					{ amenities.map((item, index) => (
+					{ amenities && amenities.map((item, index) => (
 						<div className="col-sm-12 col-md-4 col-lg-2 col-xl-2 mb-2" key={index}>
 							<div className="d-flex">
 								<FiberManualRecordIcon />

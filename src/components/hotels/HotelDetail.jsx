@@ -33,13 +33,20 @@ class HotelDetail extends Component {
 
 	componentDidMount(){
 		let id = this.props.match.params.hotel_id;
-		
-		let data = {
-			guestCount: 3
+		let searchData = this.props.location.searchData;
+		if(searchData !== undefined){
+			let data = {
+				start: searchData.start,
+				end: searchData.end,
+				guestCount: searchData.guestCount
+			}
+			this.fetchData(id, data);
+		} else {	
+			this.handleBackButton();
 		}
-		this.fetchData(id, data);
 	}
 	fetchData=(id, data)=>{
+		console.log(data)
 		axios.get(`https://quickstays.azurewebsites.net/api/v1/hotels/${id}`, {params: data})
 		.then(res => {
 		   console.log(res.data.data);
@@ -60,6 +67,9 @@ class HotelDetail extends Component {
 
 	render(){
 		const { activeTabIndex, hotelData } = this.state;
+		const { searchData } = this.props.location;
+		console.log(searchData)
+		// const { hotel_id } = this.props.match.params;
 		return (
 			<div className="container-fluid mt-3">
 				<div className="row">
@@ -143,7 +153,7 @@ class HotelDetail extends Component {
 						</AppBar>
 						{ activeTabIndex === 0 && <TabContainer><Overview { ...hotelData } /></TabContainer> }
 						{ activeTabIndex === 1 && <TabContainer><Facilities { ...hotelData } /></TabContainer> }
-						{ activeTabIndex === 2 && <TabContainer><Rooms { ...hotelData } /></TabContainer> }
+						{ activeTabIndex === 2 && <TabContainer><Rooms { ...hotelData } searchData={searchData} /></TabContainer> }
 						{ activeTabIndex === 3 && <TabContainer><Reviews { ...hotelData } /></TabContainer> }
 					</div>
 				</div>

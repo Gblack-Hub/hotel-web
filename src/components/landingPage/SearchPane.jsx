@@ -22,7 +22,7 @@ class SearchPane extends Component {
 		longitude: -9.142685,
 		location: "",
 		// noOfChildren: 0,
-		// noOfAdults: 0,
+		// noOfAdult: 0,
 		checkInDateTime: "",
 		checkOutDateTime: "",
 		size: 3,
@@ -63,7 +63,7 @@ class SearchPane extends Component {
 				location: this.state.location,
 				latitude: this.state.latitude,
 				longitude: this.state.longitude,
-				// noOfChildren: this.state.noOfChildren,
+				// guestCount: this.state.noOfChildren + this.state.noOfAdult,
 				// noOfAdults: this.state.noOfAdults,
 				start: moment(this.state.checkInDateTime).format("YYYY-MM-DD"),
 				end: moment(this.state.checkOutDateTime).format("YYYY-MM-DD"),
@@ -181,7 +181,7 @@ class SearchPane extends Component {
 									<InputLabel id="forNoOfAdults">No of Adults</InputLabel>
 									<Select
 										labelId="noOfAdults"
-										id="noOfAdults"
+										id="noOfAdult"
 										value={this.state.noOfAdults}
 										onChange={this.handleChange}
 										label="No Of Adults"
@@ -214,12 +214,12 @@ class SearchPane extends Component {
 									</Select>
 								</FormControl>
 				        	</div>
-				      </div>
-			        	<div className="col-sm-12 col-md-4 col-lg-2 col-xl-2">
+				      	</div>
+			        	<div className="col-sm-12 col-md-4 col-lg-2 col-xl-2 text-center">
 				        	<Button variant="contained" type="submit" size="large" color="primary">Search</Button>
-			       	</div>
-			      </div>
-		      </form>
+			       		</div>
+			      	</div>
+		      	</form>
 		   </div>
 		);
 	}

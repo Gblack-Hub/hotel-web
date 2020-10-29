@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { /*BrowserRouter as Router, Route,*/ Link/*, Redirect, Switch */} from 'react-router-dom';
+import { /*BrowserRouter as Router, Route,*/ Link, Redirect /*, Switch */} from 'react-router-dom';
 
 import axios from 'axios';
 
 import Paper from '@material-ui/core/Paper';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -22,6 +23,8 @@ class HotelList extends Component{
 		hotels: [],
 		searchData: "",
 		slideValue: false,
+		isResultFound: null,
+		isLoading: null
 	}
 	getSearch=(data)=>{
 		console.log(data)
@@ -30,10 +33,11 @@ class HotelList extends Component{
 	componentDidMount() {
 		// console.log(this.props);
 		// let searchData = this.props.searchData;
-		let data = this.props.location.state.searchData;
-		if(typeof(data) === undefined){
-			data = {};
-		}
+		let data = this.props.location.state.searchData ? this.props.location.state.searchData : this.props.history.push("/");
+		// if(typeof(data) === undefined){
+		// 	window.history.push("/");
+		// 	data = {};
+		// }
 		console.log(data);
 		this.fetchData(data);
 	}
@@ -43,24 +47,32 @@ class HotelList extends Component{
 		}
 	}
 	fetchData=(data)=>{
+		this.setState({isLoading: true });
+
 		axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {
 			params: data
 		})
 		.then(res => {
 		   console.log(res.data.body.data);
+		   this.setState({isLoading: false });
+		   if(res.data.body.data.length <= 0){
+		   	this.setState({isResultFound: false });
+		   } else {
+		   	this.setState({isResultFound: true });
+		   }
 		   this.setState({hotels: res.data.body.data });
 		   this.setState(prevState => { return {slideValue: true} })
 		})
 		.catch(error => {
 			console.log(error);
-		}) 
+		})
 	}
 	// React.useEffect(() => {
 	// }, []);
 
 	render() {
-		const { slideValue } = this.state;
-		const { searchData } = this.props.location.state;
+		const { slideValue, hotels, isResultFound, isLoading } = this.state;
+		const { searchData } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
 		return (
 			<div className="container-fluid pt-3">
 				<div className="row">
@@ -68,20 +80,31 @@ class HotelList extends Component{
 						<SideSearchPane onSubmitSearch={this.getSearch} searchData={searchData} />
 					</div>
 					<div className="col-sm-12 col-md-8 col-lg-9 col-xl-9">
-						{ this.state.hotels.length <= 0 ? 
+						{ (isResultFound === false && isLoading === false) && 
 							<div className="row">
 								<div className="col-12 text-center">
 									<Paper className="p-5">
-										<Typography variant="h6">Sorry, we couldn't find any hotel that matches your search.</Typography>
+									<Typography variant="h6">Sorry, we couldn't find any hotel that matches your search.</Typography>
 									</Paper>
 								</div>
 							</div>
-						:
-							<Slide direction="down" in={slideValue} mountOnEnter unmountOnExit>
+						}
+						{ isLoading && 
 							<div className="row">
-								{ this.state.hotels.map((item, index) => (
+								<div className="col-12 text-center">
+									<Paper className="p-5">
+										<LinearProgress />
+										<Typography variant="caption" color="textSecondary">Loading...</Typography>
+									</Paper>
+								</div>
+							</div>
+						}
+						
+						<Slide direction="down" in={slideValue} mountOnEnter unmountOnExit>
+							<div className="row">
+								{ hotels.map((item, index) => (
 								<div className="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3" key={index}>
-									<Link to={"/hotel/detail/" + item.propertyId}>
+									<Link to={{ pathname:`/hotel/detail/${item.propertyId}`, searchData: {start: searchData.start, end: searchData.end, guestCount: 1} }} >
 										<Card>
 									      <CardActionArea>
 												<CardMedia
@@ -165,8 +188,7 @@ class HotelList extends Component{
 								</div>
 								))}
 							</div>
-							</Slide>
-						}
+						</Slide>
 					</div>
 				</div>
 			</div>
