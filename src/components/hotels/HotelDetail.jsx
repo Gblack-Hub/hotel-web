@@ -6,7 +6,7 @@ import Facilities from './hotelDetail/Facilities.jsx';
 import Rooms from './hotelDetail/Rooms.jsx';
 import Reviews from './hotelDetail/Reviews.jsx';
 
-import AppBar from "@material-ui/core/AppBar";
+import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
@@ -18,7 +18,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 function TabContainer(props) {
   return (
-    <Typography component="div" style={{ padding: 24 }}>
+    <Typography component="div" className="p-2">
       {props.children}
     </Typography>
   );
@@ -135,22 +135,22 @@ class HotelDetail extends Component {
 								<Button variant="contained" color="secondary" disableElevation>Reserve Now</Button>
 							</div>
 						</div>
-						<AppBar position="static" color="default">
+						<Paper square>
 						  <Tabs
 						  		value={this.state.activeTabIndex}
 						  		onChange={this.handleTabChange}
 						  		aria-label="Hotel Detail Tab"
 						  		indicatorColor="primary"
-				            textColor="primary"
-				            variant="scrollable"
-          					scrollButtons="auto"
+				            	textColor="primary"
+				            	variant="scrollable"
+          						scrollButtons="auto"
 				         >
 						    <Tab label="Overview" />
 						    <Tab label="Facilities" />
 						    <Tab label="Rooms" />
 						    <Tab label="Reviews" />
 						  </Tabs>
-						</AppBar>
+						</Paper>
 						{ activeTabIndex === 0 && <TabContainer><Overview { ...hotelData } /></TabContainer> }
 						{ activeTabIndex === 1 && <TabContainer><Facilities { ...hotelData } /></TabContainer> }
 						{ activeTabIndex === 2 && <TabContainer><Rooms { ...hotelData } searchData={searchData} /></TabContainer> }

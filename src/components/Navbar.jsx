@@ -29,8 +29,12 @@ class Navbar extends Component {
 			      {/*<Button variant="contained" type="submit" className="mr-3" disableElevation>
 			       	<AccountCircleIcon /> <span className="ml-1">MY ACCOUNT</span>
 			      </Button>*/}
-			      <Button variant="contained" type="submit" className="mr-3" disableElevation>SIGN IN</Button>
+			    <Link to="/auth">
+					  <Button variant="contained" type="submit" className="mr-3" disableElevation>SIGN IN</Button>
+				</Link>
+				<Link to="/auth">
 			      <Button variant="contained" color="primary" type="submit" disableElevation>SIGN UP</Button>
+				</Link>
 			    </div>
 			  </div>
 			</nav>

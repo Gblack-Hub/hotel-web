@@ -5,18 +5,11 @@ import Button from '@material-ui/core/Button';
 import Alert from '@material-ui/lab/Alert';
 import Divider from '@material-ui/core/Divider';
 import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Chip from '@material-ui/core/Chip';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+// import IconButton from '@material-ui/core/IconButton';
+// import CloseIcon from '@material-ui/icons/Close';
 
 
 class BookingConfirmation extends Component {
@@ -27,7 +20,7 @@ class BookingConfirmation extends Component {
 		console.log(this.props)
 	}
 	componentDidUpdate(prevProps){
-		if(prevProps != this.props){
+		if(prevProps !== this.props){
 			console.log(this.props);
 		}
 	}

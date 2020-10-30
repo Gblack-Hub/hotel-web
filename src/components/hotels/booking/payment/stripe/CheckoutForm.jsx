@@ -6,14 +6,10 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
-import Slide from '@material-ui/core/Slide';
-import MuiAlert from '@material-ui/lab/Alert';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import { ElementsConsumer, CardElement } from "@stripe/react-stripe-js";
 
 
@@ -404,29 +400,29 @@ class CheckoutForm extends React.Component {
               </div>
               
               <CardSection />
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  open={isRequestError}
-                  autoHideDuration={6000}
-                  onClose={this.handleErrorClose}
-                >
-                  <Alert onClose={this.handleErrorClose} variant="filled" severity="error">{ isRequestErrorMessage }</Alert>
-                </Snackbar>
-              
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  open={isRequestWarning}
-                  autoHideDuration={6000}
-                  onClose={this.handleWarningClose}
-                >
-                  <Alert onClose={this.handleErrorClose} variant="filled" severity="warning">{isRequestWarningMessage}</Alert>
-                </Snackbar>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                open={isRequestError}
+                autoHideDuration={6000}
+                onClose={this.handleErrorClose}
+              >
+                <Alert onClose={this.handleErrorClose} variant="filled" severity="error">{ isRequestErrorMessage }</Alert>
+              </Snackbar>
+            
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                open={isRequestWarning}
+                autoHideDuration={6000}
+                onClose={this.handleWarningClose}
+              >
+                <Alert onClose={this.handleErrorClose} variant="filled" severity="warning">{isRequestWarningMessage}</Alert>
+              </Snackbar>
               <Button variant="contained" disabled={!this.props.stripe || isProcessing } type="submit" color="secondary" size="large" fullWidth>
                 Reserve Now
               </Button>
