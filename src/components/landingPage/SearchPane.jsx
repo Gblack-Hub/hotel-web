@@ -21,8 +21,8 @@ class SearchPane extends Component {
 		latitude: 38.736946,
 		longitude: -9.142685,
 		location: "",
-		// noOfChildren: 0,
-		// noOfAdult: 0,
+		noOfChildren: 0,
+		noOfAdult: 0,
 		checkInDateTime: "",
 		checkOutDateTime: "",
 		size: 3,
@@ -54,7 +54,8 @@ class SearchPane extends Component {
  //  	}
 	handleChange = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
-		// console.log(this.state)
+		console.log(e.target.value)
+		console.log(this.state)
 	}
 	handleSubmit = (e) => {
 		e.preventDefault();
@@ -76,7 +77,7 @@ class SearchPane extends Component {
 			} else {
 				this.props.history.push({ 
 				 pathname: '/hotels',
-				 state: { searchData: this.state.data }
+				 state: { searchData: this.state.data, guestCount: this.state.noOfAdult + this.state.noOfChildren }
 				});
 				this.setState({ isDataNotComplete: false, isNotError: true });
 			}
@@ -102,6 +103,7 @@ class SearchPane extends Component {
  //  	}
 
 	render() {
+
 	   // if (this.state.isNotError === true) {
 	   //    return <Redirect 
 	   //    			to={{
@@ -177,40 +179,32 @@ class SearchPane extends Component {
 			        	</div>
 			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 mb-3 d-flex">
 				        	<div className="flex-fill mr-1">
-					         <FormControl size="small" fullWidth variant="outlined">
-									<InputLabel id="forNoOfAdults">No of Adults</InputLabel>
+								<FormControl size="small" fullWidth variant="outlined">
+									<InputLabel id="for-noOfAdult">No of Adults</InputLabel>
 									<Select
-										labelId="noOfAdults"
+										labelId="noOfAdult"
 										id="noOfAdult"
-										value={this.state.noOfAdults}
+										value={this.state.noOfAdult}
 										onChange={this.handleChange}
-										label="No Of Adults"
 									>
-										<MenuItem value="">
-											<em>None</em>
-										</MenuItem>
 										<MenuItem value={1}>One</MenuItem>
 										<MenuItem value={2}>Two</MenuItem>
-										<MenuItem value={3}>Three</MenuItem>
+										<MenuItem value={3}>Three+</MenuItem>
 									</Select>
-						      </FormControl>
+								</FormControl>
 				        	</div>
 				        	<div className="flex-fill ml-1">
 								<FormControl size="small" fullWidth variant="outlined">
-									<InputLabel id="forNoOfChildren">No of Children</InputLabel>
+									<InputLabel id="for-noOfChildren">No of Children</InputLabel>
 									<Select
 										labelId="noOfChildren"
 										id="noOfChildren"
 										value={this.state.noOfChildren}
 										onChange={this.handleChange}
-										label="Age"
 									>
-										<MenuItem value="">
-											<em>None</em>
-										</MenuItem>
-										<MenuItem value={1}>1</MenuItem>
-										<MenuItem value={2}>2</MenuItem>
-										<MenuItem value={3}>3</MenuItem>
+										<MenuItem value={1}>One</MenuItem>
+										<MenuItem value={2}>Two</MenuItem>
+										<MenuItem value={3}>Three+</MenuItem>
 									</Select>
 								</FormControl>
 				        	</div>
