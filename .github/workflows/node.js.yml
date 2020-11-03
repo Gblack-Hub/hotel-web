@@ -33,6 +33,8 @@ jobs:
         yarn
         yarn build 
         popd
+      env:
+        CI: false
         
     - name: 'Run Azure Storage Action'
       uses: bacongobbler/azure-blob-storage-upload@v1.1.1
