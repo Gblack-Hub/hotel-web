@@ -36,7 +36,7 @@ jobs:
         popd
         
     - name: 'Run Azure Storage Action'
-    - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+      uses: bacongobbler/azure-blob-storage-upload@v1.1.1
       with:
         source_dir: 'public'
         container_name: '$web'
