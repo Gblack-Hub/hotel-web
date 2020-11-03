@@ -24,7 +24,7 @@ function SignIn(props){
 	const [isLoading, setLoadingStatus] = useState(false);
 	const [isRequestError, setRequestError] = useState(false);
 	const [errorMessage, setRequestErrorMessage] = useState("");
-	const [authenticationToken, setAuthenticationToken] = useState(null);
+	// const [authenticationToken, setAuthenticationToken] = useState(null);
 
 	function validateForm() {
 		return values.email.length > 3 && values.password.length > 7;
@@ -53,7 +53,7 @@ function SignIn(props){
 			try {
 				let response = await axios.post('https://quickstays.azurewebsites.net/api/v1/login', JSON.stringify(data));
 				if(response.status === 200 || response.status === 201){
-					setAuthenticationToken(response.data.token)
+					// setAuthenticationToken(response.data.token)
 					props.history.push('/hotels');
 				}
 			} catch (error) {

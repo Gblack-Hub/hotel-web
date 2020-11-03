@@ -56,7 +56,7 @@ function SignUp(){
 		} else {
 			setPasswordNotLongState(true);
 		}
-	})
+	},[errorMessage, values.password, values.confirmPassword])
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
