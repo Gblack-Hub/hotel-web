@@ -32,7 +32,7 @@ class Auth extends Component {
 					<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <Paper square>
 						    <Tabs
-						  		value={this.state.activeTabIndex}
+						  		value={activeTabIndex}
 						  		onChange={this.handleTabChange}
 						  		aria-label="Hotel Detail Tab"
 						  		indicatorColor="primary"

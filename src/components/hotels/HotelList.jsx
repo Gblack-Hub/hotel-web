@@ -31,15 +31,14 @@ class HotelList extends Component{
 		this.setState({ searchData: data });
 	}
 	componentDidMount() {
-		// console.log(this.props);
-		// let searchData = this.props.searchData;
-		let data = this.props.location.state.searchData ? this.props.location.state.searchData : this.props.history.push("/");
-		// if(typeof(data) === undefined){
-		// 	window.history.push("/");
-		// 	data = {};
-		// }
-		console.log(data);
-		this.fetchData(data);
+		console.log(typeof(this.props))
+		if(this.props.location.state.searchData === undefined){
+			return <Redirect to="/auth" />
+		} else {
+			let data = this.props.location.state.searchData;
+			console.log(data);
+			this.fetchData(data);
+		}
 	}
 	componentDidUpdate=(prevProps, prevState)=>{
 		if(prevState.searchData !== this.state.searchData){
