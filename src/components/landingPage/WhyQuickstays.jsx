@@ -15,7 +15,7 @@ class Services extends Component {
 	}
 	render(){
 		return (
-			<div className="container mt-5 my-4">
+			<div className="container mt-5 my-3">
 				{/* <div className="row mb-5">
 					<div className="col-12 text-center">
 						<Typography variant="h4" className="text-center">Why QuikStays?</Typography>
@@ -26,7 +26,7 @@ class Services extends Component {
 				</div> */}
 				<div className="row">
 				{ this.state.data.map((item, index) => (
-					<div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-3 px-5 text-center" key={index}>
+					<div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-5 px-5 text-center" key={index}>
 						<IconButton aria-label={item.title} style={{backgroundColor: 'rgba(241, 182, 51, 0.3)'}} component="span">
 							<item.icon fontSize="large" color="primary" />
 						</IconButton>

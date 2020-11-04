@@ -21,7 +21,7 @@ class WantToTalk extends Component {
         return (
             <div className="container mt-5 mb-5">
                 <div className="row py-4">
-                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-4">
                         <Typography variant="h5">Want to talk with us?</Typography>
                         <hr style={{width: '100px' }} className="hrColor mb-4 float-left" />
                         <div className="clearfix"></div>

@@ -9,12 +9,12 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 class CopyrightsSection extends Component {
 	render(){
 		return (
-			<Box className="container-fluid py-3 primaryBgColor">
+			<Box className="container-fluid pt-3 primaryBgColor">
                 <div className="row justify-content-center align-items-center">
-                    <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 text-center mb-3">
 				        <Typography variant="caption" className="text-white">&copy; 2020 Quikstays, All Rights Reserved</Typography>
                     </div>
-                    <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-flex align-items-center justify-content-between">
+                    <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-flex align-items-center justify-content-between mb-3">
 				        <Link to="/" className="text-decoration-none text-white">
                             <Typography variant="caption">Terms of Service</Typography>
                         </Link>
@@ -25,7 +25,7 @@ class CopyrightsSection extends Component {
                             <Typography variant="caption">Cookies Policy</Typography>
                         </Link>
                     </div>
-                    <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-center">
+                    <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-center mb-3">
                         <FacebookIcon color="secondary" className="mr-3" />
                         <InstagramIcon color="secondary" className="mr-3" />
                         <TwitterIcon color="secondary" className="mr-3" />

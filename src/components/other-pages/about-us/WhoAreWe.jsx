@@ -6,8 +6,8 @@ class WhoAreWe extends Component {
         return (
             <div className="container-fluid mt-5">
                 <div className="row primaryBgColor py-4">
-                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                        <img className="img-fluid" src={require('../../../assets/images/nigeria.png')} />
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3 my-auto">
+                        <img className="img-fluid" src={require('../../../assets/images/who-are-we.png')} />
                     </div>
                     <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-left">
                         <Typography variant="h5" className="text-white">Who Are We?</Typography>

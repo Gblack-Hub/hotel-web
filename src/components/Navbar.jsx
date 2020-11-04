@@ -15,17 +15,17 @@ class Navbar extends Component {
 						<Link className="navbar-brand" to="/">
 							<img src={require('../assets/images/logo.png')} style={{height: '40px'}} />
 						</Link>
-						<div>
+						<div className="d-md-block d-lg-block d-none">
 							<Link to="/"><Button color="textSecondary">Home</Button></Link>
 							<Link to="/about-us"><Button color="textSecondary">About Us</Button></Link>
 							<Link to="/help-and-support"><Button color="textSecondary">Help & Support</Button></Link>
 						</div>
-						<div>
+						<div className="d-flex align-items-center">
 						{/*<Button variant="contained" type="submit" className="mr-3" disableElevation>
 							<AccountCircleIcon /> <span className="ml-1">MY ACCOUNT</span>
 						</Button>*/}
 							<Link to="/auth">
-								<Button variant="contained" type="submit" className="mr-3" disableElevation>SIGN IN</Button>
+								<Button variant="contained" type="submit" className="mr-3 d-md-inline d-lg-inline d-none" disableElevation>SIGN IN</Button>
 							</Link>
 							<Link to="/auth">
 								<Button variant="contained" color="primary" type="submit" disableElevation>SIGN UP</Button>

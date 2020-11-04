@@ -22,8 +22,8 @@ class Testimonies extends Component {
 				</div>
 				<div className="row">
 					{ this.state.data.map((item, index) => (
-						<div className="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-							<Typography variant="body2" className="font-italic mb-4">{item.testimony}</Typography>
+						<div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-5">
+							<Typography variant="body2" className="font-italic mb-3">{item.testimony}</Typography>
 							<Typography variant="body1" className="font-weight-bold">{item.name}</Typography>
 							<Typography variant="caption" color="textSecondary">{item.location}</Typography>
 						</div>
