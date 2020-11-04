@@ -39,7 +39,7 @@ jobs:
     - name: 'Run Azure Storage Action'
       uses: bacongobbler/azure-blob-storage-upload@v1.1.1
       with:
-        source_dir: 'public'
+        source_dir: 'build'
         container_name: '$web'
         connection_string: ${{ secrets.ConnectionString }}
         sync: true
