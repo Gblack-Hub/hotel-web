@@ -111,6 +111,7 @@ function SignUp(){
 						label="First Name"
 						id="firstName"
 						required
+						size="small"
 						value={values.firstName}
 						fullWidth
 						error={false}
@@ -123,6 +124,7 @@ function SignUp(){
 						label="Last Name"
 						id="lastName"
 						required
+						size="small"
 						value={values.lastName}
 						fullWidth
 					/>
@@ -131,10 +133,11 @@ function SignUp(){
 					<TextField
 						onChange={handleChange('email')}
 						variant="outlined"
-						label="Email"
+						label="Email Address"
 						id="email"
 						value={values.email}
 						required
+						size="small"
 						fullWidth
 					/>
 				</div>
@@ -150,6 +153,7 @@ function SignUp(){
 						onChange={handleChange('password')}
 						fullWidth
 						required
+						size="small"
 						InputProps={{
 							endadornment: (
 								<InputAdornment position="end">
@@ -178,6 +182,7 @@ function SignUp(){
 						onChange={handleChange('confirmPassword')}
 						fullWidth
 						required
+						size="small"
 						InputProps={{
 							endadornment:(
 								<InputAdornment position="end">

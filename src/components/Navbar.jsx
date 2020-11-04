@@ -24,10 +24,10 @@ class Navbar extends Component {
 						{/*<Button variant="contained" type="submit" className="mr-3" disableElevation>
 							<AccountCircleIcon /> <span className="ml-1">MY ACCOUNT</span>
 						</Button>*/}
-							<Link to="/auth">
+							<Link to={{ pathname: "/auth", whatIsClicked: 1 }}>
 								<Button variant="contained" type="submit" className="mr-3 d-md-inline d-lg-inline d-none" disableElevation>SIGN IN</Button>
 							</Link>
-							<Link to="/auth">
+							<Link to={{ pathname: "/auth", whatIsClicked: 0 }}>
 								<Button variant="contained" color="primary" type="submit" disableElevation>SIGN UP</Button>
 							</Link>
 						</div>
