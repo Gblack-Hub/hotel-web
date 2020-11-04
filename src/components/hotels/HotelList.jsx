@@ -71,7 +71,7 @@ class HotelList extends Component{
 
 	render() {
 		const { slideValue, hotels, isResultFound, isLoading } = this.state;
-		const { searchData } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
+		const { searchData, guestCount } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
 		return (
 			<div className="container-fluid pt-3">
 				<div className="row">
@@ -103,7 +103,7 @@ class HotelList extends Component{
 							<div className="row">
 								{ hotels.map((item, index) => (
 								<div className="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-3" key={index}>
-									<Link to={{ pathname:`/hotel/detail/${item.propertyId}`, searchData: {start: searchData.start, end: searchData.end, guestCount: 1} }} >
+									<Link to={{ pathname:`/hotel/detail/${item.propertyId}`, searchData: {start: searchData.start, end: searchData.end, guestCount: guestCount} }} >
 										<Card>
 									      <CardActionArea>
 												<CardMedia

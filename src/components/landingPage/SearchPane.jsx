@@ -52,6 +52,9 @@ class SearchPane extends Component {
 
  //    this.setState({isDataNotComplete: false});
  //  	}
+ 	handleSelectChange =(e)=> {
+		this.setState({ [e.target.name]: e.target.value })
+	}
 	handleChange = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
 		console.log(e.target.value)
@@ -204,12 +207,10 @@ class SearchPane extends Component {
 									<Select
 										labelId="noOfAdult"
 										id="noOfAdult"
+										name="noOfAdult"
 										value={this.state.noOfAdult}
-										onChange={this.handleChange}
+										onChange={this.handleSelectChange}
 									>
-										<MenuItem value="">
-											<em>None</em>
-										</MenuItem>
 										<MenuItem value={0}>None</MenuItem>
 										<MenuItem value={1}>One</MenuItem>
 										<MenuItem value={2}>Two</MenuItem>
@@ -223,8 +224,9 @@ class SearchPane extends Component {
 									<Select
 										labelId="noOfChildren"
 										id="noOfChildren"
+										name="noOfChildren"
 										value={this.state.noOfChildren}
-										onChange={this.handleChange}
+										onChange={this.handleSelectChange}
 									>
 										<MenuItem value={0}>None</MenuItem>
 										<MenuItem value={1}>One</MenuItem>
