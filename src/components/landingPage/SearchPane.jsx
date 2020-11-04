@@ -33,25 +33,27 @@ class SearchPane extends Component {
 		locationNotSet: false,
 	}
 
-	handleGetLocation = async() => {
+	handleGetLocation = () => {
 		window.navigator.geolocation.getCurrentPosition(
-         success => this.setState({ latitude: success.coords.latitude, longitude: success.coords.longitude })
+         success => this.setState({ latitude: success.coords.latitude, longitude: success.coords.longitude }, () => {
+			console.log('Latitide: ', this.state.latitude);
+			console.log('Longitude: ', this.state.longitude);	
+
+			Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK-Rih0go");
+			Geocode.fromLatLng(this.state.latitude, this.state.longitude).then(
+				response => {
+				const address = response.results[0].formatted_address;
+				console.log(address);
+				this.setState({location : address})
+				},
+				error => {
+				console.error(error);
+				}
+			);
+		 })
          // error=> console.log(error);
      	);
-		console.log('Latitide: ', this.state.latitude);
-		console.log('Longitude: ', this.state.longitude);	
-
-		Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK-Rih0go");
-		Geocode.fromLatLng(this.state.latitude, this.state.longitude).then(
-			response => {
-			  const address = response.results[0].formatted_address;
-			  console.log(address);
-			  this.setState({location : address})
-			},
-			error => {
-			  console.error(error);
-			}
-		  );
+		
 	}
 	// displayDataNotCompleteAlert=()=>{
 	// 	this.setState({this.})
