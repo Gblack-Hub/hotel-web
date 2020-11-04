@@ -11,64 +11,62 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 class Hotels extends Component {
 	state = {
 		data: [
-			{ image: 'HotelIcon', location: 'Lagos', country: 'Nigeria', likes: '120,888'},
-			{ image: 'HotelIcon', location: 'Ogun', country: 'Nigeria', likes: '110,008'},
-			{ image: 'HotelIcon', location: 'Abuja', country: 'Nigeria', likes: '90,243'},
-			{ image: 'HotelIcon', location: 'Kaduna', country: 'Nigeria', likes: '140,765'},
-			{ image: 'HotelIcon', location: 'Ogun', country: 'Nigeria', likes: '110,008'},
-			{ image: 'HotelIcon', location: 'Lagos', country: 'Nigeria', likes: '120,888'},
-			{ image: 'HotelIcon', location: 'Kaduna', country: 'Nigeria', likes: '140,765'},
-			{ image: 'HotelIcon', location: 'Abuja', country: 'Nigeria', likes: '90,243'}
+			{ image: 'paris', location: 'Paris', country: 'Nigeria', likes: '11,008'},
+			{ image: 'berlin', location: 'Berlin', country: 'Berlin', likes: '9,243'},
+			{ image: 'st-petersburg', location: 'Saint Petersburg', country: 'Nigeria', likes: '14,765'},
+			{ image: 'nigeria', location: 'Nigeria', country: 'Nigeria', likes: '12,888'},
+			{ image: 'uk', location: 'UK', country: 'UK', likes: '10,008'},
+			{ image: 'budapest', location: 'Budapest', country: 'Nigeria', likes: '15,888'},
+			{ image: 'amsterdam', location: 'Amsterdam', country: 'Nigeria', likes: '14,000'},
+			{ image: 'rio-de-janeiro', location: 'Rio de Janeiro', country: 'Nigeria', likes: '5,243'}
 		],
 		hotels: [],
 	}
 
-	componentDidMount=()=>{
-		this._isMounted = true;
+	// componentDidMount=()=>{
+	// 	this._isMounted = true;
 
-		axios.get('https://quickstays.azurewebsites.net/api/v1/hotels?size=10&start=2020-10-24&end=2020-10-25')
-	   .then(res => {
-	   	if (this._isMounted) {
-		   	// console.log(res.data.body.data);
-		   	this.setState({hotels: res.data.body.data});
-		   	console.log(this.state.hotels);
-	   	}
-	   })
-	}
-	componentWillUnmount() {
-   	this._isMounted = false;
-	}
+	// 	axios.get('https://quickstays.azurewebsites.net/api/v1/hotels?size=10&start=2020-10-24&end=2020-10-25')
+	//    .then(res => {
+	//    	if (this._isMounted) {
+	// 	   	// console.log(res.data.body.data);
+	// 	   	this.setState({hotels: res.data.body.data});
+	// 	   	console.log(this.state.hotels);
+	//    	}
+	//    })
+	// }
+	// componentWillUnmount() {
+   	// 	this._isMounted = false;
+	// }
 	
 	render(){
 		return (
-			<div className="container py-5">
-				<div className="row mb-4">
+			<div className="container py-5 mt-5">
+				<div className="row mb-5">
 					<div className="col-12">
-						<div className="d-flex justify-content-between align-items-center">
-							<Typography>Enjoy Quick stay all over Nigeria</Typography>
-							<Button variant="contained" disableElevation>See All</Button>
+						<Typography variant="h5" className="text-center">Enjoy Quikstays all over the world</Typography>
+						<div className="text-center">
+							<hr style={{width: '100px' }} className="hrColor" />
 						</div>
 					</div>
 				</div>
 				<div className="row">
-					{ this.state.hotels.map((item, index) => (
+					{ this.state.data.map((item, index) => (
 						<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 mb-4" key={index}>
 							<Card>
 						      <CardActionArea>
 									<CardMedia
 									 component="img"
-									 alt={item.address.country}
+									 alt={item.location}
 									 height="140"
-									 image={item.images.url}
-									 title={item.address.country}
+									 image={require('../../assets/images/'+item.image+'.png')}
+									 title={item.location}
 									/>
 						        	<CardContent>
-										<Typography gutterBottom variant="body2">
-											{ item.address.city }
-										</Typography>
+										<Typography gutterBottom variant="h6">{ item.location }</Typography>
 										<div className="d-flex justify-content-between">
 											<div>
-												<LocationOnIcon fontSize="small" /><Typography variant="caption">{ item.address.countryFull }</Typography>
+												<LocationOnIcon fontSize="small" /><Typography variant="caption">{ item.likes } hotels available</Typography>
 											</div>
 											{/*<Typography variant="caption">{item.starRating} stars</Typography>*/}
 										</div>

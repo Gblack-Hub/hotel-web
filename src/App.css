@@ -1,10 +1,56 @@
 #home {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8), rgba(32, 39, 2, 0.9)),
-    url("./assets/images/img1.jpg");
-  height: 90vh;
+  background: linear-gradient(
+      180deg,
+      rgba(29, 25, 116, 0.5),
+      rgba(29, 25, 116, 0.5)
+    ),
+    url("./assets/images/hero.png");
+  height: 85vh;
   width: 100%;
   background-position: center;
   background-size: cover;
+}
+#aboutUsHome {
+  background: linear-gradient(
+      180deg,
+      rgba(29, 25, 116, 0.5),
+      rgba(29, 25, 116, 0.5)
+    ),
+    url("./assets/images/about-us-hero.png");
+  height: 85vh;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+}
+.heroText {
+  padding-top: 25vh;
+}
+.aboutUsHeroText {
+  padding-top: 25vh;
+}
+
+.primaryColor {
+  color: #1d1974 !important;
+}
+.primaryBgColor {
+  background-color: #1d1974 !important;
+}
+.secondaryColor {
+  color: #f1b633 !important;
+}
+.secondaryBgColor {
+  background-color: #f1b633 !important;
+}
+.secondaryLightColor {
+  background-color: rgba(241, 182, 51, 0.3) !important;
+}
+
+.hrColor {
+  border: 1px solid #f1b633 !important;
+}
+
+.searchPaneBackground {
+  background: rgba(29, 25, 116, 0.7);
 }
 
 body {
@@ -19,56 +65,8 @@ body {
   align-items: center;
 }
 
-.StripeElement {
-  margin: 15px auto;
-  padding: 10px 12px;
-  color: #32325d;
-  background-color: white;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-
-.StripeElement--webkit-autofill {
-  background-color: #fefde5 !important;
-}
-
-.product {
-  width: 100%;
-  max-width: 450px;
-  margin: auto;
-  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.btn-pay {
-  display: block;
-  width: 100%;
-  border: none;
-  background: linear-gradient(
-    135deg,
-    rgb(49, 0, 62) 0%,
-    rgb(195, 40, 110) 100%
-  );
-  color: #fff;
-  padding: 10px;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.product-info {
-  padding: 0 16px;
-}
-
-h3.product-title {
-  font-size: 28px;
-  margin-bottom: 15px;
-}
-
-h4.product-price {
-  font-size: 24px;
-  margin: 0;
-  margin-bottom: 30px;
-  color: #777;
-  font-weight: 500;
+@media screen and (max-width: 720px) {
+  .heroText {
+    padding-top: 5vh;
+  }
 }

@@ -69,7 +69,7 @@ class Rooms extends React.PureComponent {
 												</Button>
 											</div>
 											<Divider />
-											<div className="d-flex align-items-center justify-content-between py-3">
+											{/* <div className="d-flex align-items-center justify-content-between py-3">
 												<Typography variant="subtitle2" className="text-uppercase">Select No of Rooms</Typography>
 												<div className="d-flex align-items-center">
 													<Button variant="contained" color="primary" disableElevation onClick={this.handleDecrementRoom}>
@@ -80,7 +80,7 @@ class Rooms extends React.PureComponent {
 														<AddIcon />
 													</Button>
 												</div>
-											</div>
+											</div> */}
 											<div className="d-flex flex-column">
 												{/* <Typography variant="subtitle2" className="text-uppercase">Select No of hours</Typography>
 												<div className="d-flex justify-content-between py-3">

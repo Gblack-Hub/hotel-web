@@ -31,12 +31,12 @@ class HotelList extends Component{
 		this.setState({ searchData: data });
 	}
 	componentDidMount() {
-		console.log(typeof(this.props))
 		if(this.props.location.state.searchData === undefined){
-			return <Redirect to="/auth" />
+			return <Redirect to="/" />
 		} else {
 			let data = this.props.location.state.searchData;
-			console.log(data);
+			let guestCount = this.props.location.state.guestCount;
+			console.log(data, guestCount);
 			this.fetchData(data);
 		}
 	}
