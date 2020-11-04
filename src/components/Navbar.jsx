@@ -16,9 +16,9 @@ class Navbar extends Component {
 							<img src={require('../assets/images/logo.png')} alt="brand-logo" style={{height: '40px'}} />
 						</Link>
 						<div className="d-md-block d-lg-block d-none">
-							<Link to="/"><Button color="textSecondary">Home</Button></Link>
-							<Link to="/about-us"><Button color="textSecondary">About Us</Button></Link>
-							<Link to="/help-and-support"><Button color="textSecondary">Help & Support</Button></Link>
+							<Link to="/"><Button className="text-secondary">Home</Button></Link>
+							<Link to="/about-us"><Button className="text-secondary">About Us</Button></Link>
+							<Link to="/help-and-support"><Button className="text-secondary">Help & Support</Button></Link>
 						</div>
 						<div className="d-flex align-items-center">
 						{/*<Button variant="contained" type="submit" className="mr-3" disableElevation>

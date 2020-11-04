@@ -15,9 +15,6 @@ import NodeGeocoder from 'node-geocoder';
 // import Alert from '@material-ui/lab/Alert';
 // import CloseIcon from '@material-ui/icons/Close';
 
-const geocoder = NodeGeocoder({provider: 'openstreetmap'});
-
-
 class SearchPane extends Component {
 	state = {
 		latitude: 38.736946,
@@ -57,6 +54,7 @@ class SearchPane extends Component {
  //  	}
 	handleChange = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
+		console.log(e.target.value)
 	}
 	isFieldComplete=()=>{
 		if(this.state.checkInDateTime === ""){
@@ -65,7 +63,6 @@ class SearchPane extends Component {
 		if(this.state.checkOutDateTime === ""){
 			this.setState({ endDateNotSet: true });
 		}
-		console.log(this.state.location === "" || (this.state.latitude === "" && this.state.longitude === ""))
 		if(this.state.location === "" || (this.state.latitude === "" && this.state.longitude === "")){
 			this.setState({ locationNotSet: true });
 		}
@@ -76,9 +73,15 @@ class SearchPane extends Component {
 	handleSubmit = async (e) => {
 		e.preventDefault();
 		this.isFieldComplete();
-		
-		const res = await geocoder.reverse({ lat: this.state.latitude, lon: this.state.longitude });
-		console.log(res);
+		console.log(this.state.noOfAdult, this.state.noOfChildren)
+		const geocoder = NodeGeocoder({provider: 'openstreetmap'});
+
+		try {
+			const res = await geocoder.reverse({ lat: this.state.latitude, lon: this.state.longitude });
+			console.log(res);
+		} catch (error) {
+			console.log(error)
+		}
 
 		// console.log(this.state.startDateNotSet)
 		// console.log(this.state.endDateNotSet)
@@ -204,6 +207,9 @@ class SearchPane extends Component {
 										value={this.state.noOfAdult}
 										onChange={this.handleChange}
 									>
+										<MenuItem value="">
+											<em>None</em>
+										</MenuItem>
 										<MenuItem value={0}>None</MenuItem>
 										<MenuItem value={1}>One</MenuItem>
 										<MenuItem value={2}>Two</MenuItem>
