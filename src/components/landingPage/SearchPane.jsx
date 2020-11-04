@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
-import NodeGeocoder from 'node-geocoder';
+import Geocode from "react-geocode";
 // import Snackbar from '@material-ui/core/Snackbar';
 // import Alert from '@material-ui/lab/Alert';
 // import CloseIcon from '@material-ui/icons/Close';
@@ -35,11 +35,25 @@ class SearchPane extends Component {
 
 	handleGetLocation = () => {
 		window.navigator.geolocation.getCurrentPosition(
-         success => this.setState({ latitude: success.coords.latitude, longitude: success.coords.longitude })
+         success => this.setState({ latitude: success.coords.latitude, longitude: success.coords.longitude }, () => {
+			console.log('Latitide: ', this.state.latitude);
+			console.log('Longitude: ', this.state.longitude);	
+
+			Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK-Rih0go");
+			Geocode.fromLatLng(this.state.latitude, this.state.longitude).then(
+				response => {
+				const address = response.results[0].formatted_address;
+				console.log(address);
+				this.setState({location : address})
+				},
+				error => {
+				console.error(error);
+				}
+			);
+		 })
          // error=> console.log(error);
      	);
-		console.log('Latitide: ', this.state.latitude);
-		console.log('Longitude: ', this.state.longitude);
+		
 	}
 	// displayDataNotCompleteAlert=()=>{
 	// 	this.setState({this.})
@@ -77,14 +91,6 @@ class SearchPane extends Component {
 		e.preventDefault();
 		this.isFieldComplete();
 		console.log(this.state.noOfAdult, this.state.noOfChildren)
-		const geocoder = NodeGeocoder({provider: 'openstreetmap'});
-
-		try {
-			const res = await geocoder.reverse({ lat: this.state.latitude, lon: this.state.longitude });
-			console.log(res);
-		} catch (error) {
-			console.log(error)
-		}
 
 		// console.log(this.state.startDateNotSet)
 		// console.log(this.state.endDateNotSet)
@@ -143,8 +149,8 @@ class SearchPane extends Component {
 			      </Alert>
 				</Snackbar>*/}
 				<form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-					<div className="row justify-content-center align-items-center py-2">
-			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 mb-2">
+					<div className="py-2 row justify-content-center align-items-center">
+			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-3">
 					      <div className="d-flex align-items-center justify-content-between">
 				        		<div className="pr-1">
 					        		<IconButton className="text-white" onClick={this.handleGetLocation}>
@@ -154,17 +160,18 @@ class SearchPane extends Component {
 					        	<TextField
 									id="location"
 									size="small"
+									value={this.state.location}
 									error={locationNotSet}
 									helperText={ locationNotSet && "*this field is required"}
 									onChange={this.handleChange}
 									fullWidth
 									label="Enter Location"
-									className="bg-light rounded"
+									className="rounded bg-light"
 									variant="filled"
 								/>
 					      </div>
 					   	</div>
-			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-2 mb-2">
+			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-2">
 				        	<TextField
 				         		variant="filled"
 							    id="checkInDateTime"
@@ -176,13 +183,13 @@ class SearchPane extends Component {
 							    required
 							    onChange={this.handleChange}
 							    type="date"
-							    className="bg-light rounded"
+							    className="rounded bg-light"
 							    InputLabelProps={{
 							      shrink: true,
 							    }}
 							/>
 			        	</div>
-			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-2 mb-2">
+			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-2">
 				         <TextField
 				         	variant="filled"
 							id="checkOutDateTime"
@@ -194,15 +201,15 @@ class SearchPane extends Component {
 							required
 							onChange={this.handleChange}
 							type="date"
-							className="bg-light rounded"
+							className="rounded bg-light"
 							InputLabelProps={{
 								shrink: true,
 							}}
 						/>
 			        	</div>
-			        	<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3 mb-2 d-flex align-items-center">
-				        	<div className="flex-fill mr-1">
-								<FormControl size="small" fullWidth variant="filled" className="bg-light rounded">
+			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-3 d-flex align-items-center">
+				        	<div className="mr-1 flex-fill">
+								<FormControl size="small" fullWidth variant="filled" className="rounded bg-light">
 									<InputLabel id="for-noOfAdult">No of Adults</InputLabel>
 									<Select
 										labelId="noOfAdult"
@@ -218,8 +225,8 @@ class SearchPane extends Component {
 									</Select>
 								</FormControl>
 				        	</div>
-				        	<div className="flex-fill ml-1">
-								<FormControl size="small" fullWidth variant="filled" className="bg-light rounded">
+				        	<div className="ml-1 flex-fill">
+								<FormControl size="small" fullWidth variant="filled" className="rounded bg-light">
 									<InputLabel id="for-noOfChildren">No of Children</InputLabel>
 									<Select
 										labelId="noOfChildren"
@@ -236,7 +243,7 @@ class SearchPane extends Component {
 								</FormControl>
 				        	</div>
 				      	</div>
-			        	<div className="col-sm-12 col-md-4 col-lg-2 col-xl-2 mb-2 text-center">
+			        	<div className="mb-2 text-center col-sm-12 col-md-4 col-lg-2 col-xl-2">
 				        	<Button variant="contained" type="submit" size="large" color="secondary" fullWidth className="text-white">Search</Button>
 			       		</div>
 			      	</div>
