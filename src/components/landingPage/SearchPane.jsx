@@ -41,7 +41,7 @@ class SearchPane extends Component {
 		console.log('Latitide: ', this.state.latitude);
 		console.log('Longitude: ', this.state.longitude);	
 
-		// Geocode.setApiKey("");
+		Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK");
 		Geocode.fromLatLng(this.state.latitude, this.state.longitude).then(
 			response => {
 			  const address = response.results[0].formatted_address;
