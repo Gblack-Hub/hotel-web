@@ -4,8 +4,8 @@ import { /*BrowserRouter as Router, Route,*/ Link/*, Redirect, Switch */} from '
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
+// import RemoveIcon from '@material-ui/icons/Remove';
+// import AddIcon from '@material-ui/icons/Add';
 
 const classes = {
 	hidden: {
@@ -39,7 +39,7 @@ class Rooms extends React.PureComponent {
 	render(){
 		const { rooms } = this.props;
 		console.log(rooms);
-		const { defaultRoom, isTextHidden } = this.state;
+		const { /*defaultRoom,*/ isTextHidden } = this.state;
 		return (
 			<div className="container-fluid">
 				<div className="row">

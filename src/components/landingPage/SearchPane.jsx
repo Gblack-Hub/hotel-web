@@ -10,9 +10,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
+import NodeGeocoder from 'node-geocoder';
 // import Snackbar from '@material-ui/core/Snackbar';
 // import Alert from '@material-ui/lab/Alert';
 // import CloseIcon from '@material-ui/icons/Close';
+
+const geocoder = NodeGeocoder({provider: 'openstreetmap'});
 
 
 class SearchPane extends Component {
@@ -70,9 +73,12 @@ class SearchPane extends Component {
 		// 	return true;
 		// }
 	}
-	handleSubmit = (e) => {
+	handleSubmit = async (e) => {
 		e.preventDefault();
 		this.isFieldComplete();
+		
+		const res = await geocoder.reverse({ lat: this.state.latitude, lon: this.state.longitude });
+		console.log(res);
 
 		// console.log(this.state.startDateNotSet)
 		// console.log(this.state.endDateNotSet)

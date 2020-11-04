@@ -13,7 +13,7 @@ class Navbar extends Component {
 				<Toolbar className="d-block">
 					<div className="d-flex justify-content-between align-items-center pt-2">
 						<Link className="navbar-brand" to="/">
-							<img src={require('../assets/images/logo.png')} style={{height: '40px'}} />
+							<img src={require('../assets/images/logo.png')} alt="brand-logo" style={{height: '40px'}} />
 						</Link>
 						<div className="d-md-block d-lg-block d-none">
 							<Link to="/"><Button color="textSecondary">Home</Button></Link>
