@@ -17,6 +17,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
+const today = new Date();
+
 const mapContainer = {
 	position: 'relative',
    width: '100%',
@@ -198,12 +200,13 @@ class SideSearchPane extends Component{
 								variant="outlined"
 								id="checkInDateTime"
 								// label="CHECK IN DATE AND TIME"
+								InputProps={{inputProps: { min: moment(today).add(1, 'days').format("YYYY-MM-DD") } }}
 								fullWidth
 								type="date"
 								// defaultValue="2017-05-24"
 								className="bg-light rounded"
 								InputLabelProps={{
-								shrink: true,
+									shrink: true,
 								}}
 							/>
 						</div>

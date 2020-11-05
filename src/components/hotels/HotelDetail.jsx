@@ -46,6 +46,9 @@ class HotelDetail extends Component {
 			this.handleBackButton();
 		}
 	}
+	gotoRooms=()=>{
+		this.setState({ activeTabIndex: 2 }, console.log(this.state.activeTabIndex));
+	}
 	fetchData=(id, data)=>{
 		console.log(data)
 		axios.get(`https://quickstays.azurewebsites.net/api/v1/hotels/${id}`, {params: data})
@@ -133,7 +136,7 @@ class HotelDetail extends Component {
 								</div>
 							</div>
 							<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-								<Button variant="contained" color="secondary" disableElevation>Reserve Now</Button>
+								<Button variant="contained" color="secondary" onClick={this.gotoRooms} disableElevation>Reserve Now</Button>
 							</div>
 						</div>
 						<Paper square>
@@ -146,15 +149,15 @@ class HotelDetail extends Component {
 				            	variant="scrollable"
           						scrollButtons="auto"
 				         >
+						    <Tab label="Rooms" />
 						    <Tab label="Overview" />
 						    <Tab label="Facilities" />
-						    <Tab label="Rooms" />
 						    <Tab label="Reviews" />
 						  </Tabs>
 						</Paper>
-						{ activeTabIndex === 0 && <TabContainer><Overview { ...hotelData } /></TabContainer> }
-						{ activeTabIndex === 1 && <TabContainer><Facilities { ...hotelData } /></TabContainer> }
-						{ activeTabIndex === 2 && <TabContainer><Rooms { ...hotelData } searchData={searchData} /></TabContainer> }
+						{ activeTabIndex === 0 && <TabContainer><Rooms { ...hotelData } searchData={searchData} /></TabContainer> }
+						{ activeTabIndex === 1 && <TabContainer><Overview { ...hotelData } /></TabContainer> }
+						{ activeTabIndex === 2 && <TabContainer><Facilities { ...hotelData } /></TabContainer> }
 						{ activeTabIndex === 3 && <TabContainer><Reviews { ...hotelData } /></TabContainer> }
 					</div>
 				</div>

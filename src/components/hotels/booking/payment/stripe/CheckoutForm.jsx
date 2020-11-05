@@ -160,7 +160,7 @@ class CheckoutForm extends React.Component {
           :
             <form onSubmit={this.handleSubmit}>
               <div>
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <Typography variant="h6" color="primary">Purpose of use</Typography>
                   <RadioGroup row aria-label="Are you travelling for work" name="purposeOfUse" value={purposeOfUse} onChange={this.handleChange}>
                     <FormControlLabel value="quick business meetings" control={<Radio />} label="Quick Business Meetings" />
@@ -176,8 +176,8 @@ class CheckoutForm extends React.Component {
                     size="small"
                     fullWidth
                   />
-                  </div>
-                  <Divider />
+                  </div> */}
+                  {/* <Divider /> */}
                 <Typography variant="h6" className="mt-3 mb-2">Enter your information</Typography>
                 <div className="col-12 p-0 mb-3">
                   <div className="row">

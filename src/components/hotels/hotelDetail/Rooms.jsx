@@ -4,6 +4,7 @@ import { /*BrowserRouter as Router, Route,*/ Link/*, Redirect, Switch */} from '
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import { Alert, AlertTitle } from '@material-ui/lab';
 // import RemoveIcon from '@material-ui/icons/Remove';
 // import AddIcon from '@material-ui/icons/Add';
 
@@ -138,6 +139,14 @@ class Rooms extends React.PureComponent {
 							</div>
 						</div>
 					))}
+					<div className="col-12 mb-5">
+						{ rooms && rooms.length === 0 && 
+							<Alert severity="info">
+								<AlertTitle>Info</AlertTitle>
+								Sorry, there is no room that match your search
+							</Alert>
+						}
+					</div>
 				</div>
 			</div>
 		);

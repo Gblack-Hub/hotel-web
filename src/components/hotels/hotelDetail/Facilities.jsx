@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 class Facilities extends React.PureComponent {
 	render(){
@@ -18,6 +19,15 @@ class Facilities extends React.PureComponent {
 							</div>
 						</div>
 					)) }
+					
+					<div className="col-sm-12 mb-5">
+						{ amenities && amenities.length === 0 && 
+							<Alert severity="info">
+								<AlertTitle>Info</AlertTitle>
+								Sorry, no facilities found for this hotel
+							</Alert>
+						}
+					</div>
 				</div>
 			</div>
 		);

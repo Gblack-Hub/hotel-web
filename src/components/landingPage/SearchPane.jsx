@@ -15,6 +15,8 @@ import Geocode from "react-geocode";
 // import Alert from '@material-ui/lab/Alert';
 // import CloseIcon from '@material-ui/icons/Close';
 
+const today = new Date();
+
 class SearchPane extends Component {
 	state = {
 		latitude: 38.736946,
@@ -177,7 +179,8 @@ class SearchPane extends Component {
 								label="Check in Date and Time"
 								error={startDateNotSet}
 								helperText={ startDateNotSet && "*this field is required"}
-							    size="small"
+								size="small"
+								InputProps={{inputProps: { min: moment(today).add(1, 'days').format("YYYY-MM-DD") } }}
 							    fullWidth
 							    required
 							    onChange={this.handleChange}
