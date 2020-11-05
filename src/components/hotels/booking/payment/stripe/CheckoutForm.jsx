@@ -55,7 +55,7 @@ class CheckoutForm extends React.Component {
   //   console.log(this.props.selectedHotel);
   // }
   
-  handleIsBookingForMyself =(e)=> {
+  handleRadioChange =(e)=> {
     this.setState({ [e.target.name]: e.target.value === "true" ? true : e.target.value === "false" ? false : false });
   }
   handleChange = (e) => {
@@ -247,7 +247,7 @@ class CheckoutForm extends React.Component {
               <div className="mt-4">
                 <div>
                   <Typography variant="h6" color="primary">Are you booking for yourself?</Typography>
-                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForSomeone" value={isBookingForSomeone} onChange={this.handleIsBookingForMyself}>
+                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForSomeone" value={isBookingForSomeone} onChange={this.handleRadioChange}>
                     <FormControlLabel value={false} control={<Radio />} label="Yes, I am booking for myself" />
                     <FormControlLabel value={true} control={<Radio />} label="No, I am booking for someone" />
                   </RadioGroup>
