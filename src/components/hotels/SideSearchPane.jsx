@@ -6,6 +6,9 @@ import { Map, GoogleApiWrapper, Marker  } from 'google-maps-react';
 
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -73,10 +76,11 @@ class SideSearchPane extends Component{
 		latitude: 38.736946,
 		longitude: -9.142685,
 		location: "",
-		// guestCount: null,
+		noOfAdult: 0,
+		noOfChildren: 0,
+		guestCount: "",
 		checkInDateTime: null,
 		checkOutDateTime: null,
-		size: 4,
 		data: null
 	}
 	// componentDidMount(){
@@ -95,8 +99,6 @@ class SideSearchPane extends Component{
 	// 	);
 	// }
 
-	// const [value, setValue] = React.useState(30);
-
 	handleGetLocation = () => {
 		window.navigator.geolocation.getCurrentPosition(
          success => this.setState({ latitude: success.coords.latitude, longitude: success.coords.longitude })
@@ -105,10 +107,12 @@ class SideSearchPane extends Component{
 		console.log('Latitide: ', this.state.latitude);
 		console.log('Longitude: ', this.state.longitude);
 	}
+	handleSelectChange =(e)=> {
+		this.setState({ [e.target.name]: e.target.value })
+	}
 	handleChange = (e) => {
 		this.setState({ [e.target.id]: e.target.value }, ()=> {
-			// console.log(this.state)
-			// this.handleSearchRequest();
+
 		});
 	}
 	handleClearSearch=()=>{
@@ -117,68 +121,33 @@ class SideSearchPane extends Component{
 			location: "",
 			latitude: "",
 			longitude: "",
-			size: "",
-			// guestCount: this.state.guestCount,
+			noOfAdult: "",
+			noOfChildren: "",
 			checkInDateTime: "",
 			checkOutDateTime: "",
 		})
 	}
 	handleSliderChange = (event, newValue) => {
 		this.setState({ value: newValue });
-		// console.log(this.state.value)
-		// setValue(newValue);
 	}
-	// handleSearchRequest=(data) => {
-	// 	axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {
-	// 		params: data
-	// 	})
-	// 	.then(res => {
-	// 	   console.log(res.data.body.data);
-	// 	   this.setState({hotels: res.data.body.data});
-	// 	})
-	// 	.catch(error => {
-	// 		console.log(error);
-	// 	});
-	// }
-	handleSubmit = async (e) => {
-		e.preventDefault();
+	handleDataPass=()=>{
 		this.setState({
 			data: {
 				location: this.state.location,
 				latitude: this.state.latitude,
 				longitude: this.state.longitude,
-				size: this.state.size,
-				// noOfChildren: this.state.noOfChildren,
-				// noOfAdults: this.state.noOfAdults,
 				start: moment(this.state.checkInDateTime).format("YYYY-MM-DD"),
 				end: moment(this.state.checkOutDateTime).format("YYYY-MM-DD"),
-			}
+			},
+			guestCount: this.state.noOfAdult + this.state.noOfChildren,
 		}, () => {
-			// console.log(this.state.data);
-			// this.handleSearchRequest(this.state.data);
 			this.props.onSubmitSearch(this.state.data);
+			this.props.onSubmitGuestCount(this.state.guestCount);
 		});
-
-		// let searchData = this.props.location.state.searchData;
-		// console.log(searchData);
-		// axios.get('https://quickstays.azurewebsites.net/api/v1/hotels/', {
-		// 	params: searchData
-		// })
-		// .then(res => {
-		//    console.log(res.data.body.data);
-		//    this.setState({hotels: res.data.body.data});
-		// })
-		// .catch(error => {
-		// 	console.log(error);
-		// });
-
-
-		// try {
-		// 	const res = await axios.get("https://quickstays.azurewebsites.net/api/v1/hotels", searchData);
-		// 	console.log(res);
-		// } catch(err) {
-		// 	console.log(err);
-		// }
+	}
+	handleSubmit = async (e) => {
+		e.preventDefault();
+		this.handleDataPass();
 	}
 
 
@@ -187,63 +156,68 @@ class SideSearchPane extends Component{
 		return (
 			<div>
 				<Paper style={mapContainer} elevation={1}>
-						<Map
-				         google={this.props.google}
-				         zoom={14}
-				         style={mapStyles}
-				         initialCenter={{
-				            lat: latitude,
-				            lng: longitude
-				         }}
-				      >
-				         <Marker
-				          onClick={this.onMarkerClick}
-				          name={'This is test name'}
-				        />
-				      </Map>
+					<Map
+						google={this.props.google}
+						zoom={14}
+						style={mapStyles}
+						initialCenter={{
+						lat: latitude,
+						lng: longitude
+						}}
+					>
+						<Marker
+						onClick={this.onMarkerClick}
+						name={'This is test name'}
+					/>
+					</Map>
 				</Paper>
-				<Card className="d-block mt-2">
+				<Card className="d-block mt-2 primaryBgColor text-white">
 					<CardContent>
 						<form onSubmit={ this.handleSubmit }>
-						<div className="input-group">
-						  <div className="input-group-prepend my-auto mr-2">
-						  	<IconButton onClick={this.handleGetLocation}>
-						   	<MyLocationIcon fontSize="small" />
-						  	</IconButton>
-						  </div>
-						  <input type="text" className="form-control" id="location" onChange={this.handleChange} aria-label="Enter Location" placeholder="Enter Location" />
-						  <div className="input-group-append">
-						    <button type="submit" className="btn btn-primary">Search</button>
-						  </div>
+						<div className="d-flex bg-light rounded">
+							<IconButton onClick={this.handleGetLocation}>
+								<MyLocationIcon fontSize="small" color="primary" />
+							</IconButton>
+							<div className="input-group">
+								<input type="text" className="form-control border-0 my-auto" id="location" onChange={this.handleChange} aria-label="Enter Location" placeholder="Enter Location" />
+								<div className="input-group-append">
+									<button type="submit" className="btn btn-sm secondaryBgColor">Search</button>
+								</div>
+							</div>
 						</div>
 						<div className="d-flex justify-content-between align-items-center pb-4 pt-4">
-							<div>Filters</div>
-							<Button size="small" variant="outlined" onClick={this.handleClearSearch} className="btn btn-outline-primary">Clear all filters</Button>
+							<Typography variant="h6" color="secondary">Filters</Typography>
+							<Button size="small" variant="outlined" color="secondary" onClick={this.handleClearSearch}>
+								<Typography variant="caption">Clear all filters</Typography>
+							</Button>
 						</div>
-						{/*<Typography variant="body1">Check In Date and Time</Typography>*/}
-						<TextField
-							 onChange={this.handleChange}
-							 variant="outlined"
-						    id="checkInDateTime"
-						    label="CHECK IN DATE AND TIME"
-						    fullWidth
-						    type="date"
-						    // defaultValue="2017-05-24"
-						    className="d-block"
-						    InputLabelProps={{
-						      shrink: true,
-						    }}
-						/>
-						<div className="mt-3">
+						<div className="form-group">
+							<Typography variant="caption" className="text-uppercase">Check In Date</Typography>
 							<TextField
-								 onChange={this.handleChange}
-								 variant="outlined"
+								onChange={this.handleChange}
+								variant="outlined"
+								id="checkInDateTime"
+								// label="CHECK IN DATE AND TIME"
+								fullWidth
+								type="date"
+								// defaultValue="2017-05-24"
+								className="bg-light rounded"
+								InputLabelProps={{
+								shrink: true,
+								}}
+							/>
+						</div>
+						<div className="form-group">
+							<Typography variant="caption" className="text-uppercase">Check Out Date</Typography>
+							<TextField
+								onChange={this.handleChange}
+								variant="outlined"
 							    id="checkOutDateTime"
-							    label="CHECK OUT DATE AND TIME"
+							    // label="CHECK OUT DATE AND TIME"
 							    fullWidth
 							    type="date"
 							    // defaultValue="2017-05-24"
-							    className="d-block"
+							    className="bg-light rounded"
 							    InputLabelProps={{
 							      shrink: true,
 							    }}
@@ -251,43 +225,54 @@ class SideSearchPane extends Component{
 						</div>
 						<div className="d-flex justify-content-between py-4">
 							<div className="d-flex flex-column mr-2">
-								{/*<Typography variant="body1" className="text-uppercase">No. of Adults</Typography>*/}
-								<TextField
-									 onChange={this.handleChange}
-									 variant="outlined"
-									 label="NO OF ADULTS"
-								    id="noOfAdults"
-								    className="d-block"
-								    InputLabelProps={{
-								      shrink: true,
-								    }}
-								/>
+								<Typography variant="caption" className="text-uppercase">No. of Adults</Typography>
+								<FormControl size="small" fullWidth variant="outlined" className="rounded bg-light">
+									{/* <InputLabel id="for-noOfAdult">No of Adults</InputLabel> */}
+									<Select
+										labelId="noOfAdult"
+										id="noOfAdult"
+										name="noOfAdult"
+										value={this.state.noOfAdult}
+										onChange={this.handleSelectChange}
+									>
+										<MenuItem value={0}>None</MenuItem>
+										<MenuItem value={1}>One</MenuItem>
+										<MenuItem value={2}>Two</MenuItem>
+										<MenuItem value={3}>Three+</MenuItem>
+									</Select>
+								</FormControl>
 							</div>
 							<div className="d-flex flex-column">
-								{/*<Typography variant="body1" className="text-uppercase">No. of Children</Typography>*/}
-								<TextField
-									 onChange={this.handleChange}
-									 variant="outlined"
-									 label="NO OF CHILDREN"
-								    id="noOfChildren"
-								    className="d-block"
-								    InputLabelProps={{
-								      shrink: true,
-								    }}
-								/>
+								<Typography variant="caption" className="text-uppercase">No. of Children</Typography>
+								<FormControl size="small" fullWidth variant="outlined" className="rounded bg-light">
+									{/* <InputLabel id="for-noOfChildren">No of Children</InputLabel> */}
+									<Select
+										labelId="noOfChildren"
+										id="noOfChildren"
+										name="noOfChildren"
+										value={this.state.noOfChildren}
+										onChange={this.handleSelectChange}
+									>
+										<MenuItem value={0}>None</MenuItem>
+										<MenuItem value={1}>One</MenuItem>
+										<MenuItem value={2}>Two</MenuItem>
+										<MenuItem value={3}>Three+</MenuItem>
+									</Select>
+								</FormControl>
 							</div>
 						</div>
-						<Typography variant="body1" className="text-uppercase">Price per hour</Typography>
-				      <Slider
-				        defaultValue={500}
-				        getAriaValueText={valuetext}
-				        aria-labelledby="price per hour"
-				        step={10}
-				        valueLabelDisplay="auto"
-				        marks={marks}
-				        value={this.state.value}
-				        onChange={this.handleSliderChange}
-				      />
+						<Typography variant="caption" className="text-uppercase">Price per day</Typography>
+						<Slider
+							defaultValue={500}
+							color="secondary"
+							getAriaValueText={valuetext}
+							aria-labelledby="price per hour"
+							step={10}
+							valueLabelDisplay="auto"
+							marks={marks}
+							value={this.state.value}
+							onChange={this.handleSliderChange}
+						/>
 				      </form>
 					</CardContent>
 				</Card>

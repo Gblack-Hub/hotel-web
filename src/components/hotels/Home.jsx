@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route/*, Redirect, Switch */} from 'react-router-dom';
 
 import SideSearchPane from './SideSearchPane.jsx';
-import HotelList from './HotelList.jsx' ;
-import HotelDetail from './HotelDetail.jsx' ;
+// import HotelList from './HotelList.jsx' ;
+// import HotelDetail from './HotelDetail.jsx' ;
 
 
 class HotelHome extends Component{
 	state = {
-		searchData: ""
+		searchData: "",
+		guestCount: ""
 	}
 
 	getSearch=(data)=>{
 		console.log(data)
 		this.setState({ searchData: data });
+	}
+	getGuestCount=(data)=>{
+		console.log(data)
+		this.setState({ guestCount: data})
 	}
 	render(){	
 		// console.log(this.props.location.state.searchData);
@@ -21,7 +26,7 @@ class HotelHome extends Component{
 			<div className="container-fluid pt-2">
 				<div className="row">
 					<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3">
-						<SideSearchPane onSubmitSearch={this.getSearch} />
+						<SideSearchPane onSubmitSearch={this.getSearch} onSubmitGuestCount={this.getGuestCount} />
 					</div>
 					<div className="col-sm-12 col-md-8 col-lg-9 col-xl-9">
 						<Router>

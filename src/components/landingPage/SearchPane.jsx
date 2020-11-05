@@ -71,7 +71,6 @@ class SearchPane extends Component {
 	}
 	handleChange = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
-		console.log(e.target.value)
 	}
 	isFieldComplete=()=>{
 		if(this.state.checkInDateTime === ""){

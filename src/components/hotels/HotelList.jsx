@@ -16,6 +16,7 @@ import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Slide from '@material-ui/core/Slide';
 import SideSearchPane from './SideSearchPane.jsx';
+import { Alert } from '@material-ui/lab';
 
 	
 class HotelList extends Component{
@@ -23,12 +24,19 @@ class HotelList extends Component{
 		hotels: [],
 		searchData: "",
 		slideValue: false,
+		guestCount: "", //needed to set this
 		isResultFound: null,
-		isLoading: null
+		isLoading: null,
+		isSearchError: false,
+		errorMessage: ""
 	}
 	getSearch=(data)=>{
 		console.log(data)
 		this.setState({ searchData: data });
+	}
+	getGuestCount=(data)=>{
+		console.log(data)
+		this.setState({ guestCount: data})
 	}
 	componentDidMount() {
 		if(this.props.location.state.searchData === undefined){
@@ -36,6 +44,7 @@ class HotelList extends Component{
 		} else {
 			let data = this.props.location.state.searchData;
 			let guestCount = this.props.location.state.guestCount;
+			this.setState({ guestCount: guestCount }) //needed to set guest count state in order to get dynamic guest count, probably after filter
 			console.log(data, guestCount);
 			this.fetchData(data);
 		}
@@ -63,20 +72,21 @@ class HotelList extends Component{
 		   this.setState(prevState => { return {slideValue: true} })
 		})
 		.catch(error => {
-			console.log(error);
+			console.log(error.message);
+			this.setState({ isSearchError: true, errorMessage: error.message });
 		})
 	}
 	// React.useEffect(() => {
 	// }, []);
 
 	render() {
-		const { slideValue, hotels, isResultFound, isLoading } = this.state;
-		const { searchData, guestCount } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
+		const { slideValue, hotels, isResultFound, isLoading, guestCount, isSearchError, errorMessage } = this.state;
+		const { searchData } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
 		return (
 			<div className="container-fluid pt-3">
 				<div className="row">
 					<div className="col-sm-12 col-md-4 col-lg-3 col-xl-3">
-						<SideSearchPane onSubmitSearch={this.getSearch} searchData={searchData} />
+						<SideSearchPane onSubmitSearch={this.getSearch} onSubmitGuestCount={this.getGuestCount} searchData={searchData} />
 					</div>
 					<div className="col-sm-12 col-md-8 col-lg-9 col-xl-9">
 						{ (isResultFound === false && isLoading === false) && 
@@ -94,6 +104,7 @@ class HotelList extends Component{
 									<Paper className="p-5">
 										<LinearProgress />
 										<Typography variant="caption" color="textSecondary">Loading...</Typography>
+										{ isSearchError && <Alert severity="error">{ errorMessage }</Alert>}
 									</Paper>
 								</div>
 							</div>
