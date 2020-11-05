@@ -176,7 +176,7 @@ class SearchPane extends Component {
 				        	<TextField
 				         		variant="filled"
 							    id="checkInDateTime"
-								label="Check in Date and Time"
+								label="Check in Date"
 								error={startDateNotSet}
 								helperText={ startDateNotSet && "*this field is required"}
 								size="small"
@@ -195,7 +195,7 @@ class SearchPane extends Component {
 				         <TextField
 				         	variant="filled"
 							id="checkOutDateTime"
-							label="Check out Date and Time"
+							label="Check out Date"
 							error={endDateNotSet}
 							helperText={ endDateNotSet && "*this field is required"}
 							size="small"
