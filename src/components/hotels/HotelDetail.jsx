@@ -149,7 +149,7 @@ class HotelDetail extends Component {
 				            	variant="scrollable"
           						scrollButtons="auto"
 				         >
-						    <Tab label="Rooms" />
+						    <Tab label="Available Rooms" />
 						    <Tab label="Overview" />
 						    <Tab label="Facilities" />
 						    <Tab label="Reviews" />

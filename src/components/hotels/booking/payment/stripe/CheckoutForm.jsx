@@ -1,9 +1,11 @@
 import React from "react";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import Collapse from '@material-ui/core/Collapse';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import Alert from '@material-ui/lab/Alert';
@@ -18,13 +20,13 @@ import BookingConfirmation from "./BookingConfirmation";
 
 class CheckoutForm extends React.Component {
   state = {
-		purposeOfUse: "yes",
+		isTravellingForBusiness: true,
 		firstName: "",
 		lastName: "",
 		email: "",
 		phoneNo: "+1012345667",
 		saveInformation: true,
-		isBookingForMyself: false,
+		isBookingForSomeone: false,
 		isInstantPayment: true,
 		paymentMethod: "",
 		guestFirstName: "",
@@ -53,8 +55,11 @@ class CheckoutForm extends React.Component {
   //   console.log(this.props.selectedHotel);
   // }
   
+  handleIsBookingForMyself =(e)=> {
+    this.setState({ [e.target.name]: e.target.value === "true" ? true : e.target.value === "false" ? false : false });
+  }
   handleChange = (e) => {
-		this.setState({ [e.target.name]: e.target.value});
+    this.setState({ [e.target.name]: e.target.value});
   };
 
   sendData = (data)=>{
@@ -151,7 +156,7 @@ class CheckoutForm extends React.Component {
   };
 
   render() {
-    const { purposeOfUse, isBookingForMyself, isInstantPayment, saveInformation, paymentMethod, isProcessing, isDataSubmitted, data, modalMessage, isRequestError, isRequestErrorMessage, isRequestWarning, isRequestWarningMessage } = this.state;
+    const { isTravellingForBusiness, isBookingForSomeone, saveInformation, paymentMethod, isProcessing, isDataSubmitted, data, modalMessage, isRequestError, isRequestErrorMessage, isRequestWarning, isRequestWarningMessage } = this.state;
     return (
       <div>
         <div>
@@ -160,14 +165,20 @@ class CheckoutForm extends React.Component {
           :
             <form onSubmit={this.handleSubmit}>
               <div>
-                {/* <div className="mb-3">
-                  <Typography variant="h6" color="primary">Purpose of use</Typography>
+                <div className="mb-3">
+                <Typography variant="h6" color="primary">Are you travelling for business?</Typography>
+                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" value={isTravellingForBusiness} onChange={this.handleChange}>
+                    <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                    <FormControlLabel value={false} control={<Radio />} label="No" />
+                  </RadioGroup>
+
+                  {/* <Typography variant="h6" color="primary">Purpose of use</Typography>
                   <RadioGroup row aria-label="Are you travelling for work" name="purposeOfUse" value={purposeOfUse} onChange={this.handleChange}>
                     <FormControlLabel value="quick business meetings" control={<Radio />} label="Quick Business Meetings" />
                     <FormControlLabel value="refresh after interview" control={<Radio />} label="Refresh after interview" />
                     <FormControlLabel value="avoiding traffic" control={<Radio />} label="Avoiding traffic" />
                     <FormControlLabel value="others" control={<Radio />} label="Others" />
-                      </RadioGroup>
+                  </RadioGroup>
                   <TextField
                     onChange={this.handleChange}
                     variant="outlined"
@@ -175,8 +186,8 @@ class CheckoutForm extends React.Component {
                     name="purposeOfUse"
                     size="small"
                     fullWidth
-                  />
-                  </div> */}
+                  /> */}
+                  </div>
                   {/* <Divider /> */}
                 <Typography variant="h6" className="mt-3 mb-2">Enter your information</Typography>
                 <div className="col-12 p-0 mb-3">
@@ -233,59 +244,70 @@ class CheckoutForm extends React.Component {
                 <Divider />
               </div>
 
-              <div className="mt-3">
+              <div className="mt-4">
                 <div>
                   <Typography variant="h6" color="primary">Are you booking for yourself?</Typography>
-                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForMyself" value={isBookingForMyself} onChange={this.handleChange}>
-                    <FormControlLabel value="yes" control={<Radio />} label="Yes, I am booking for myself" />
-                    <FormControlLabel value="no" control={<Radio />} label="No, I am booking for someone" />
-                      </RadioGroup>
-                  </div>
-                  <Divider />
-                <Typography variant="h6" className="mt-3 mb-2">Enter guest information</Typography>
+                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForSomeone" value={isBookingForSomeone} onChange={this.handleIsBookingForMyself}>
+                    <FormControlLabel value={false} control={<Radio />} label="Yes, I am booking for myself" />
+                    <FormControlLabel value={true} control={<Radio />} label="No, I am booking for someone" />
+                  </RadioGroup>
+                </div>
                 <div className="col-12 p-0 mb-3">
-                  <div className="row">
-                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                      <TextField
-                          onChange={this.handleChange}
-                          variant="outlined"
-                          label="First Name"
-                          name="guestFirstName"
-                          id="guestFirstName"
-                          size="small"
-                          fullWidth
-                      />
+                  <Collapse in={isBookingForSomeone} timeout="auto" unmountOnExit>
+                    <div className="row">
+                      <div className="col-12 mb-2">
+                        <Typography variant="h6" className="mt-3 mb-2">Enter guest information</Typography>
+                      </div>
                     </div>
-                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                      <TextField
-                          onChange={this.handleChange}
-                          variant="outlined"
-                          label="Last Name"
-                          name="guestLastName"
-                          id="guestLastName"
-                          size="small"
-                          fullWidth
-                      />
+                    <div className="row">
+                      <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <TextField
+                            onChange={this.handleChange}
+                            variant="outlined"
+                            label="First Name"
+                            name="guestFirstName"
+                            id="guestFirstName"
+                            size="small"
+                            fullWidth
+                        />
+                      </div>
+                      <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <TextField
+                            onChange={this.handleChange}
+                            variant="outlined"
+                            label="Last Name"
+                            name="guestLastName"
+                            id="guestLastName"
+                            size="small"
+                            fullWidth
+                        />
+                      </div>
+                      <div className="col-12 mt-3">
+                        <TextField
+                            onChange={this.handleChange}
+                            variant="outlined"
+                            label="Email"
+                            name="guestEmail"
+                            id="guestEmail"
+                            size="small"
+                            fullWidth
+                        />
+                        <Typography variant="caption" color="textSecondary" className="font-italic">reservation information will be sent to this address</Typography>
+                      </div>
                     </div>
-                    <div className="col-12 mt-3">
-                      <TextField
-                          onChange={this.handleChange}
-                          variant="outlined"
-                          label="Email"
-                          name="guestEmail"
-                          id="guestEmail"
-                          size="small"
-                          fullWidth
-                      />
-                      <Typography variant="caption" color="textSecondary" className="font-italic">reservation information will be sent to this address</Typography>
-                    </div>
+                  </Collapse>
+                  <div>
                     <div className="col-12 my-4 bg-secondary">
                       <div className="row align-items-center py-2">
                         <div className="col-sm-12 col-md-8 col-lg-9 col-xl-9">
                           <Typography variant="body1" className="text-white">Wish to save your details and manage your bookings on the go?</Typography>
                         </div>
                         <div className="col-sm-12 col-md-4 col-lg-3 col-xl-3">
-                            <Button variant="contained" color="secondary" size="large" disableElevation>Sign Up Now</Button>
+                          <Link to={{ pathname: "/auth", whatIsClicked: 0 }}>
+                            <Button variant="contained" color="secondary" size="large" disableElevation>
+                              <Typography color="primary">Sign Up Now</Typography>
+                            </Button>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -294,34 +316,34 @@ class CheckoutForm extends React.Component {
                 <Divider />
               </div>
               <div className="mb-2">
-                <div>
+                {/* <div>
                   <Typography variant="h6" color="primary">Do you wish to pay Now?</Typography>
                   <RadioGroup row aria-label="Do you wish to pay Now?" name="isInstantPayment" value={isInstantPayment} onChange={this.handleChange}>
                     <FormControlLabel value="yes" control={<Radio />} label="Yes, I am booking for myself" />
                     <FormControlLabel value="no" control={<Radio />} label="No, I am booking for someone" />
                   </RadioGroup>
-                  </div>
-                <Divider />
-                  <Typography variant="h6">Choose your payment method</Typography>
+                </div>
+                <Divider /> */}
+                <Typography variant="h6">Choose your payment method</Typography>
                 <RadioGroup aria-label="payment Method" value={paymentMethod} name="paymentMethod" onChange={this.handleChange}>
-                  <div className="d-flex flex-column mb-2">
+                  <div className="d-flex flex-column mb-4">
                     <div className="d-flex justify-content-between">
                       <FormControlLabel value="paypal" control={<Radio color="primary" />} label="PayPal" />
-                      <Typography variant="h6">PayPal</Typography>
+                      <Typography variant="h6" className="font-weight-bold">PayPal</Typography>
                     </div>
                     <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
                   </div>
                   <div className="d-flex flex-column">
                     <div className="d-flex justify-content-between">
-                      <FormControlLabel value="credit card" control={<Radio color="primary" />} label="Credit Card" />
-                      <Typography variant="h6">Visa, MasterCard</Typography>
+                      <FormControlLabel value="credit-card" control={<Radio color="primary" />} label="Credit Card" />
+                      <Typography variant="h6" className="font-weight-bold">Visa, MasterCard</Typography>
                     </div>
                   <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
                   </div>
                 </RadioGroup>
               </div>
               <Divider />
-              <div className="col-12 p-0 my-3">
+              {/* <div className="col-12 p-0 my-3">
                 <div className="row mb-3">
                   <div className="col-12">
                     <Typography variant="h6" className="mb-2">Enter your credit card details</Typography>
@@ -397,9 +419,12 @@ class CheckoutForm extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <CardSection />
+              </div> */}
+              <Collapse in={paymentMethod === "credit-card"} timeout="auto" unmountOnExit>
+                <Typography variant="h6" className="font-weight-bold mt-4 mb-3">Enter your credit card details</Typography>
+                <CardSection />
+              </Collapse>
+
               <Snackbar
                 anchorOrigin={{
                   vertical: 'bottom',
@@ -424,7 +449,7 @@ class CheckoutForm extends React.Component {
                 <Alert onClose={this.handleErrorClose} variant="filled" severity="warning">{isRequestWarningMessage}</Alert>
               </Snackbar>
               <Button variant="contained" disabled={!this.props.stripe || isProcessing } type="submit" color="secondary" size="large" fullWidth>
-                Reserve Now
+                <Typography variant="body1" color="primary" className="font-weight-bold">Reserve Now</Typography>
               </Button>
             </form>
           }

@@ -40,7 +40,7 @@ class BookHotel extends Component {
 		const { hotelImage, hotelName, roomType, roomAmount, start } = this.props.location.hotelInfo;
 		// const { selectedHotel } = this.state;
 		return (
-			<React.Fragment>
+			<div className="container-fluid">
 				<div className="row mb-4 mt-2">
 					<div className="col-sm-12 col-md-5 col-lg-4 col-xl-4">
 						<div className="card mb-4">
@@ -142,7 +142,7 @@ class BookHotel extends Component {
 						</Elements>
 					</div>
 				</div>
-			</React.Fragment>
+			</div>
 		);
 	}
 }
