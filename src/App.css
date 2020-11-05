@@ -65,7 +65,7 @@ body {
   align-items: center;
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 767px) {
   .heroText {
     padding-top: 5vh;
   }
