@@ -114,7 +114,7 @@ class SearchPane extends Component {
 			} else {
 				this.props.history.push({ 
 				 pathname: '/hotels',
-				 state: { searchData: this.state.data, guestCount: this.state.noOfAdult + this.state.noOfChildren }
+				 state: { searchData: this.state.data, guestCount: ((this.state.noOfAdult + this.state.noOfChildren) || 1) }
 				});
 				this.setState({ isDataNotComplete: false, isNotError: true });
 			}

@@ -25,15 +25,11 @@ class BookHotel extends Component {
 		selectedHotel: ""
 	}
 	componentDidMount(){
-		console.log(this.props.location.hotelInfo);
+		if(this.props.location.hotelInfo === undefined){
+			this.props.history.push('/');
+			return;
+		}
 		this.setState({ selectedHotel: this.props.location.hotelInfo });
-
-		// let id = this.props.match.params.hotel_id;
-		
-		// let data = {
-		// 	guestCount: 3
-		// }
-		// this.fetchData(id);
 	}
 
 	render(){

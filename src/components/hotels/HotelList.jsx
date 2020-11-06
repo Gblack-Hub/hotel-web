@@ -24,7 +24,7 @@ class HotelList extends Component{
 		hotels: [],
 		searchData: "",
 		slideValue: false,
-		guestCount: "", //needed to set this
+		guestCount: 1, //needed to set this
 		isResultFound: null,
 		isLoading: null,
 		isSearchError: false,
@@ -39,15 +39,19 @@ class HotelList extends Component{
 		this.setState({ guestCount: data})
 	}
 	componentDidMount() {
-		if(this.props.location.state.searchData === undefined){
-			return <Redirect to="/" />
-		} else {
-			let data = this.props.location.state.searchData;
-			let guestCount = this.props.location.state.guestCount;
-			this.setState({ guestCount: guestCount }) //needed to set guest count state in order to get dynamic guest count, probably after filter
-			console.log(data, guestCount);
-			this.fetchData(data);
+		if(this.props.location.state === undefined){
+			this.props.history.push('/');
+			return;
 		}
+		
+		let data = this.props.location.state.searchData;
+		let guestCount = this.props.location.state.guestCount;
+		this.setState({ guestCount: guestCount }) //needed to set guest count state in order to get dynamic guest count, probably after filter
+		console.log(data, guestCount);
+		this.fetchData(data);
+	}
+	gotoHome=()=> {
+		this.props.history.push('/');
 	}
 	componentDidUpdate=(prevProps, prevState)=>{
 		if(prevState.searchData !== this.state.searchData){
