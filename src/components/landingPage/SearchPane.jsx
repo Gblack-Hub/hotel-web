@@ -40,17 +40,17 @@ const styles = theme => ({
 	state = {
 		latitude: 38.736946,
 		longitude: -9.142685,
-		// location: "",
-		// noOfChildren: 0,
-		// noOfAdult: 0,
-		// checkInDateTime: "",
-		// checkOutDateTime: "",
-		// size: 3,
+		location: "",
+		noOfChildren: 0,
+		noOfAdult: 0,
+		checkInDateTime: "",
+		checkOutDateTime: "",
+		size: 3,
 		data: null,
 		isDataNotComplete: true,
 		isNotError: false,
-		// startDateNotSet: false,
-		// endDateNotSet: false,
+		startDateNotSet: false,
+		endDateNotSet: false,
 		locationNotSet: false,
 	}
 
@@ -114,8 +114,8 @@ const styles = theme => ({
 		// }
 	}
 	handleSubmit = async (e) => {
-		e.preventDefault();
-		//this.isFieldComplete();
+		//e.preventDefault();
+		this.isFieldComplete();
 		// console.log(this.state.noOfAdult, this.state.noOfChildren)
 
 		// console.log(this.state.startDateNotSet)
@@ -130,7 +130,7 @@ const styles = theme => ({
 				longitude: this.state.longitude,
 				start: moment(this.state.checkInDateTime).format("YYYY-MM-DD"),
 				end: moment(this.state.checkOutDateTime).format("YYYY-MM-DD"),
-				// size: this.state.size,
+				size: this.state.size,
 			}
 		}, ()=>{
 			if(this.state.longitude === "" || this.state.latitude === ""){
@@ -170,11 +170,28 @@ const styles = theme => ({
 		value: "4+",  label:  "4+"
 		}
 		];
+		const noOfChildren = [
+			{
+				value: "0", label:  "0"
+			},
+			{
+			  value: "1", label:  "1"
+			},
+			{
+			  value: "2", label:  "2"
+			},
+			{
+			  value: "3", label:  "3"
+			},
+			{
+			value: "4+",  label:  "4+"
+			}
+			];
 		const today = new Date();
-	   const validationSchema = yup.object().shape({
+	   	const validationSchema = yup.object().shape({
 		noOfAdults:  yup.string().required("Select No of Adults"),
 		noOfChildren:  yup.string().required("Select No of Children"), 
-		checkInDateTime: yup.date().required("Required").when('start', () => {  return yup.date().min(today) }),
+		checkInDateTime: yup.date().required("Required").test('start', () => {  return yup.date().min(today) }),
 		checkOutDateTime: yup.date().min(yup.ref('checkInDateTime'),
         "Check out date can't be before Check in date").required("Required"),
 		location: yup.string().required("Required"),
@@ -207,7 +224,13 @@ const styles = theme => ({
 						location: "",
 					}} 
 					validationSchema={validationSchema}
-					onSubmit={this.handleSubmit}
+					onSubmit= {()=>this.handleSubmit()}
+						// this.props.history.push({ 
+						//  pathname: '/hotels'})
+						//  state: { searchData: this.state.data, guestCount: this.state.noOfAdult + this.state.noOfChildren }
+						// })
+						
+					//}
 				>
 					 {({
 						values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting
@@ -324,7 +347,7 @@ const styles = theme => ({
 										error={touched.noOfChildren && Boolean(errors.noOfChildren)} 		
 												
 									>
-										{noOfAdults.map(option => (
+										{noOfChildren.map(option => (
 											<MenuItem key={option.value} value={option.value}>
 											{option.label}
 											</MenuItem>			
@@ -334,7 +357,7 @@ const styles = theme => ({
 				        	</div>
 				      	
 			        	<div className="mb-2 text-center col-sm-12 col-md-4 col-lg-2 col-xl-1">
-				        	<Button variant="contained" type="submit" size="large" color="secondary" fullWidth className="text-white" disabled={isSubmitting} onClick={()=> console.log(values)}>Search</Button>
+				        	<Button variant="contained" type="submit" size="large" color="secondary" fullWidth className="text-white" disabled={isSubmitting}>Search</Button>
 			       		</div>
 			      	</div>
 		      		</form>
