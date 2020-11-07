@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 import moment from 'moment';
 import { withRouter, /*Redirect, NavLink */} from 'react-router-dom';
-import InputLabel from '@material-ui/core/InputLabel';
+import { Formik } from 'formik'; 
+import * as yup from "yup";
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import withStyles from "@material-ui/core/styles/withStyles";
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -16,22 +17,40 @@ import Geocode from "react-geocode";
 // import CloseIcon from '@material-ui/icons/Close';
 
 const today = new Date();
+const styles = theme => ({	
+	errortext:{		
+			color: "#ff0000",
+			lineHeight: 1,
+			backgroundColor: "rgba(29, 25, 116, 1)",
+			margin: 0,
+			paddingLeft:theme.spacing(1),
+			paddingTop:theme.spacing(1)		
+	},	
+   });
+   const CssTextField = withStyles({
+	root: {	 
+	  '& .MuiInputBase-root': {
+		backgroundColor: "#fff"
+	  },
+	 
+	},
+  })(TextField);
 
-class SearchPane extends Component {
+   class SearchPane extends Component {
 	state = {
 		latitude: 38.736946,
 		longitude: -9.142685,
-		location: "",
-		noOfChildren: 0,
-		noOfAdult: 0,
-		checkInDateTime: "",
-		checkOutDateTime: "",
+		// location: "",
+		// noOfChildren: 0,
+		// noOfAdult: 0,
+		// checkInDateTime: "",
+		// checkOutDateTime: "",
 		// size: 3,
 		data: null,
 		isDataNotComplete: true,
 		isNotError: false,
-		startDateNotSet: false,
-		endDateNotSet: false,
+		// startDateNotSet: false,
+		// endDateNotSet: false,
 		locationNotSet: false,
 	}
 
@@ -74,6 +93,12 @@ class SearchPane extends Component {
 	handleChange = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
 	}
+ 	handleSelectChange =(e)=> {
+		this.setState({ [e.target.name]: e.target.value })
+	}
+	handleChange = (e) => {
+		this.setState({ [e.target.id]: e.target.value })
+	}
 	isFieldComplete=()=>{
 		if(this.state.checkInDateTime === ""){
 			this.setState({ startDateNotSet: true });
@@ -90,8 +115,8 @@ class SearchPane extends Component {
 	}
 	handleSubmit = async (e) => {
 		e.preventDefault();
-		this.isFieldComplete();
-		console.log(this.state.noOfAdult, this.state.noOfChildren)
+		//this.isFieldComplete();
+		// console.log(this.state.noOfAdult, this.state.noOfChildren)
 
 		// console.log(this.state.startDateNotSet)
 		// console.log(this.state.endDateNotSet)
@@ -114,14 +139,15 @@ class SearchPane extends Component {
 			} else {
 				this.props.history.push({ 
 				 pathname: '/hotels',
-				 state: { searchData: this.state.data, guestCount: ((this.state.noOfAdult + this.state.noOfChildren) || 1) }
+				 state: { searchData: this.state.data, guestCount: this.state.noOfAdult + this.state.noOfChildren }
 				});
 				this.setState({ isDataNotComplete: false, isNotError: true });
 			}
 		})
 	}
 	render() {
-		const { startDateNotSet, endDateNotSet, locationNotSet } = this.state;
+		const { classes } = this.props;
+		// const { startDateNotSet, endDateNotSet, locationNotSet } = this.state;
 	   // if (this.state.isNotError === true) {
 	   //    return <Redirect 
 	   //    			to={{
@@ -130,6 +156,29 @@ class SearchPane extends Component {
 	   //    			}}
 	   //    		/>
 	   // }
+	   const noOfAdults = [
+		{
+		  value: "1", label:  "1"
+		},
+		{
+		  value: "2", label:  "2"
+		},
+		{
+		  value: "3", label:  "3"
+		},
+		{
+		value: "4+",  label:  "4+"
+		}
+		];
+		const today = new Date();
+	   const validationSchema = yup.object().shape({
+		noOfAdults:  yup.string().required("Select No of Adults"),
+		noOfChildren:  yup.string().required("Select No of Children"), 
+		checkInDateTime: yup.date().required("Required").when('start', () => {  return yup.date().min(today) }),
+		checkOutDateTime: yup.date().min(yup.ref('checkInDateTime'),
+        "Check out date can't be before Check in date").required("Required"),
+		location: yup.string().required("Required"),
+	  });
 
 		return (
 			<div className="container-fluid searchPaneBackground">
@@ -149,7 +198,22 @@ class SearchPane extends Component {
 			        Please enter a location
 			      </Alert>
 				</Snackbar>*/}
-				<form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+				<Formik
+					initialValues={{
+						noOfChildren: "",
+						noOfAdults: "",
+						checkInDateTime: "",
+						checkOutDateTime: "",
+						location: "",
+					}} 
+					validationSchema={validationSchema}
+					onSubmit={this.handleSubmit}
+				>
+					 {({
+						values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting
+					}) =>(
+			
+					<form autoComplete="off" onSubmit={handleSubmit}>
 					<div className="py-2 row justify-content-center align-items-center">
 			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-3">
 					      <div className="d-flex align-items-center justify-content-between">
@@ -158,50 +222,56 @@ class SearchPane extends Component {
 					        			<MyLocationIcon fontSize="large" />
 					        		</IconButton>
 				        		</div>
-					        	<TextField
+					        	<CssTextField 
+									FormHelperTextProps={{className:classes.errortext}}
 									id="location"
 									size="small"
-									value={this.state.location}
-									error={locationNotSet}
-									helperText={ locationNotSet && "*this field is required"}
-									onChange={this.handleChange}
+									name="location"
+									value={values.location}
+									helperText={touched.location ? errors.location : ""}
+									error={touched.location && Boolean(errors.location)}
+									onChange={handleChange}
+									onBlur={handleBlur}
 									fullWidth
 									label="Enter Location"
-									className="rounded bg-light"
 									variant="filled"
 								/>
 					      </div>
 					   	</div>
 			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-2">
-				        	<TextField
+							<CssTextField  
+								className= {classes.input}
+								FormHelperTextProps={{className:classes.errortext}}
 				         		variant="filled"
-							    id="checkInDateTime"
+								id="checkInDateTime"
+								name="checkInDateTime"
 								label="Check in Date"
-								error={startDateNotSet}
-								helperText={ startDateNotSet && "*this field is required"}
 								size="small"
+								helperText={touched.checkInDateTime ? errors.checkInDateTime : ""}
+								error={touched.checkInDateTime && Boolean(errors.checkInDateTime)}
 								InputProps={{inputProps: { min: moment(today).add(1, 'days').format("YYYY-MM-DD") } }}
 							    fullWidth
-							    required
-							    onChange={this.handleChange}
+							   	onBlur={handleBlur}
+							    onChange={handleChange}
 							    type="date"
-							    className="rounded bg-light"
 							    InputLabelProps={{
-							      shrink: true,
+								  shrink: true,
 							    }}
 							/>
 			        	</div>
 			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-2">
-				         <TextField
+				         <CssTextField 
+						 	FormHelperTextProps={{className:classes.errortext}}
 				         	variant="filled"
 							id="checkOutDateTime"
+							name="checkOutDateTime"
 							label="Check out Date"
-							error={endDateNotSet}
-							helperText={ endDateNotSet && "*this field is required"}
+							helperText={touched.checkOutDateTime ? errors.checkOutDateTime : ""}
+							error={touched.checkOutDateTime && Boolean(errors.checkOutDateTime)} 
 							size="small"
 							fullWidth
-							required
-							onChange={this.handleChange}
+							onChange={handleChange}
+							onBlur={handleBlur}
 							type="date"
 							className="rounded bg-light"
 							InputLabelProps={{
@@ -209,50 +279,70 @@ class SearchPane extends Component {
 							}}
 						/>
 			        	</div>
-			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-3 d-flex align-items-center">
-				        	<div className="mr-1 flex-fill">
+			        	<div className="mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-2">
+				        	{/* <div className="mr-2 flex-fill mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-3 "> */}
 								<FormControl size="small" fullWidth variant="filled" className="rounded bg-light">
-									<InputLabel id="for-noOfAdult">No of Adults</InputLabel>
-									<Select
-										labelId="noOfAdult"
-										id="noOfAdult"
-										name="noOfAdult"
-										value={this.state.noOfAdult}
-										onChange={this.handleSelectChange}
-									>
-										<MenuItem value={0}>None</MenuItem>
-										<MenuItem value={1}>One</MenuItem>
-										<MenuItem value={2}>Two</MenuItem>
-										<MenuItem value={3}>Three+</MenuItem>
-									</Select>
+										<CssTextField 
+											FormHelperTextProps={{className:classes.errortext}}
+											select
+											variant="filled"
+											size="small" 
+											label="No of Adults"										
+											id="noOfAdults"
+											name="noOfAdults"
+											value={values.noOfAdults}
+											onChange={handleChange}
+											onBlur={handleBlur}
+											helperText={touched.noOfAdults ? errors.noOfAdults : ""}
+											error={touched.noOfAdults && Boolean(errors.noOfAdults)} 
+											
+										>
+											{noOfAdults.map(option => (
+												<MenuItem key={option.value} value={option.value}>
+												{option.label}
+												</MenuItem>
+											))}
+									</CssTextField >
+								
 								</FormControl>
 				        	</div>
-				        	<div className="ml-1 flex-fill">
+				        	<div className=" mb-2 col-sm-12 col-md-4 col-lg-3 col-xl-2 ">
 								<FormControl size="small" fullWidth variant="filled" className="rounded bg-light">
-									<InputLabel id="for-noOfChildren">No of Children</InputLabel>
-									<Select
-										labelId="noOfChildren"
+									
+									<CssTextField 
+									select
+										FormHelperTextProps={{className:classes.errortext}}
+										variant="filled"
+										size="small" 
+										label="No of Children"
 										id="noOfChildren"
 										name="noOfChildren"
-										value={this.state.noOfChildren}
-										onChange={this.handleSelectChange}
+										value={values.noOfChildren}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										helperText={touched.noOfChildren ? errors.noOfChildren : ""}
+										error={touched.noOfChildren && Boolean(errors.noOfChildren)} 		
+												
 									>
-										<MenuItem value={0}>None</MenuItem>
-										<MenuItem value={1}>One</MenuItem>
-										<MenuItem value={2}>Two</MenuItem>
-										<MenuItem value={3}>Three+</MenuItem>
-									</Select>
+										{noOfAdults.map(option => (
+											<MenuItem key={option.value} value={option.value}>
+											{option.label}
+											</MenuItem>			
+											))}	
+									</CssTextField >
 								</FormControl>
 				        	</div>
-				      	</div>
-			        	<div className="mb-2 text-center col-sm-12 col-md-4 col-lg-2 col-xl-2">
-				        	<Button variant="contained" type="submit" size="large" color="secondary" fullWidth className="text-white">Search</Button>
+				      	
+			        	<div className="mb-2 text-center col-sm-12 col-md-4 col-lg-2 col-xl-1">
+				        	<Button variant="contained" type="submit" size="large" color="secondary" fullWidth className="text-white" disabled={isSubmitting} onClick={()=> console.log(values)}>Search</Button>
 			       		</div>
 			      	</div>
-		      	</form>
+		      		</form>
+				)}
+				</Formik>
 		   </div>
 		);
 	}
 }
 
-export default withRouter(SearchPane);
+export default withRouter((withStyles(styles)(SearchPane)));
