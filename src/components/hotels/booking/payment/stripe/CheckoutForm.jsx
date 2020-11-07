@@ -13,8 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Snackbar from '@material-ui/core/Snackbar';
 import { ElementsConsumer, CardElement } from "@stripe/react-stripe-js";
-
-
 import CardSection from "./CardSection";
 import BookingConfirmation from "./BookingConfirmation";
 
@@ -167,7 +165,7 @@ class CheckoutForm extends React.Component {
               <div>
                 <div className="mb-3">
                 <Typography variant="h6" color="primary">Are you travelling for business?</Typography>
-                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" value={isTravellingForBusiness} onChange={this.handleChange}>
+                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" value={isTravellingForBusiness} onChange={this.handleRadioChange}>
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
                     <FormControlLabel value={false} control={<Radio />} label="No" />
                   </RadioGroup>
