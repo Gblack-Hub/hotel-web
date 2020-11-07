@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-// import "@fortawesome/fontawesome-free/css/all.min.css";
 import * as serviceWorker from './serviceWorker';
 
 const theme = createMuiTheme({
