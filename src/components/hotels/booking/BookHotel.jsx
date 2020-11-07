@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./payment/stripe/CheckoutForm";
+import { withRouter } from 'react-router-dom';
 
 // import BookingConfirmation from "./payment/stripe/BookingConfirmation.jsx";
 
@@ -142,4 +143,4 @@ class BookHotel extends Component {
 		);
 	}
 }
-export default BookHotel;
+export default withRouter(BookHotel);
