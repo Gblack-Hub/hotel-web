@@ -56,8 +56,6 @@ class HotelList extends Component{
 	componentDidUpdate=(prevProps, prevState)=>{
 		console.log(prevState.searchData !== this.state.searchData)
 		if(prevState.searchData !== this.state.searchData){
-			console.log(prevState.searchData)
-			console.log(this.state.searchData);
 			this.fetchData(this.state.searchData)
 		}
 	}
@@ -83,13 +81,12 @@ class HotelList extends Component{
 			this.setState({ isSearchError: true, errorMessage: error.message });
 		})
 	}
-	// React.useEffect(() => {
-	// }, []);
-
+	
 	render() {
 		const { slideValue, hotels, isResultFound, isLoading, guestCount, isSearchError, errorMessage } = this.state;
-		const { searchData } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
-		console.log(searchData);
+		// const { searchData } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
+		let searchData = this.state.searchData ? this.state.searchData : this.props.location.state.searchData ? this.props.location.state.searchData : <Redirect to="/" />;
+		
 		return (
 			<div className="container-fluid pt-3">
 				<div className="row">
