@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 import moment from 'moment';
 import { withRouter, /*Redirect, NavLink */} from 'react-router-dom';
-import { Formik } from 'formik'; 
+import { Formik, useFormikContext } from 'formik'; 
 import * as yup from "yup";
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -16,7 +16,8 @@ import Geocode from "react-geocode";
 // import Alert from '@material-ui/lab/Alert';
 // import CloseIcon from '@material-ui/icons/Close';
 
-const today = new Date();
+//const today = new Date();
+//const {values} = useFormikContext({values})
 const styles = theme => ({	
 	errortext:{		
 			color: "#ff0000",
@@ -147,6 +148,7 @@ const styles = theme => ({
 	}
 	render() {
 		const { classes } = this.props;
+		
 		// const { startDateNotSet, endDateNotSet, locationNotSet } = this.state;
 	   // if (this.state.isNotError === true) {
 	   //    return <Redirect 
@@ -357,7 +359,8 @@ const styles = theme => ({
 				        	</div>
 				      	
 			        	<div className="mb-2 text-center col-sm-12 col-md-4 col-lg-2 col-xl-1">
-				        	<Button variant="contained" type="submit" size="large" color="secondary" fullWidth className="text-white" disabled={isSubmitting}>Search</Button>
+							<Button variant="contained" type="submit" size="large" color="secondary" fullWidth className="text-white" 
+							disabled={isSubmitting}>Search</Button>
 			       		</div>
 			      	</div>
 		      		</form>

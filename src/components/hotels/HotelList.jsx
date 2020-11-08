@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { /*BrowserRouter as Router, Route,*/ Link, Redirect, /*, Switch */
-withRouter} from 'react-router-dom';
+import { /*BrowserRouter as Router, Route,*/ Link, Redirect /*, Switch */} from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -211,4 +210,4 @@ class HotelList extends Component{
 	}
 }
 
-export default withRouter(HotelList);
+export default HotelList;
