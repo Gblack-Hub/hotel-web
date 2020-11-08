@@ -33,6 +33,7 @@ class HotelDetail extends Component {
 	componentDidMount(){
 		let id = this.props.match.params.hotel_id;
 		let searchData = this.props.location.searchData;
+		console.log(this.props.location)
 		console.log(searchData)
 		if(searchData !== undefined){
 			let data = {
