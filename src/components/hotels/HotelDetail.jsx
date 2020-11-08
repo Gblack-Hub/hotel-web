@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
 import Overview from './hotelDetail/Overview.jsx';
 import Facilities from './hotelDetail/Facilities.jsx';
 import Rooms from './hotelDetail/Rooms.jsx';

@@ -143,6 +143,7 @@ class SideSearchPane extends Component{
 			},
 			guestCount: this.state.noOfAdult + this.state.noOfChildren,
 		}, () => {
+			console.log(this.state.data)
 			this.props.onSubmitSearch(this.state.data);
 			this.props.onSubmitGuestCount(this.state.guestCount);
 		});
@@ -155,6 +156,7 @@ class SideSearchPane extends Component{
 
 	render(){
 		const { latitude, longitude } = this.props.searchData;
+
 		return (
 			<div>
 				<Paper style={mapContainer} elevation={1}>
