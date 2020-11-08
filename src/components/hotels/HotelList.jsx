@@ -55,7 +55,10 @@ class HotelList extends Component{
 		this.props.history.push('/');
 	}
 	componentDidUpdate=(prevProps, prevState)=>{
+		console.log(prevState.searchData !== this.state.searchData)
 		if(prevState.searchData !== this.state.searchData){
+			console.log(prevState.searchData)
+			console.log(this.state.searchData);
 			this.fetchData(this.state.searchData)
 		}
 	}
@@ -87,6 +90,7 @@ class HotelList extends Component{
 	render() {
 		const { slideValue, hotels, isResultFound, isLoading, guestCount, isSearchError, errorMessage } = this.state;
 		const { searchData } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
+		console.log(searchData);
 		return (
 			<div className="container-fluid pt-3">
 				<div className="row">
