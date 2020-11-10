@@ -165,7 +165,7 @@ class CheckoutForm extends React.Component {
               <div>
                 <div className="mb-3">
                 <Typography variant="h6" color="primary">Are you travelling for business?</Typography>
-                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" value={isTravellingForBusiness} onChange={this.handleRadioChange}>
+                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" value={isTravellingForBusiness} onChange={this.handleChange}>
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
                     <FormControlLabel value={false} control={<Radio />} label="No" />
                   </RadioGroup>
@@ -245,7 +245,8 @@ class CheckoutForm extends React.Component {
               <div className="mt-4">
                 <div>
                   <Typography variant="h6" color="primary">Are you booking for yourself?</Typography>
-                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForSomeone" value={isBookingForSomeone} onChange={this.handleRadioChange}>
+                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForSomeone" 
+                  value={isBookingForSomeone} onChange={this.handleRadioChange}>
                     <FormControlLabel value={false} control={<Radio />} label="Yes, I am booking for myself" />
                     <FormControlLabel value={true} control={<Radio />} label="No, I am booking for someone" />
                   </RadioGroup>
@@ -327,14 +328,15 @@ class CheckoutForm extends React.Component {
                   <div className="d-flex flex-column mb-4">
                     <div className="d-flex justify-content-between">
                       <FormControlLabel value="paypal" control={<Radio color="primary" />} label="PayPal" />
-                      <Typography variant="h6" className="font-weight-bold">PayPal</Typography>
+                      <img src={require('../../../../../assets/images/paypal.png')} alt="paypal" style={{height: '25px'}} />
                     </div>
                     <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
                   </div>
                   <div className="d-flex flex-column">
                     <div className="d-flex justify-content-between">
                       <FormControlLabel value="credit-card" control={<Radio color="primary" />} label="Credit Card" />
-                      <Typography variant="h6" className="font-weight-bold">Visa, MasterCard</Typography>
+                      <img src={require('../../../../../assets/images/visa.png')} alt="paypal" style={{height: '25px'}} />
+                      <img src={require('../../../../../assets/images/mastercard.png')} alt="paypal" style={{height: '25px'}} />
                     </div>
                   <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
                   </div>
