@@ -335,8 +335,11 @@ class CheckoutForm extends React.Component {
                   <div className="d-flex flex-column">
                     <div className="d-flex justify-content-between">
                       <FormControlLabel value="credit-card" control={<Radio color="primary" />} label="Credit Card" />
+                      <div className="d-flex">
                       <img src={require('../../../../../assets/images/visa.png')} alt="paypal" style={{height: '25px'}} />
                       <img src={require('../../../../../assets/images/mastercard.png')} alt="paypal" style={{height: '25px'}} />
+                      </div>
+                    
                     </div>
                   <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
                   </div>

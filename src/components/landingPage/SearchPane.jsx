@@ -113,8 +113,8 @@ const useStyles = makeStyles((theme) => ({
 	  });
 	 const history  = useHistory()
 	  const initialValues = {
-						noOfChildren: "0",
-						noOfAdults: "1",
+						noOfChildren: 0,
+						noOfAdults: 1,
 						checkInDateTime: "",
 						checkOutDateTime: "",
 						location,
@@ -141,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
 								latitude: values.latitude,
 								longitude: values.longitude,
 								start: values.checkInDateTime,
-								end: values.checkOutDateTime}, guestCount: values.noOfAdult +values.noOfChildren }
+								end: values.checkOutDateTime}, guestCount: values.noOfAdults + values.noOfChildren }
 						   }
 						)}}
 						
