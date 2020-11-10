@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { Alert, AlertTitle } from '@material-ui/lab';
-// import RemoveIcon from '@material-ui/icons/Remove';
-// import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+ import AddIcon from '@material-ui/icons/Add';
 
 const classes = {
 	hidden: {
@@ -70,18 +70,20 @@ class Rooms extends React.PureComponent {
 												</Button>
 											</div>
 											<Divider />
-											{/* <div className="d-flex align-items-center justify-content-between py-3">
+											<div className="d-flex align-items-center justify-content-between py-3">
 												<Typography variant="subtitle2" className="text-uppercase">Select No of Rooms</Typography>
 												<div className="d-flex align-items-center">
-													<Button variant="contained" color="primary" disableElevation onClick={this.handleDecrementRoom}>
+													<Button variant="contained" color="primary" size="small" disableElevation onClick={this.handleDecrementRoom} 
+													 disabled= {this.state.defaultRoom===1}>
 														<RemoveIcon />
 													</Button>
-													<input type="text" className="form-control mx-2 px-1 text-center" value={defaultRoom} onChange={this.handleRoomChange} style={{width: '40px'}} />
-													<Button variant="contained" color="primary" disableElevation onClick={this.handleIncrementRoom}>
+													<span className='badge m-2 badge-secondary' color="white">{this.state.defaultRoom}</span>
+													{/* <input type="text" className="form-control mx-2 px-1 text-center" value={this.state.defaultRoom} onChange={this.handleRoomChange} style={{width: '40px'}} /> */}
+													<Button variant="contained" size="small"  color="primary" disableElevation onClick={this.handleIncrementRoom}>
 														<AddIcon />
 													</Button>
 												</div>
-											</div> */}
+											</div>
 											<div className="d-flex flex-column">
 												{/* <Typography variant="subtitle2" className="text-uppercase">Select No of hours</Typography>
 												<div className="d-flex justify-content-between py-3">
@@ -143,7 +145,7 @@ class Rooms extends React.PureComponent {
 						{ rooms && rooms.length === 0 && 
 							<Alert severity="info">
 								<AlertTitle>Info</AlertTitle>
-								Sorry, there is no room that match your search
+								Sorry, there is no room that matches your search
 							</Alert>
 						}
 					</div>
