@@ -7,11 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import EditIcon from '@material-ui/icons/Edit';
 // import StarHalfIcon from '@material-ui/icons/StarHalf';
-
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./payment/stripe/CheckoutForm";
-import { withRouter } from 'react-router-dom';
 
 // import BookingConfirmation from "./payment/stripe/BookingConfirmation.jsx";
 
@@ -34,18 +32,17 @@ class BookHotel extends Component {
 	}
 
 	render(){
-		// const { hotelImage, hotelName, roomType, roomAmount, start } = this.props.location.hotelInfo ? this.props.location.hotelInfo : this.props.history.push('/');
+		const { hotelImage, hotelName, roomType, roomAmount, start } = this.props.location.hotelInfo;
 		// const { selectedHotel } = this.state;
 		return (
 			<div className="container-fluid">
-			{ this.props.location.hotelInfo !== undefined &&
 				<div className="row mb-4 mt-2">
 					<div className="col-sm-12 col-md-5 col-lg-4 col-xl-4">
 						<div className="card mb-4">
 							<div className="card-body p-0">
 								<div className="d-flex justify-content-between p-2">
 									<div className="flex-fill">
-										<Typography variant="body1" className="font-weight-bold">{ this.props.location.hotelInfo.hotelName }</Typography>
+										<Typography variant="body1" className="font-weight-bold">{ hotelName }</Typography>
 									</div>
 									<div className="ml-3">
 										<StarIcon fontSize="small" color="secondary" />
@@ -56,15 +53,15 @@ class BookHotel extends Component {
 									</div>
 								</div>
 								<div>
-									{ this.props.location.hotelInfo.hotelImage && <img src={this.props.location.hotelInfo.hotelImage} className="img-fluid" alt="Napoleon Hotel Roma" /> }
+									{ hotelImage && <img src={hotelImage} className="img-fluid" alt="Napoleon Hotel Roma" /> }
 								</div>
 								<div className="p-2">
-									<Typography variant="body1" color="primary" className="font-weight-bold mb-2">{ this.props.location.hotelInfo.roomType }</Typography>
+									<Typography variant="body1" color="primary" className="font-weight-bold mb-2">{ roomType }</Typography>
 									<div className="d-flex justify-content-between mb-2">
 										<Typography variant="body2" className="text-uppercase">Check In Date</Typography>
 										<div className="d-flex">
 											<div className="d-flex flex-column align-items-center mr-2">
-												<Typography variant="body2" className="text-uppercase">{this.props.location.hotelInfo.start}</Typography>
+												<Typography variant="body2" className="text-uppercase">{start}</Typography>
 												<Typography variant="caption" color="textSecondary">FROM 12:00PM</Typography>
 											</div>
 											<div>
@@ -117,7 +114,7 @@ class BookHotel extends Component {
 									<Divider />
 									<div className="d-flex justify-content-between my-2">
 										<Typography variant="body2" className="text-uppercase">Amount for selected days</Typography>
-										<Typography variant="body2" className="text-uppercase">${ this.props.location.hotelInfo.roomAmount }</Typography>
+										<Typography variant="body2" className="text-uppercase">${ roomAmount }</Typography>
 									</div>
 									<div className="d-flex justify-content-between mb-2">
 										<Typography variant="body2" className="text-uppercase">VAT</Typography>
@@ -140,9 +137,8 @@ class BookHotel extends Component {
 						</Elements>
 					</div>
 				</div>
-			}
 			</div>
 		);
 	}
 }
-export default withRouter(BookHotel);
+export default BookHotel;
