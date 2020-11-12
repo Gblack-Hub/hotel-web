@@ -6,9 +6,6 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Carousel from 'react-bootstrap/Carousel'
-import RemoveIcon from '@material-ui/icons/Remove';
- import AddIcon from '@material-ui/icons/Add';
-import Counters from './counters'
 import { CarouselItem } from 'react-bootstrap';
 
 const classes = {
@@ -22,7 +19,7 @@ const classes = {
 
 class Rooms extends React.PureComponent {
 	state = {
-		defaultRoom: 1,
+		
 		isTextHidden: true,
 	}
 	componentDidMount(){
@@ -34,13 +31,7 @@ class Rooms extends React.PureComponent {
 	handleRoomChange=(e)=>{
 		this.setState({defaultRoom: e.target.value})
 	}
-	handleDecrementRoom=(id)=>{
-		this.setState(prevState => { return {defaultRoom: prevState.defaultRoom-1}}, console.log(this.state.defaultRoom));
-		
-	}
-	handleIncrementRoom=()=>{
-		this.setState(prevState => { return {defaultRoom: prevState.defaultRoom+1}}, console.log(this.state.defaultRoom));
-	}
+	
 	render(){
 		const { rooms } = this.props;
 		console.log(rooms);
@@ -74,10 +65,10 @@ class Rooms extends React.PureComponent {
 												</Button>
 											</div>
 											<Divider />
-											<div className="d-flex align-items-center justify-content-between py-3">
+											<div className="d-flex align-items-center py-3">
 												<Typography variant="subtitle2" className="text-uppercase">No of Rooms:</Typography>
 												<div className="d-flex align-items-center">
-													<span className='badge m-2 badge-secondary' color="white">1</span>
+													<span className='badge m-2 badge-secondary' color="white" size="large">1</span>
 													{/* <Counters 	item={item}
 																onIncrement={this.handleIncrementRoom}
 																onDecrement={this.handleDecrementRoom}/> */}
@@ -135,7 +126,7 @@ class Rooms extends React.PureComponent {
 																} 
 															}}
 												>
-													<Button variant="contained" color="secondary" size="large" disableElevation>
+													<Button variant="contained" color="secondary" size="large" className={classes.button} disableElevation>
 														<Typography color="primary">Reserve Now</Typography>
 													</Button>
 												</Link>

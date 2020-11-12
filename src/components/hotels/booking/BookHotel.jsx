@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
 import Typography from '@material-ui/core/Typography';
 import StarIcon from '@material-ui/icons/Star';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
-import EditIcon from '@material-ui/icons/Edit';
 // import StarHalfIcon from '@material-ui/icons/StarHalf';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./payment/stripe/CheckoutForm";
-
+import EditDialog from "./payment/dialog"
 // import BookingConfirmation from "./payment/stripe/BookingConfirmation.jsx";
 
 const STRIPE_PUBLISHABLE_KEY = "pk_test_51HXBJrBCeQfqZ7YQTyeOsrTJSU7vCOL1tPHZobPkdXcJbXLB7Dr0LyZ2qEgqRucH2OR7EwAAMve04nnktCfgrwfr00sHxbmm6L";
@@ -21,19 +19,24 @@ axios.defaults.headers.post['Content-Type'] = 'text/plain';
 
 class BookHotel extends Component {
 	state = {
-		selectedHotel: ""
+		selectedHotel: "",
+	
 	}
 	componentDidMount(){
+		console.log(this.props.location.hotelInfo)
 		if(this.props.location.hotelInfo === undefined){
 			this.props.history.push('/');
 			return;
 		}
 		this.setState({ selectedHotel: this.props.location.hotelInfo });
+		
 	}
+	
 
 	render(){
-		const { hotelImage, hotelName, roomType, roomAmount, start } = this.props.location.hotelInfo;
+		const { hotelImage, hotelName, roomType, roomAmount, start} = this.props.location.hotelInfo;
 		// const { selectedHotel } = this.state;
+		const VAT = 210;
 		return (
 			<div className="container-fluid">
 				<div className="row mb-4 mt-2">
@@ -64,11 +67,6 @@ class BookHotel extends Component {
 												<Typography variant="body2" className="text-uppercase">{start}</Typography>
 												<Typography variant="caption" color="textSecondary">FROM 12:00PM</Typography>
 											</div>
-											<div>
-												<IconButton size="small">
-													<EditIcon fontSize="small" />
-												</IconButton>
-											</div>
 										</div>
 									</div>
 									{/* <div className="d-flex justify-content-between mb-2">
@@ -85,31 +83,31 @@ class BookHotel extends Component {
 											</div>
 										</div>
 									</div> */}
-									<div className="d-flex justify-content-between mb-2">
-										<Typography variant="body2" className="text-uppercase">No. of rooms selected</Typography>
+									{/* <div className="d-flex justify-content-between mb-2">
+										<Typography variant="body2" className="text-uppercase">No. of days selected</Typography>
 										<div className="d-flex">
 											<div className="mr-2">
-												<Typography variant="body2" className="text-uppercase">1 room</Typography>
+											<button onClick= {()=>this.handleDecrement()}
+											disabled= {this.state.product.quantity===1}
+											className="btn m-0 btn-secondary btn-sm">-</button>
+											<span className='badge m-2 badge-primary'>{this.state.noOfDays}</span>
+											<button onClick= {() => this.handleIncrement()}
+											className="btn btn-secondary btn-sm">+</button>
 											</div>
-											<div>
-												<IconButton size="small">
-													<EditIcon fontSize="small" />
-												</IconButton>
-											</div>
+										
 										</div>
-									</div>
+									</div> */}
 									<div className="d-flex justify-content-between mb-2">
 										<Typography variant="body2" className="text-uppercase">No. of days selected</Typography>
 										<div className="d-flex">
 											<div className="mr-2">
 												<Typography variant="body2" className="text-uppercase">2 days</Typography>
 											</div>
-											<div>
-												<IconButton size="small">
-													<EditIcon fontSize="small" />
-												</IconButton>
-											</div>
-										</div>
+										</div>	
+										
+									</div>
+									<div  className=" mt-3 mb-2">
+										<EditDialog  start={start} roomType={roomType}/>
 									</div>
 									<Divider />
 									<div className="d-flex justify-content-between my-2">
@@ -118,12 +116,12 @@ class BookHotel extends Component {
 									</div>
 									<div className="d-flex justify-content-between mb-2">
 										<Typography variant="body2" className="text-uppercase">VAT</Typography>
-										<Typography variant="body2" className="text-uppercase">$210</Typography>
+										<Typography variant="body2" className="text-uppercase">${VAT}</Typography>
 									</div>
 									<Divider />
 									<div className="d-flex align-items-center justify-content-between mb-2">
 										<Typography variant="body2" className="text-uppercase font-weight-bold">Total amount</Typography>
-										<Typography variant="h6" className="text-uppercase" color="secondary">$3210</Typography>
+										<Typography variant="h6" className="text-uppercase" color="secondary">${roomAmount + VAT}</Typography>
 									</div>
 								</div>
 							</div>
@@ -132,7 +130,7 @@ class BookHotel extends Component {
 					<div className="col-sm-12 col-md-7 col-lg-8 col-xl-8">
 						<Elements stripe={stripePromise}>
 							{ this.props.location.hotelInfo &&
-								<CheckoutForm selectedHotel={ this.props.location.hotelInfo } />
+								<CheckoutForm selectedHotel={ this.props.location.hotelInfo }  />
 							}
 						</Elements>
 					</div>

@@ -112,50 +112,50 @@ componentDidMount(){
   handleSubmit = async values=> {
    // event.preventDefault();
      console.log(this.state.data)
-//     const { start, end, guestCount, room_id, hotel_id } = this.props.selectedHotel;
-// console.log(this.props.selectedHotel)
-//     const { stripe, elements } = this.props;
+    const { start, end, guestCount, room_id, hotel_id } = this.props.selectedHotel;
+console.log(this.props.selectedHotel)
+    const { stripe, elements } = this.props;
 
-//     if (!stripe || !elements) {
-//       return;
-//     }
+    if (!stripe || !elements) {
+      return;
+    }
 
-//     const card = elements.getElement(CardElement);
-//     const result = await stripe.createToken(card);
-    // if (result.error) {
-    //   console.log(result.error.message);
-  	// 	this.setState({ isProcessing: false, isRequestWarning: true, isRequestWarningMessage: result.error.message });
-  //  } else 
+    const card = elements.getElement(CardElement);
+    const result = await stripe.createToken(card);
+    if (result.error) {
+      console.log(result.error.message);
+  		this.setState({ isProcessing: false, isRequestWarning: true, isRequestWarningMessage: result.error.message });
+   } else 
     
-  //     console.log(result.token);
+      console.log(result.token);
 
-  //     this.setState({
+      this.setState({
 
-  //       data: {
-  //         // purposeOfUse: this.state.purposeOfUse,
-  //         firstName: values.firstName,
-  //         lastName: values.lastName,
-  //         email: values.email,
-  //         phoneNo: this.state.phoneNo,
-  //         // isBookingForMyself: this.state.isBookingForMyself,
-  //         // isInstantPayment: this.state.isInstantPayment,
-  //         guestFirstName:  values.guestFirstName,
-  //         guestLastName: values.guestLastName,
-  //         guestEmail:values.guestEmail,
-  //         guestsCount: guestCount,
-  //         rooms: [{ areaTypeId: room_id }],
-  //         property_id: hotel_id,
-  //         stripeToken: result.token.id,
-  //         start: start,
-  //         end: end,
-  //       }
+        data: {
+          // purposeOfUse: this.state.purposeOfUse,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phoneNo: this.state.phoneNo,
+          // isBookingForMyself: this.state.isBookingForMyself,
+          // isInstantPayment: this.state.isInstantPayment,
+          guestFirstName:  values.guestFirstName,
+          guestLastName: values.guestLastName,
+          guestEmail:values.guestEmail,
+          guestsCount: guestCount,
+          rooms: [{ areaTypeId: room_id }],
+          property_id: hotel_id,
+          stripeToken: result.token.id,
+          start: start,
+          end: end,
+        }
         
-  //     }, ()=>{
-  //       console.log(this.state.data);
-  //       this.sendData(this.state.data);
-  //     })
+      }, ()=>{
+        console.log(this.state.data);
+        this.sendData(this.state.data);
+      })
       
-  //     this.setState({ isProcessing: true });
+      this.setState({ isProcessing: true });
     
 
   };
@@ -168,9 +168,9 @@ componentDidMount(){
       email:  yup.string()
         .email("Enter a valid email")
         .required("Email is required"),
-      guestfirstName:  yup.string().required("Required"),
-      guestlastName:  yup.string().required("Required"),
-      guestemail:  yup.string()
+      guestFirstName:  yup.string().required("Required"),
+      guestLastName:  yup.string().required("Required"),
+      guestEmail:  yup.string()
           .email("Enter a valid email")
           .required("Email is required"),
       })
@@ -203,7 +203,8 @@ componentDidMount(){
               <div>
                 <div className="mb-3">
                 <Typography variant="h6" color="primary">Are you travelling for business?</Typography>
-                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" value={isTravellingForBusiness} onChange={this.handleChange}>
+                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" 
+                  value={isTravellingForBusiness} onChange={this.handleRadioChange}>
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
                     <FormControlLabel value={false} control={<Radio />} label="No" />
                   </RadioGroup>
@@ -313,6 +314,7 @@ componentDidMount(){
                     </div>
                     <div className="row">
                       <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <form></form>
                         <TextField
                             //onChange={this.handleChange}
                             variant="outlined"
@@ -337,7 +339,7 @@ componentDidMount(){
                             id="guestLastName"
                             value={values.guestLastName}
                             helperText={touched.guestLastName ? errors.guestLastName : ""}
-                            error={touched.guestLastNamel && Boolean(errors.guestLastName)}
+                            error={touched.guestLastName && Boolean(errors.guestLastName)}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             size="small"
