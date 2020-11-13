@@ -1,4 +1,4 @@
-import React, {  useRef } from 'react';
+import React, {  useEffect, useRef } from 'react';
 // import axios from 'axios';
 import moment from 'moment';
 import { useHistory, withRouter, /*Redirect, NavLink */} from 'react-router-dom';
@@ -12,11 +12,13 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import Geocode from "react-geocode";
+// import { InputAdornment } from '@material-ui/core';
+// import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 // import Snackbar from '@material-ui/core/Snackbar';
 // import Alert from '@material-ui/lab/Alert';
 // import CloseIcon from '@material-ui/icons/Close';
 
-const today = new Date();
+
 const useStyles = makeStyles((theme) => ({	
 	errortext:{		
 			color: "#ff0000",
@@ -35,40 +37,77 @@ const useStyles = makeStyles((theme) => ({
 	 
 	},
   })(TextField);
+
+const dateNow = new Date() ; // Creating a new date object with the current date and time
+const year = dateNow.getFullYear(); // Getting current year from the created Date object
+const monthWithOffset = dateNow.getUTCMonth() + 1; // January is 0 by default in JS. Offsetting +1 to fix date for calendar.
+const month = // Setting current Month number from current Date object
+  monthWithOffset.toString().length < 2 // Checking if month is < 10 and pre-prending 0 if not to adjust for date input.
+    ? `0${monthWithOffset}`
+    : monthWithOffset;
+const date =
+  dateNow.getUTCDate().toString().length < 2 // Checking if date is < 10 and pre-prending 0 if not to adjust for date input.
+    ? `0${dateNow.getUTCDate()}`
+    : dateNow.getUTCDate();
+
+const materialDateInput = `${year}-${month}-${date}`; // combining to format for defaultValue or value attribute of material <TextField>
+
 	
 	const SearchPane =()=> {
 		const classes = useStyles();
 
-		const [coordinate, setCoordinate] = React.useState([{latitude:38.736946, longitude:-9.142685}]);
+		const [coordinate, setCoordinate] = React.useState({latitude:"38.736946", longitude:"-9.142685"});
 		const [location, setLocation] = React.useState("");
 		
 
 		const handleGetLocation = () => {
-				
+			
 			window.navigator.geolocation.getCurrentPosition(
-			 success => setCoordinate({ latitude: success.coords.latitude, longitude: success.coords.longitude }, () => {
+			  success => setCoordinate({ latitude: success.coords.latitude, longitude: success.coords.longitude }),
+			//   console.log({latitude: success.coords.latitude, longitude: success.coords.longitude});
 			
-			// 	console.log('Longitude: ', coordinate.longitude);	
-	
-				Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK-Rih0go");
-				Geocode.fromLatLng(coordinate.latitude, coordinate.longitude).then(
-					response => {
-					const address = response.results[0].formatted_address;
-					console.log(address);
-					setLocation(address)
-					// this.setState({location : address})
-					},
-					error => {
-						console.error(error);
-					}
-				);
-			 })
-			 // error=> console.log(error);
-			 );
+			//   ,
+			//   () => {
+			// 	console.log('Latitide: ', coordinate.latitude);
+			// 	console.log('Longitude: ', coordinate.longitude);
+		
+			// 	Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK-Rih0go");
+			// 	Geocode.fromLatLng(coordinate.latitude, coordinate.longitude).then(
+			// 		response => {
+			// 		const address = response.results[0].formatted_address;
+			// 		console.log(address);
+			// 		setLocation(address)
+			// 		},
+			// 		error => {
+			// 			console.error(error);
+			// 		}
+			// 	);
+			// 	 //error=> console.log(error);
+			//  }
+			  );
+			 
 			
-		}
-	
+			}
+				// useEffect( () => {
+				// 	console.log('Latitide: ', coordinate.latitude);
+				// 	console.log('Longitude: ', coordinate.longitude);
 			
+				// 	Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK-Rih0go");
+				// 	Geocode.fromLatLng(coordinate.latitude, coordinate.longitude).then(
+				// 		response => {
+				// 		const address = response.results[0].formatted_address;
+				// 		console.log(address);
+				// 		setLocation(address)
+						
+				// 		},
+				// 		error => {
+				// 			console.error(error);
+				// 		}
+				// 	);
+				// // 	 //error=> console.log(error);
+				//  })
+				
+				
 		
 
 	   	const adults = [
@@ -103,6 +142,7 @@ const useStyles = makeStyles((theme) => ({
 			}
 		];
 		const today = new Date();
+		
 	    const validationSchema = yup.object().shape({
 		noOfAdults:  yup.string().required("Select No of Adults"),
 		noOfChildren:  yup.string().required("Select No of Children"), 
@@ -110,20 +150,23 @@ const useStyles = makeStyles((theme) => ({
 		checkOutDateTime: yup.date().min(yup.ref('checkInDateTime'),
         "Check out date can't be before Check in date"),
 		location: yup.string().required("Required"),
-	  });
-	 const history  = useHistory()
-	  const initialValues = {
+	  	});
+		
+		const history  = useHistory()
+		  
+		const initialValues = {
 						noOfChildren: 0,
 						noOfAdults: 1,
-						checkInDateTime: "",
-						checkOutDateTime: "",
-						location,
+						checkInDateTime:materialDateInput,
+						checkOutDateTime: moment(today).add(1, 'days').format("YYYY-MM-DD"),
+						location:location,
 						latitude:coordinate.latitude,
 						longitude:coordinate.longitude
 
 					};
 					const ref = useRef()
 					//use ref.current.values to access values outside of the formik tag
+	
 
 		return (
 		
@@ -143,7 +186,25 @@ const useStyles = makeStyles((theme) => ({
 								start: values.checkInDateTime,
 								end: values.checkOutDateTime}, guestCount: values.noOfAdults + values.noOfChildren }
 						   }
-						)}}
+						)}
+						//  (values) => {
+						// 	console.log('Latitide: ', coordinate.latitude);
+						// 	console.log('Longitude: ', coordinate.longitude);
+					
+						// 	Geocode.setApiKey("AIzaSyC00L07VTlenchjOPLk1lY0hVAK-Rih0go");
+						// 	Geocode.fromLatLng(coordinate.latitude, coordinate.longitude).then(
+						// 		response => {
+						// 		const address = response.results[0].formatted_address;
+						// 		console.log(address);
+						// 		values.location = address
+						// 		},
+						// 		error => {
+						// 			console.error(error);
+						// 		}
+						// 	);
+						// 	 //error=> console.log(error);
+						//  }
+						}
 						
 				>
 					 {({
@@ -184,16 +245,20 @@ const useStyles = makeStyles((theme) => ({
 								name="checkInDateTime"
 								label="Check in Date"
 								size="small"
-								value={values.checkInDateTime}
+								placeholder="dd/mm/yyyy"								
+								value={values.checkInDateTime}								
 								helperText={touched.checkInDateTime ? errors.checkInDateTime : ""}
 								error={touched.checkInDateTime && Boolean(errors.checkInDateTime)}
-								InputProps={{inputProps: { min: moment(today).add(0, 'days').format("YYYY-MM-DD") } }}
+								InputProps={{inputProps: { min: moment(today).add(0, 'days').format("YYYY-MM-DD") },  
+								//endAdornment: <InputAdornment position="end"><CalendarTodayIcon/></InputAdornment> 
+								}}
 							    fullWidth
 							   	onBlur={handleBlur}
 								onChange={handleChange}
 							    type="date"
 							    InputLabelProps={{
 								  shrink: true,
+								 
 							    }}
 							/>
 			        	</div>
@@ -207,6 +272,7 @@ const useStyles = makeStyles((theme) => ({
 							helperText={touched.checkOutDateTime ? errors.checkOutDateTime : ""}
 							error={touched.checkOutDateTime && Boolean(errors.checkOutDateTime)} 
 							size="small"
+							placeholder="dd/mm/yyyy"
 							value={values.checkOutDateTime}
 							fullWidth
 							onChange={handleChange}
@@ -225,7 +291,7 @@ const useStyles = makeStyles((theme) => ({
 											FormHelperTextProps={{className:classes.errortext}}
 											select
 											variant="filled"
-											size="small" 
+											size="small" 										
 											label="No of Adults"										
 											id="noOfAdults"
 											name="noOfAdults"
