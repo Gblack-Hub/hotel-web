@@ -141,7 +141,7 @@ class HotelDetail extends Component {
 						</div>
 						<Paper square>
 						  <Tabs
-						  		value={this.state.activeTabIndex}
+						  		value={activeTabIndex}
 						  		onChange={this.handleTabChange}
 						  		aria-label="Hotel Detail Tab"
 						  		indicatorColor="primary"
