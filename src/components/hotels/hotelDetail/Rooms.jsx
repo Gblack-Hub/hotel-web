@@ -1,12 +1,12 @@
 import React from 'react';
 import { /*BrowserRouter as Router, Route,*/ Link/*, Redirect, Switch */} from 'react-router-dom';
-
+//import Carousel from 'react-material-ui-carousel'
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { Alert, AlertTitle } from '@material-ui/lab';
-// import RemoveIcon from '@material-ui/icons/Remove';
-// import AddIcon from '@material-ui/icons/Add';
+import Carousel from 'react-bootstrap/Carousel'
+import { CarouselItem } from 'react-bootstrap';
 
 const classes = {
 	hidden: {
@@ -19,7 +19,7 @@ const classes = {
 
 class Rooms extends React.PureComponent {
 	state = {
-		defaultRoom: 1,
+		
 		isTextHidden: true,
 	}
 	componentDidMount(){
@@ -31,12 +31,7 @@ class Rooms extends React.PureComponent {
 	handleRoomChange=(e)=>{
 		this.setState({defaultRoom: e.target.value})
 	}
-	handleDecrementRoom=()=>{
-		this.setState(prevState => { return {defaultRoom: prevState.defaultRoom-1}}, console.log(this.state.defaultRoom));
-	}
-	handleIncrementRoom=()=>{
-		this.setState(prevState => { return {defaultRoom: prevState.defaultRoom+1}}, console.log(this.state.defaultRoom));
-	}
+	
 	render(){
 		const { rooms } = this.props;
 		console.log(rooms);
@@ -70,18 +65,24 @@ class Rooms extends React.PureComponent {
 												</Button>
 											</div>
 											<Divider />
-											{/* <div className="d-flex align-items-center justify-content-between py-3">
-												<Typography variant="subtitle2" className="text-uppercase">Select No of Rooms</Typography>
+											<div className="d-flex align-items-center py-3">
+												<Typography variant="subtitle2" className="text-uppercase">No of Rooms:</Typography>
 												<div className="d-flex align-items-center">
-													<Button variant="contained" color="primary" disableElevation onClick={this.handleDecrementRoom}>
+													<span className='badge m-2 badge-secondary' color="white" size="large">1</span>
+													{/* <Counters 	item={item}
+																onIncrement={this.handleIncrementRoom}
+																onDecrement={this.handleDecrementRoom}/> */}
+													{/* <Button variant="contained" color="primary" size="small" disableElevation onClick={()=>this.handleDecrementRoom(item.index)} 
+													 disabled= {this.state.defaultRoom===1}>
 														<RemoveIcon />
 													</Button>
-													<input type="text" className="form-control mx-2 px-1 text-center" value={defaultRoom} onChange={this.handleRoomChange} style={{width: '40px'}} />
-													<Button variant="contained" color="primary" disableElevation onClick={this.handleIncrementRoom}>
+													
+													<input type="text" className="form-control mx-2 px-1 text-center" value={this.state.defaultRoom} onChange={this.handleRoomChange} style={{width: '40px'}} /> */}
+													{/* <Button variant="contained" size="small"  color="primary" disableElevation onClick={this.handleIncrementRoom}>
 														<AddIcon />
-													</Button>
+													</Button> */} 
 												</div>
-											</div> */}
+											</div>
 											<div className="d-flex flex-column">
 												{/* <Typography variant="subtitle2" className="text-uppercase">Select No of hours</Typography>
 												<div className="d-flex justify-content-between py-3">
@@ -125,14 +126,19 @@ class Rooms extends React.PureComponent {
 																} 
 															}}
 												>
-													<Button variant="contained" color="secondary" size="large" disableElevation>
+													<Button variant="contained" color="secondary" size="large" className={classes.button} disableElevation>
 														<Typography color="primary">Reserve Now</Typography>
 													</Button>
 												</Link>
 											</div>
 										</div>
 										<div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
-											<img src={item.images[0].url} className="img-fluid rounded" alt={item.name} />
+											< Carousel interval="1000">
+											
+											{item.images.map(e =><CarouselItem> <img src={e.url} className="img-fluid rounded" alt={item.name} style={{height:300, width:500 }} /></CarouselItem>)}
+											
+											</Carousel>
+											
 										</div>
 									</div>
 								</div>
@@ -143,7 +149,7 @@ class Rooms extends React.PureComponent {
 						{ rooms && rooms.length === 0 && 
 							<Alert severity="info">
 								<AlertTitle>Info</AlertTitle>
-								Sorry, there is no room that match your search
+								Sorry, there is no room that matches your search
 							</Alert>
 						}
 					</div>

@@ -2,6 +2,8 @@ import React from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import { Formik } from 'formik'; 
+import * as yup from "yup";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -42,12 +44,14 @@ class CheckoutForm extends React.Component {
     bookingReferenceCode: "",
     hotelConfirmationCode: "",
     modalMessage: null,
-    isRequestError: false,
-    isRequestErrorMessage: "",
-    isRequestWarning: false,
-    isRequestWarningMessage: "",
+    // isRequestError: false,
+    // isRequestErrorMessage: "",
+    // isRequestWarning: false,
+   // isRequestWarningMessage: "",
   }
-
+componentDidMount(){
+  console.log(this.props.stripe )
+}
   // componentDidUpdate(){
   //   console.log(this.props);
   //   console.log(this.props.selectedHotel);
@@ -79,7 +83,7 @@ class CheckoutForm extends React.Component {
 			// }
 		})
 		.catch(error => {
-		  this.setState({ isProcessing: false, isRequestError: true, isRequestErrorMessage: "All fields are required!" });
+		  //this.setState({ isProcessing: false, isRequestError: true, isRequestErrorMessage: "All fields are required!" });
 			console.log(error);
     })
     
@@ -90,26 +94,26 @@ class CheckoutForm extends React.Component {
     // })
   }
 
-  handleErrorClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  // handleErrorClose = (event, reason) => {
+  //   if (reason === 'clickaway') {
+  //     return;
+  //   }
 
-    this.setState({ isRequestError: false });
-  };
-  handleWarningClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  //   this.setState({ isRequestError: false });
+  // };
+  // handleWarningClose = (event, reason) => {
+  //   if (reason === 'clickaway') {
+  //     return;
+  //   }
 
-    this.setState({ isRequestError: false });
-  };
+  //   this.setState({ isRequestError: false });
+  //};
   
-  handleSubmit = async event => {
-    event.preventDefault();
-    
+  handleSubmit = async values=> {
+   // event.preventDefault();
+     console.log(this.state.data)
     const { start, end, guestCount, room_id, hotel_id } = this.props.selectedHotel;
-
+console.log(this.props.selectedHotel)
     const { stripe, elements } = this.props;
 
     if (!stripe || !elements) {
@@ -121,21 +125,23 @@ class CheckoutForm extends React.Component {
     if (result.error) {
       console.log(result.error.message);
   		this.setState({ isProcessing: false, isRequestWarning: true, isRequestWarningMessage: result.error.message });
-    } else {
+   } else 
+    
       console.log(result.token);
 
       this.setState({
+
         data: {
           // purposeOfUse: this.state.purposeOfUse,
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          email: this.state.email,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
           phoneNo: this.state.phoneNo,
           // isBookingForMyself: this.state.isBookingForMyself,
           // isInstantPayment: this.state.isInstantPayment,
-          // guestFirstName: this.state.guestFirstName,
-          // guestLastName: this.state.guestLastName,
-          // guestEmail: this.state.guestEmail,
+          guestFirstName:  values.guestFirstName,
+          guestLastName: values.guestLastName,
+          guestEmail:values.guestEmail,
           guestsCount: guestCount,
           rooms: [{ areaTypeId: room_id }],
           property_id: hotel_id,
@@ -143,29 +149,62 @@ class CheckoutForm extends React.Component {
           start: start,
           end: end,
         }
+        
       }, ()=>{
         console.log(this.state.data);
         this.sendData(this.state.data);
       })
       
       this.setState({ isProcessing: true });
-    }
+    
 
   };
 
   render() {
     const { isTravellingForBusiness, isBookingForSomeone, saveInformation, paymentMethod, isProcessing, isDataSubmitted, data, modalMessage, isRequestError, isRequestErrorMessage, isRequestWarning, isRequestWarningMessage } = this.state;
+    const  validationSchema= yup.object().shape({
+      firstName:  yup.string().required("Required"),
+      lastName:  yup.string().required("Required"),
+      email:  yup.string()
+        .email("Enter a valid email")
+        .required("Email is required"),
+      guestFirstName:  yup.string().required("Required"),
+      guestLastName:  yup.string().required("Required"),
+      guestEmail:  yup.string()
+          .email("Enter a valid email")
+          .required("Email is required"),
+      })
     return (
       <div>
         <div>
           { isDataSubmitted ? 
             <BookingConfirmation bookingInfo={data} bookingReceiptInfo={modalMessage} />
           :
+          <Formik
+					//innerRef ={ref}
+					initialValues={{
+            firstName: this.state.firstName,
+            lastName: this.state.lastname,
+            email:  this.state.email,
+            guestLastName:this.state.guestLastName,
+            guestFirstName:this.state.guestFirstName,
+            guestEmail:this.state.guestEmail
+
+          }} 
+					validationSchema={validationSchema}
+					 onSubmit= {this.handleSubmit}
+				
+						
+				>
+					 {({
+						values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting
+					}) =>(
             <form onSubmit={this.handleSubmit}>
               <div>
                 <div className="mb-3">
                 <Typography variant="h6" color="primary">Are you travelling for business?</Typography>
-                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" value={isTravellingForBusiness} onChange={this.handleRadioChange}>
+                  <RadioGroup row aria-label="Are you travelling for work" name="isTravellingForBusiness" 
+                  value={isTravellingForBusiness} onChange={this.handleRadioChange}>
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
                     <FormControlLabel value={false} control={<Radio />} label="No" />
                   </RadioGroup>
@@ -192,33 +231,48 @@ class CheckoutForm extends React.Component {
                   <div className="row">
                     <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                       <TextField
-                        onChange={this.handleChange}
+                        //onChange={this.handleChange}
                         variant="outlined"
                         label="First Name"
                         name="firstName"
                         id="firstName"
+                        value={values.firstName}
+                        helperText={touched.firstName ? errors.firstName : ""}
+                        error={touched.firstName && Boolean(errors.firstName)}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                         size="small"
                         fullWidth
                       />
                     </div>
                     <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                       <TextField
-                        onChange={this.handleChange}
+                       // onChange={this.handleChange}
                         variant="outlined"
                         label="Last Name"
                         name="lastName"
                         id="lastName"
+                        value={values.lastName}
+                        helperText={touched.lastName ? errors.lastName : ""}
+                        error={touched.lastName && Boolean(errors.lastName)}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                         size="small"
                         fullWidth
                       />
                     </div>
                     <div className="col-12 mt-3">
                       <TextField
-                        onChange={this.handleChange}
-                        variant="outlined"
-                        label="Email"
-                        name="email"
+                          //onChange={this.handleChange}
+                          variant="outlined"
+                          label="Email"
+                          name="email"
                           id="email"
+                          value={values.email}
+                          helperText={touched.email ? errors.email : ""}
+                          error={touched.email && Boolean(errors.email)}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
                           size="small"
                           fullWidth
                       />
@@ -245,7 +299,8 @@ class CheckoutForm extends React.Component {
               <div className="mt-4">
                 <div>
                   <Typography variant="h6" color="primary">Are you booking for yourself?</Typography>
-                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForSomeone" value={isBookingForSomeone} onChange={this.handleRadioChange}>
+                  <RadioGroup row aria-label="Are you booking for yourself" name="isBookingForSomeone" 
+                  value={isBookingForSomeone} onChange={this.handleRadioChange}>
                     <FormControlLabel value={false} control={<Radio />} label="Yes, I am booking for myself" />
                     <FormControlLabel value={true} control={<Radio />} label="No, I am booking for someone" />
                   </RadioGroup>
@@ -259,33 +314,49 @@ class CheckoutForm extends React.Component {
                     </div>
                     <div className="row">
                       <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <form></form>
                         <TextField
-                            onChange={this.handleChange}
+                            //onChange={this.handleChange}
                             variant="outlined"
                             label="First Name"
                             name="guestFirstName"
                             id="guestFirstName"
+                            value={values.guestFirstName}
+                            helperText={touched.guestFirstName ? errors.guestFirstName : ""}
+                            error={touched.guestFirstName && Boolean(errors.guestFirstName)}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                             size="small"
                             fullWidth
                         />
                       </div>
                       <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <TextField
-                            onChange={this.handleChange}
+                            //onChange={this.handleChange}
                             variant="outlined"
                             label="Last Name"
                             name="guestLastName"
                             id="guestLastName"
+                            value={values.guestLastName}
+                            helperText={touched.guestLastName ? errors.guestLastName : ""}
+                            error={touched.guestLastName && Boolean(errors.guestLastName)}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                             size="small"
                             fullWidth
                         />
                       </div>
                       <div className="col-12 mt-3">
                         <TextField
-                            onChange={this.handleChange}
+                            //onChange={this.handleChange}
                             variant="outlined"
                             label="Email"
                             name="guestEmail"
+                            value={values.guestEmail}
+                            helperText={touched.guestEmail ? errors.guestEmail : ""}
+                            error={touched.guestEmail && Boolean(errors.guestEmail)}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                             id="guestEmail"
                             size="small"
                             fullWidth
@@ -327,14 +398,18 @@ class CheckoutForm extends React.Component {
                   <div className="d-flex flex-column mb-4">
                     <div className="d-flex justify-content-between">
                       <FormControlLabel value="paypal" control={<Radio color="primary" />} label="PayPal" />
-                      <Typography variant="h6" className="font-weight-bold">PayPal</Typography>
+                      <img src={require('../../../../../assets/images/paypal.png')} alt="paypal" style={{height: '25px'}} />
                     </div>
                     <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
                   </div>
                   <div className="d-flex flex-column">
                     <div className="d-flex justify-content-between">
                       <FormControlLabel value="credit-card" control={<Radio color="primary" />} label="Credit Card" />
-                      <Typography variant="h6" className="font-weight-bold">Visa, MasterCard</Typography>
+                      <div className="d-flex">
+                      <img src={require('../../../../../assets/images/visa.png')} alt="paypal" style={{height: '25px'}} />
+                      <img src={require('../../../../../assets/images/mastercard.png')} alt="paypal" style={{height: '25px'}} />
+                      </div>
+                    
                     </div>
                   <Typography variant="caption" color="textSecondary" className="w-75">Safe payment online. Credit card needed. Paypal account is not necessary</Typography>
                   </div>
@@ -450,7 +525,8 @@ class CheckoutForm extends React.Component {
                 <Typography variant="body1" color="primary" className="font-weight-bold">Reserve Now</Typography>
               </Button>
             </form>
-          }
+          )}
+          </Formik> }
         </div>
       </div>
     );

@@ -43,7 +43,7 @@ class HotelList extends Component{
 			this.props.history.push('/');
 			return;
 		}
-		
+		console.log(this.props.location)
 		let data = this.props.location.state.searchData;
 		let guestCount = this.props.location.state.guestCount;
 		this.setState({ guestCount: guestCount }) //needed to set guest count state in order to get dynamic guest count, probably after filter
@@ -85,7 +85,8 @@ class HotelList extends Component{
 	render() {
 		const { slideValue, hotels, isResultFound, isLoading, guestCount, isSearchError, errorMessage } = this.state;
 		// const { searchData } = this.props.location.state ? this.props.location.state : <Redirect to="/" />;
-		let searchData = this.state.searchData ? this.state.searchData : this.props.location.state.searchData ? this.props.location.state.searchData : <Redirect to="/" />;
+		let searchData = this.state.searchData 
+		? this.state.searchData : this.props.location.state.searchData ? this.props.location.state.searchData : <Redirect to="/" />;
 		
 		return (
 			<div className="container-fluid pt-3">

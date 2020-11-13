@@ -240,10 +240,10 @@ class SideSearchPane extends Component{
 										value={this.state.noOfAdult}
 										onChange={this.handleSelectChange}
 									>
-										<MenuItem value={0}>None</MenuItem>
-										<MenuItem value={1}>One</MenuItem>
-										<MenuItem value={2}>Two</MenuItem>
-										<MenuItem value={3}>Three+</MenuItem>
+										<MenuItem value={0}>1</MenuItem>
+										<MenuItem value={1}>2</MenuItem>
+										<MenuItem value={2}>3</MenuItem>
+										<MenuItem value={3}>4+</MenuItem>
 									</Select>
 								</FormControl>
 							</div>
@@ -258,15 +258,15 @@ class SideSearchPane extends Component{
 										value={this.state.noOfChildren}
 										onChange={this.handleSelectChange}
 									>
-										<MenuItem value={0}>None</MenuItem>
-										<MenuItem value={1}>One</MenuItem>
-										<MenuItem value={2}>Two</MenuItem>
-										<MenuItem value={3}>Three+</MenuItem>
+										<MenuItem value={0}>0</MenuItem>
+										<MenuItem value={1}>1</MenuItem>
+										<MenuItem value={2}>2</MenuItem>
+										<MenuItem value={3}>3+</MenuItem>
 									</Select>
 								</FormControl>
 							</div>
 						</div>
-						<Typography variant="caption" className="text-uppercase">Price per day</Typography>
+						{/* <Typography variant="caption" className="text-uppercase">Price per day</Typography>
 						<Slider
 							defaultValue={500}
 							color="secondary"
@@ -277,7 +277,7 @@ class SideSearchPane extends Component{
 							marks={marks}
 							value={this.state.value}
 							onChange={this.handleSliderChange}
-						/>
+						/> */}
 				      </form>
 					</CardContent>
 				</Card>

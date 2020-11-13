@@ -72,7 +72,7 @@ class HotelDetail extends Component {
 	render(){
 		const { activeTabIndex, hotelData } = this.state;
 		const { searchData } = this.props.location;
-
+		//const searchData = {}
 		// const { hotel_id } = this.props.match.params;
 		return (
 			<div className="container-fluid mt-3">
