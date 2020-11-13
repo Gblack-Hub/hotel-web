@@ -34,7 +34,7 @@ class BookHotel extends Component {
 	
 
 	render(){
-		const { hotelImage, hotelName, roomType, roomAmount, start} = this.props.location.hotelInfo;
+		const { hotelImage, hotelName, roomType, roomAmount, start} = this.props.location.hotelInfo || {};
 		// const { selectedHotel } = this.state;
 		const VAT = 210;
 		return (

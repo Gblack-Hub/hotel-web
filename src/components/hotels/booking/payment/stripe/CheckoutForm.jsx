@@ -69,14 +69,14 @@ componentDidMount(){
     axios.post(`https://quickstays.azurewebsites.net/api/v1/bookings`, JSON.stringify(data))
 		.then(res => {
 		   	console.log(res.data);
-		   	this.setState({ 
-           modalMessage: {
+		   	this.setState({
+          modalMessage: {
             bookingId: res.data.bookingId,
             bookingReferenceCode: res.data.bookingReferenceCode,
             hotelConfirmationCode: res.data.hotelConfirmationCode,
             amount: this.props.selectedHotel.roomAmount
-           },
-           isDataSubmitted: true,
+          },
+          isDataSubmitted: true,
         });
 			// if(this.state.isDataSubmitted){
 			// 	console.log(this.state.isDataNotComplete);
@@ -109,11 +109,11 @@ componentDidMount(){
   //   this.setState({ isRequestError: false });
   //};
   
-  handleSubmit = async values=> {
-   // event.preventDefault();
-     console.log(this.state.data)
+  handleSubmit = async (event, values)=> {
+   event.preventDefault();
+    console.log(this.state.data)
     const { start, end, guestCount, room_id, hotel_id } = this.props.selectedHotel;
-console.log(this.props.selectedHotel)
+    console.log(this.props.selectedHotel)
     const { stripe, elements } = this.props;
 
     if (!stripe || !elements) {
@@ -122,15 +122,14 @@ console.log(this.props.selectedHotel)
 
     const card = elements.getElement(CardElement);
     const result = await stripe.createToken(card);
+    console.log(result)
     if (result.error) {
       console.log(result.error.message);
   		this.setState({ isProcessing: false, isRequestWarning: true, isRequestWarningMessage: result.error.message });
-   } else 
-    
+    } else {
       console.log(result.token);
 
       this.setState({
-
         data: {
           // purposeOfUse: this.state.purposeOfUse,
           firstName: values.firstName,
@@ -149,16 +148,14 @@ console.log(this.props.selectedHotel)
           start: start,
           end: end,
         }
-        
       }, ()=>{
         console.log(this.state.data);
         this.sendData(this.state.data);
       })
       
       this.setState({ isProcessing: true });
-    
-
-  };
+    };
+  }
 
   render() {
     const { isTravellingForBusiness, isBookingForSomeone, saveInformation, paymentMethod, isProcessing, isDataSubmitted, data, modalMessage, isRequestError, isRequestErrorMessage, isRequestWarning, isRequestWarningMessage } = this.state;
