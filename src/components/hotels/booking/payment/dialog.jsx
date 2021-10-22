@@ -160,7 +160,7 @@ const EditDialog = (props) => {
                   <Typography 
                     variant= "h5" >
                   CHANGE INFORMATION
-                </Typography>< CloseIcon style={{marginLeft:"30rem", marginTop:5, fontSize: "22pxx"}}  onClick={handleClose}/>
+                </Typography><CloseIcon style={{marginLeft:"30rem", marginTop:5, fontSize: "22pxx"}}  onClick={handleClose}/>
                  </div>
                
               <DialogContent>

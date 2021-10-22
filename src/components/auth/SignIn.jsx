@@ -78,7 +78,6 @@ function SignIn(props){
 						label="Email"
 						id="email"
 						value={values.email}
-						className="d-block"
 						fullWidth
 						required
 						InputProps={{
